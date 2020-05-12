@@ -1,0 +1,209 @@
+// Fonts
+@import url('https://fonts.googleapis.com/css?family=Nunito');
+
+// Variables
+@import 'variables';
+
+// Bootstrap
+@import '~bootstrap/scss/bootstrap';
+
+html,
+body {
+    margin: 0;
+    padding: 0;
+}
+
+.top-nav {
+    text-align: center;
+    color: #ffffff;
+    padding: 1rem;
+    font-size: 1.25rem;
+
+    svg {
+        margin-left: 0.5rem;
+        margin-right: 0.5rem;
+    }
+
+    a {
+        color: #ffffff;
+    }
+}
+
+.hero-image {
+    background-image: radial-gradient(rgba(0, 0, 0, 0), rgba(0, 0, 0, 1)), url(../images/small-boi.jpg);
+    background-size: cover;
+    background-position: center center;
+    height: 100vh;
+    min-height: 120px;
+    position: relative;
+    background-attachment: fixed;
+
+    &.hero-small {
+        height: 40vh;
+    }
+
+    .bottom-text {
+        position: absolute;
+        bottom: 0;
+        color: #ffffff;
+        padding: 0.5rem 3.75rem 0.5rem 2rem;
+        font-size: 2rem;
+    }
+
+    .bottom-scroll-arrow {
+        position: absolute;
+        bottom: 0;
+        right: 0;
+        color: #ffffff;
+        padding: 0.5rem 2rem;
+        font-size: 2rem;
+        animation-name: bounce;
+        animation-duration: 2.5s;
+        animation-fill-mode: both;
+        animation-timing-function: linear;
+        animation-iteration-count: infinite;
+    }
+}
+
+@keyframes bounce {
+
+    0%,
+    20%,
+    40%,
+    60%,
+    80%,
+    100% {
+        transform: translateY(0);
+    }
+
+    70% {
+        transform: translateY(-10px);
+    }
+
+    90% {
+        transform: translateY(-5px);
+    }
+}
+
+.tiles-section {
+    padding: 1rem 2rem;
+
+    h2 {
+        font-size: 2rem;
+        text-align: center;
+    }
+}
+
+.image-tiles {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+
+    .image-tile {
+        box-sizing: border-box;
+        flex-grow: 0;
+        flex-shrink: 0;
+        flex-basis: 300px;
+        height: 300px;
+        background-size: cover;
+        background-position: center center;
+        background-color: #ccc;
+        margin: 1rem;
+        color: transparent;
+        padding: 1rem;
+        display: flex;
+        justify-content: space-around;
+        flex-direction: column;
+        text-align: center;
+        text-decoration: none;
+
+        &:hover {
+            color: #000000;
+            box-shadow: inset 0 0 0 300px rgba(255, 255, 255, 0.7);
+            border: 1px solid #000000;
+        }
+
+        &:focus {
+            color: #000000;
+            box-shadow: inset 0 0 0 300px rgba(255, 255, 255, 0.7), 0 0 0 2px #fff, 0 0 0 3px #000;
+            border: 1px solid #000000;
+        }
+
+        .image-title {
+            font-size: 2rem;
+        }
+
+        .image-date {
+            font-size: 1.125rem;
+        }
+
+        &.tile-view-all {
+            background-image: linear-gradient(to bottom, transparent 40%, #333 40%, #333 60%, transparent 60%),
+                linear-gradient(to right, transparent 40%, #333 40%, #333 60%, transparent 60%);
+            background-size: 50% 50%, 50% 50%;
+            background-repeat: no-repeat, no-repeat;
+            background-position: center;
+        }
+    }
+}
+
+.image-viewer {
+    position: relative;
+    height: 100vh;
+    background: #000000;
+    text-align: center;
+
+    .current-image {
+        max-width: 100%;
+        max-height: 100%;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translateX(-50%) translateY(-50%);
+    }
+
+    .back-link {
+        top: 0;
+        left: 0;
+    }
+
+    .prev-link {
+        top: 50vh;
+        left: 0;
+        transform: translateY(-50%);
+    }
+
+    .next-link {
+        top: 50vh;
+        right: 0;
+        transform: translateY(-50%);
+    }
+
+    .back-link,
+    .prev-link,
+    .next-link {
+        position: absolute;
+        color: transparent;
+        display: inline-block;
+        padding: 15px;
+    }
+
+    &:hover,
+    &:focus-within {
+
+        .back-link,
+        .prev-link,
+        .next-link {
+            color: white;
+            text-shadow: 0 0 4px #000000;
+        }
+    }
+}
+
+.image-details {
+    padding: 15px;
+}
+
+.footer {
+    padding: 15px;
+}

@@ -1,0 +1,39 @@
+@extends('layouts.external')
+@section('page-title', 'Albums — Photography | Matthew Schlachter')
+@section('meta-description', 'See the photo albums I\'ve posted from my adventures in photography')
+
+@section('scripts')
+@parent
+<style type="text/css">
+    .hero-image {
+        background-image: radial-gradient(rgba(0, 0, 0, 0), rgba(0, 0, 0, 1)),
+            url(<?= (App\Image::inRandomOrder()->first())->getFirstMediaUrl('image') ?>);
+    }
+
+</style>
+@endsection
+
+@section('content')
+<div class="tiles-section">
+    <h2>
+        All Albums
+    </h2>
+    <div class="image-tiles">
+        @foreach($albums as $album)
+        <a id="album-{{ $album->id }}" href="{{ route('albums.show', compact('album')) }}" class="image-tile" style="background-image: url({{ optional($album->defaultImage)->getFirstMediaUrl('image', 'thumb') }});">
+            <span class="image-title">
+                {{ $album->title }}
+            </span>
+            <span class="image-date">
+                {{ $album->date }}
+            </span>
+        </a>
+        @endforeach
+    </div>
+    <div class="row">
+        <div class="col-auto mx-auto">
+            {!! $albums->links() !!}
+        </div>
+    </div>
+</div>
+@endsection
