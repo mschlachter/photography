@@ -53,7 +53,6 @@ class ImageController extends Controller
         }
         // Update the slug (with the new ID)
         $image->save();
-        set_time_limit(300);
         $image->addMedia($validated['file-new'])->withResponsiveImages()->toMediaCollection('image');
         return back()->withImageStatus(__('Image successfully added.'));
     }
