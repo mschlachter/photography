@@ -1,4 +1,7 @@
 <h2>Comments</h2>
+<label class="sr-only" for="commento-textarea-root">
+    Add a comment
+</label>
 <div id="commento"></div>
 <noscript>Please enable JavaScript to view the comments.</noscript>
 
