@@ -13,7 +13,7 @@
 <div class="image-viewer">
     <x-picture :image="$image" class="current-image"></x-picture>
 
-    <a class="back-link" href="{{ route('albums.show', compact('album')) }}#album-{{ $image->id }}">
+    <a class="back-link" href="{{ route('albums.show', compact('album')) }}#image-{{ $image->id }}">
         <i class="far fa-times-circle mr-2"></i>Back to Album
     </a>
     @if($previous !== null)
