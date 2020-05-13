@@ -6,8 +6,36 @@
 
 require('./bootstrap');
 
-$(document).on('click', '.hero-image .bottom-scroll-arrow', function() {
+$(document).on('click', '.hero-image .bottom-scroll-arrow', function () {
     $([document.documentElement, document.body]).animate({
         scrollTop: $('.tiles-section').offset().top
     }, 1500);
 });
+
+function setPictureSizes() {
+    const vw = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
+    const vh = Math.max(document.documentElement.clientHeight, window.innerHeight || 0);
+    const vpRatio = vw/vh;
+    if (vw > 0 && vh > 0) {
+        $('picture').each(function () {
+            let $img = $(this).find('img');
+            let $sources = $(this).find('source');
+            let ratio = $img.width() / $img.height();
+            if (ratio >= vpRatio) {
+                $sources.attr('sizes', '100vw');
+            } else {
+                $sources.attr('sizes', (ratio / vpRatio * 100) + 'vw');
+            }
+        });
+    }
+}
+
+
+var resizeFinished;
+$(function () {
+  resizeFinished = setTimeout(setPictureSizes, 100);
+});
+window.onresize = function(){
+  clearTimeout(resizeFinished);
+  resizeFinished = setTimeout(setPictureSizes, 250);
+};

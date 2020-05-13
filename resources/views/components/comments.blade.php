@@ -4,5 +4,5 @@
 
 @section('scripts')
     @parent
-    <script defer src="https://cdn.commento.io/js/commento.js" async="async" @if(isset($pageId)) data-page-id="{{ $pageId }}" @endif></script>
+    <script src="https://cdn.commento.io/js/commento.js" defer="defer" data-no-fonts="true" @if(isset($pageId)) data-page-id="{{ $pageId }}" @endif></script>
 @endsection
