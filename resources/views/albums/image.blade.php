@@ -37,6 +37,10 @@
     <p>
         Date: {{ $image->date }}
     </p>
+    <p>
+        Album: 
+        <a href="{{ route('albums.show', ['album' => $image->album]) }}#image-{{ $image->id }}">{{ $image->album->title }}</a>
+    </p>
     <x-comments :pageId="'photography/images/' . $image->id"></x-comments>
 </div>
 @endsection
