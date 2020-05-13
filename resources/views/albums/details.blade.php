@@ -14,8 +14,8 @@
 
 @section('content')
 <div class="tiles-section">
-    <a href="/">
-        <i class="fas fa-chevron-left mr-2"></i>Back to home
+    <a href="{{ route('albums.all') }}">
+        <i class="fas fa-chevron-left mr-2"></i>Back to all albums
     </a>
     <h2>
         {{ $album->title }}
