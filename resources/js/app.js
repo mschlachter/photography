@@ -56,6 +56,7 @@ document.addEventListener('keydown', function (event) {
             case "ArrowRight":
                 $('.image-viewer .next-link')[0].click();
                 break;
+            case "Esc":
             case "Escape":
                 $('.image-viewer .back-link')[0].click();
                 break;
