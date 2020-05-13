@@ -4,7 +4,7 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title>@yield('page-title')</title>
-    <meta name="description" content="@yield('page-description')">
+    <meta name="description" content="@yield('meta-description')">
     <meta name="author" content="Matthew Schlachter">
     <meta name="language" content="en">
 
