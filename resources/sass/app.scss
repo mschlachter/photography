@@ -186,6 +186,17 @@ body {
         color: transparent;
         display: inline-block;
         padding: 15px;
+        transition: color ease 0.3s;
+
+        &:hover,
+        &:focus {
+            color: white;
+            text-shadow: 0 0 4px #000000;
+        }
+        
+        svg {
+            transition: color ease 0.3s;
+        }
     }
 
     &:hover,
@@ -194,8 +205,10 @@ body {
         .back-link,
         .prev-link,
         .next-link {
-            color: white;
-            text-shadow: 0 0 4px #000000;
+            svg {
+                color: white;
+                text-shadow: 0 0 4px #000000;
+            }
         }
     }
 }
