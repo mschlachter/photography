@@ -15,7 +15,7 @@ $(document).on('click', '.hero-image .bottom-scroll-arrow', function () {
 function setPictureSizes() {
     const vw = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
     const vh = Math.max(document.documentElement.clientHeight, window.innerHeight || 0);
-    const vpRatio = vw/vh;
+    const vpRatio = vw / vh;
     if (vw > 0 && vh > 0) {
         $('picture').each(function () {
             let $img = $(this).find('img');
@@ -30,12 +30,35 @@ function setPictureSizes() {
     }
 }
 
-
 var resizeFinished;
 $(function () {
-  resizeFinished = setTimeout(setPictureSizes, 100);
+    resizeFinished = setTimeout(setPictureSizes, 100);
 });
-window.onresize = function(){
-  clearTimeout(resizeFinished);
-  resizeFinished = setTimeout(setPictureSizes, 250);
+window.onresize = function () {
+    clearTimeout(resizeFinished);
+    resizeFinished = setTimeout(setPictureSizes, 250);
 };
+
+// Handle arrow keys pressed:
+document.addEventListener('keydown', function (event) {
+    const key = event.key;
+    const y = (window.pageYOffset !== undefined) ?
+        window.pageYOffset :
+        (document.documentElement || document.body.parentNode || document.body).scrollTop;
+    // Only use these if not scrolled down at all
+    if (y === 0) {
+        switch (event.key) {
+            case "Left":
+            case "ArrowLeft":
+                $('.image-viewer .prev-link')[0].click();
+                break;
+            case "Right":
+            case "ArrowRight":
+                $('.image-viewer .next-link')[0].click();
+                break;
+            case "Escape":
+                $('.image-viewer .back-link')[0].click();
+                break;
+        }
+    }
+});
