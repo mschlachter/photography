@@ -12,21 +12,15 @@ $(document).on('click', '.hero-image .bottom-scroll-arrow', function () {
     }, 1500);
 });
 
-let sizesRetries = 15;
-
 function setPictureSizes() {
     const vw = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
     const vh = Math.max(document.documentElement.clientHeight, window.innerHeight || 0);
     const vpRatio = vw / vh;
     if (vw > 0 && vh > 0) {
         $('picture').each(function () {
-            let $img = $(this).find('img')[0];
+            let $img = $(this).find('img');
             let $sources = $(this).find('source');
-            let ratio = $img.naturalWidth / $img.naturalHeight;
-            if (isNaN(ratio) && sizesRetries-- > 0) {
-                resizeFinished = setTimeout(setPictureSizes, 100);
-                return;
-            }
+            let ratio = $img.data('width') / $img.data('height');
             if (ratio >= vpRatio) {
                 $sources.attr('sizes', '100vw');
             } else {

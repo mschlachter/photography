@@ -741,7 +741,7 @@ function setPictureSizes() {
         $('picture').each(function () {
             let $img = $(this).find('img');
             let $sources = $(this).find('source');
-            let ratio = $img.width() / $img.height();
+            let ratio = $img.data('width') / $img.data('height');
             if (ratio >= vpRatio) {
                 $sources.attr('sizes', '100vw');
             } else {
