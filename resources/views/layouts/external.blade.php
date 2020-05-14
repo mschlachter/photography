@@ -7,7 +7,7 @@
     <meta name="description" content="@yield('meta-description')">
     <meta name="author" content="Matthew Schlachter">
     <meta name="language" content="en">
-    
+
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin />
     <link rel="preconnect" href="https://www.google-analytics.com" />
@@ -15,14 +15,19 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="canonical" href="{{ $canonicalURL ?? getCanonical() }}" />
 
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="manifest" href="/site.webmanifest">
+
     <link rel="stylesheet" href="{{ mix('css/app.css') }}">
     @yield('styles')
-    
+
     <!-- Global site tag (gtag.js) - Google Analytics -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-59906432-4"></script>
     <script>
         window.dataLayer = window.dataLayer || [];
-        function gtag(){dataLayer.push(arguments);}
+        function gtag() {dataLayer.push(arguments);}
         gtag('js', new Date());
         gtag('config', 'UA-59906432-4');
     </script>
