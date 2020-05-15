@@ -77,15 +77,16 @@ document.addEventListener('keydown', function (event) {
 
 // Handle mobile swipe (left/right)
 function detectswipe(el, func) {
-    swipe_det = new Object();
-    swipe_det.sX = 0;
-    swipe_det.sY = 0;
-    swipe_det.eX = 0;
-    swipe_det.eY = 0;
-    var min_x = 30; //min x swipe for horizontal swipe
-    var max_x = 30; //max x difference for vertical swipe
-    var min_y = 30; //min x swipe for horizontal swipe
-    var max_y = 30; //max x difference for vertical swipe
+    let pageWidth = window.innerWidth || document.body.clientWidth;
+    let treshold = Math.max(1, Math.floor(0.01 * (pageWidth)));
+    let swipe_det = {
+        sX: 0,
+        sY: 0,
+        eX: 0,
+        eY: 0,
+    };
+    const limit = Math.tan(45 * 1.5 / 180 * Math.PI);
+
     var direc = "";
     el.addEventListener('touchstart', function (e) {
         var t = e.touches[0];
@@ -97,12 +98,25 @@ function detectswipe(el, func) {
         var t = e.touches[0];
         swipe_det.eX = t.screenX;
         swipe_det.eY = t.screenY;
-    });//, false);
+    }); //, false);
     el.addEventListener('touchend', function (e) {
+
+        let x = swipe_det.eX - swipe_det.sX;
+        let y = swipe_det.eY - swipe_det.sY;
+        let xy = Math.abs(x / y);
+        let yx = Math.abs(y / x);
+
         //horizontal detection
-        if ((((swipe_det.eX - min_x > swipe_det.sX) || (swipe_det.eX + min_x < swipe_det.sX)) && ((swipe_det.eY < swipe_det.sY + max_y) && (swipe_det.sY > swipe_det.eY - max_y) && (swipe_det.eX > 0)))) {
-            if (swipe_det.eX > swipe_det.sX) direc = "r";
-            else direc = "l";
+        if (Math.abs(x) > treshold || Math.abs(y) > treshold) {
+            if (yx <= limit && Math.abs(x) > Math.abs(y)) {
+                if (x < 0) {
+                    direc = 'l'; // left
+                } else {
+                    direc = 'r'; // right
+                }
+            }
+        } else {
+            direc = 't'; // tap
         }
 
         if (direc != "") {
@@ -125,6 +139,8 @@ function swipeDetected(el, direction) {
         case "l": // right-to-left swipe
             targetButton = document.querySelector('.image-viewer .next-link');
             break;
+        case "t": // tap (no/minimal movement)
+            break
     }
     targetButton && targetButton.click();
 }
