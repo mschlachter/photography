@@ -251,6 +251,19 @@ body {
             }
         }
     }
+
+    &.hide-controls {
+
+        .back-link,
+        .prev-link,
+        .next-link {
+
+            &,
+            svg {
+                color: transparent;
+            }
+        }
+    }
 }
 
 .image-details {

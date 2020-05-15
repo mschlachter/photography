@@ -78,7 +78,7 @@ document.addEventListener('keydown', function (event) {
 // Handle mobile swipe (left/right)
 function detectswipe(el, func) {
     let pageWidth = window.innerWidth || document.body.clientWidth;
-    let treshold = Math.max(1, Math.floor(0.01 * (pageWidth)));
+    let treshold = Math.max(15, Math.floor(0.05 * (pageWidth)));
     let swipe_det = {
         sX: 0,
         sY: 0,
@@ -86,26 +86,28 @@ function detectswipe(el, func) {
         eY: 0,
     };
     const limit = Math.tan(45 * 1.5 / 180 * Math.PI);
-
-    var direc = "";
+    
+    let lastTouch;
     el.addEventListener('touchstart', function (e) {
         var t = e.touches[0];
+        lastTouch = t;
         swipe_det.sX = t.screenX;
         swipe_det.sY = t.screenY;
     }, false);
     el.addEventListener('touchmove', function (e) {
-        //e.preventDefault();
-        var t = e.touches[0];
+        lastTouch = e.touches[0];
+    });
+    el.addEventListener('touchend', function (e) {
+        var t = lastTouch;
         swipe_det.eX = t.screenX;
         swipe_det.eY = t.screenY;
-    }); //, false);
-    el.addEventListener('touchend', function (e) {
 
         let x = swipe_det.eX - swipe_det.sX;
         let y = swipe_det.eY - swipe_det.sY;
         let xy = Math.abs(x / y);
         let yx = Math.abs(y / x);
 
+        var direc = "";
         //horizontal detection
         if (Math.abs(x) > treshold || Math.abs(y) > treshold) {
             if (yx <= limit && Math.abs(x) > Math.abs(y)) {
@@ -134,12 +136,13 @@ function swipeDetected(el, direction) {
     let targetButton;
     switch (direction) {
         case "r": // left-to-right swipe
-            targetButton = document.querySelector('.image-viewer .prev-link');
+            targetButton = el.querySelector('.prev-link');
             break;
         case "l": // right-to-left swipe
-            targetButton = document.querySelector('.image-viewer .next-link');
+            targetButton = el.querySelector('.next-link');
             break;
         case "t": // tap (no/minimal movement)
+            el.classList.toggle('hide-controls');
             break
     }
     targetButton && targetButton.click();
@@ -147,3 +150,7 @@ function swipeDetected(el, direction) {
 
 const imageViewer = document.querySelector('.image-viewer');
 imageViewer && detectswipe(imageViewer, swipeDetected);
+
+imageViewer.addEventListener('mousemove', function() {
+    imageViewer.classList.remove('hide-controls');
+});
