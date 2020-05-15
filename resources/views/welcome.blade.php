@@ -1,4 +1,4 @@
-@extends('layouts.external', ['largeHero' => true])
+@extends('layouts.external', ['largeHero' => true, 'defaultHeroImage' => true])
 @section('page-title', 'Photography | Matthew Schlachter')
 @section('meta-description', 'Experience the fruits of my labours from my adventures in photography')
 

@@ -35,7 +35,7 @@
 
 <body>
     @if($showHero ?? true)
-    <div class="hero-image @if(!($largeHero ?? false)) hero-small @endif">
+    <div class="hero-image @if(!($largeHero ?? false)) hero-small @endif @if($defaultHeroImage ?? false) default-image @endif">
         <nav class="top-nav">
             <a href="{{ route('albums.all') }}">Albums</a>
             <a href="{{ route('home') }}"><span class="sr-only">Home</span><i class="fas fa-camera"></i></a>
