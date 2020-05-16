@@ -67,7 +67,7 @@
     <script src="{{ mix('js/app.js') }}" async></script>
     <script src="https://kit.fontawesome.com/4d7bccd5f5.js" crossorigin="anonymous" async></script>
     @yield('scripts')
-    <script src="//instant.page/5.0.1" type="module" integrity="sha384-0DvoZ9kNcB36fWcQApIMIGQoTzoBDYTQ85e8nmsfFOGz4RHAdUhADqJt4k3K2uLS"></script>
+    <script src="//instant.page/5.0.1" type="module" data-instant-intensity="mousedown" integrity="sha384-0DvoZ9kNcB36fWcQApIMIGQoTzoBDYTQ85e8nmsfFOGz4RHAdUhADqJt4k3K2uLS"></script>
 </body>
 
 </html>
