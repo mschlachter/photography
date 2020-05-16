@@ -43,10 +43,7 @@ function getMediaUrlForSize(\App\Image $image, $targetWidth = 300, $targetHeight
     $sources = explode(', ', $srcSet);
     
     // Get the ratio of the image
-    $spatieImage = Spatie\Image\Image::load($image->getFirstMediaPath('image'));
-    $width = $spatieImage->getWidth();
-    $height = $spatieImage->getHeight();
-    $ratio = $width / $height;
+    $ratio = getImageRatio($image);
     
     // Get the desired ratio
     $targetRatio = $targetWidth / $targetHeight;
@@ -66,4 +63,14 @@ function getMediaUrlForSize(\App\Image $image, $targetWidth = 300, $targetHeight
     
     // Return the URL for the desired size
     return $source;
+}
+
+function getImageRatio(App\Image $image)
+{
+    return Cache::remember('image|ratio|' . $image->id, 60*60*24*30, function() use ($image) {
+        $spatieImage = Spatie\Image\Image::load($image->getFirstMediaPath('image'));
+        $width = $spatieImage->getWidth();
+        $height = $spatieImage->getHeight();
+        return $width / $height;
+    });
 }
