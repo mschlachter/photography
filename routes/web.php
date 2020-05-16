@@ -99,3 +99,9 @@ Route::group(['middleware' => 'auth', 'prefix' => 'admin/', 'as' => 'admin.'], f
 	Route::put('profile', ['as' => 'profile.update', 'uses' => 'ProfileController@update']);
 	Route::put('profile/password', ['as' => 'profile.password', 'uses' => 'ProfileController@password']);
 });
+
+Route::get('sitemap.xml', function() {
+    return response(view('sitemap'))->withHeaders([
+        'Content-Type' => 'text/xml',
+    ]);
+});
