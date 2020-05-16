@@ -20,7 +20,7 @@
     </h2>
     <div class="image-tiles">
         @foreach($albums as $album)
-        <a id="album-{{ $album->id }}" href="{{ route('albums.show', compact('album')) }}" class="image-tile" style="background-image: url({{ optional($album->defaultImage)->getFirstMediaUrl('image', 'thumb') }});">
+        <a id="album-{{ $album->id }}" href="{{ route('albums.show', compact('album')) }}" class="image-tile" style="background-image: url({{ getMediaUrlForSize($album->defaultImage) }});">
             <span class="image-title">
                 {{ $album->title }}
             </span>

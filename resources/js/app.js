@@ -151,6 +151,6 @@ function swipeDetected(el, direction) {
 const imageViewer = document.querySelector('.image-viewer');
 imageViewer && detectswipe(imageViewer, swipeDetected);
 
-imageViewer.addEventListener('mousemove', function() {
+imageViewer && imageViewer.addEventListener('mousemove', function() {
     imageViewer.classList.remove('hide-controls');
 });

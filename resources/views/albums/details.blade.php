@@ -9,6 +9,7 @@
         background-image: radial-gradient(rgba(0, 0, 0, 0), rgba(0, 0, 0, 1)),
             url(<?= getRandomMediaUrl($album) ?>);
     }
+
 </style>
 @endsection
 
@@ -22,7 +23,7 @@
     </h2>
     <div class="image-tiles">
         @foreach($album->images as $image)
-        <a id="image-{{ $image->id }}" href="{{ route('albums.image.show', compact('album', 'image')) }}" class="image-tile" style="background-image: url({{ $image->getFirstMediaUrl('image', 'thumb') }});">
+        <a id="image-{{ $image->id }}" href="{{ route('albums.image.show', compact('album', 'image')) }}" class="image-tile" style="background-image: url({{ getMediaUrlForSize($image) }});">
             <span class="image-title">
                 {{ $image->title }}
             </span>

@@ -30,7 +30,6 @@ body {
 }
 
 .hero-image {
-    background-image: radial-gradient(rgba(0, 0, 0, 0), rgba(0, 0, 0, 1)), url(../images/small-boi.jpg);
     background-size: cover;
     background-position: center center;
     height: 100vh;
@@ -65,6 +64,10 @@ body {
     }
 
     &.default-image {
+        @media(min-width: 1601px), (min-height: 1068px) {
+            background-image: radial-gradient(rgba(0, 0, 0, 0), rgba(0, 0, 0, 1)), url(../images/small-boi.jpg);
+        }
+        
         @media(max-width: 1600px) and (max-height: 1067px) {
             background-image: radial-gradient(rgba(0, 0, 0, 0), rgba(0, 0, 0, 1)), url(../images/small-boi--1600-1067.jpg);
         }

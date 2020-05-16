@@ -35,3 +35,35 @@ function getRandomMediaUrl(\App\Album $album = null)
     
     return $image->getFirstMediaUrl('image');
 }
+
+function getMediaUrlForSize(\App\Image $image, $targetWidth = 300, $targetHeight = 300)
+{
+    $media = $image->getFirstMedia('image');
+    $srcSet = $media->getSrcset(supportsWebp() ? 'webp' : '');
+    $sources = explode(', ', $srcSet);
+    
+    // Get the ratio of the image
+    $spatieImage = Spatie\Image\Image::load($image->getFirstMediaPath('image'));
+    $width = $spatieImage->getWidth();
+    $height = $spatieImage->getHeight();
+    $ratio = $width / $height;
+    
+    // Get the desired ratio
+    $targetRatio = $targetWidth / $targetHeight;
+    
+    // Get the maximum desired width, based on the ratios
+    $desiredWidth = $ratio < $targetRatio ? $targetWidth : $targetHeight * $ratio;
+    
+    // Find the smallest source that satisfies the desired width
+    $source = $media->getUrl(supportsWebp() ? 'webp' : '');
+    foreach($sources as $testSource) {
+        $split = explode(' ', $testSource); // Uses 'imageURL width'
+        if(intVal($split[1]) < $desiredWidth) {
+            return $source; // Return previously found source
+        }
+        $source = $split[0];
+    }
+    
+    // Return the URL for the desired size
+    return $source;
+}
