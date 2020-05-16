@@ -7,7 +7,7 @@
 <style type="text/css">
     .hero-image {
         background-image: radial-gradient(rgba(0, 0, 0, 0), rgba(0, 0, 0, 1)),
-            url(<?= (App\Image::inRandomOrder()->first())->getFirstMediaUrl('image') ?>);
+            url(<?= getRandomMediaUrl() ?>);
     }
 
 </style>

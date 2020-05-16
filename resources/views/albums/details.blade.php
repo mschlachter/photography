@@ -7,7 +7,7 @@
 <style type="text/css">
     .hero-image {
         background-image: radial-gradient(rgba(0, 0, 0, 0), rgba(0, 0, 0, 1)),
-            url(<?= optional($image ?? $album->defaultImage)->getFirstMediaUrl('image') ?>);
+            url(<?= getRandomMediaUrl($album) ?>);
     }
 </style>
 @endsection
