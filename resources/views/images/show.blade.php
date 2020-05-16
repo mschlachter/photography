@@ -41,6 +41,11 @@
         Album: 
         <a href="{{ route('albums.show', ['album' => $image->album]) }}#image-{{ $image->id }}">{{ $image->album->title }}</a>
     </p>
+    <p>
+        <a href="{{ route('download', ['image' => $image]) }}" target="_blank">
+            Download full-size version
+        </a>
+    </p>
     <x-comments :pageId="'photography/images/' . $image->id"></x-comments>
 </div>
 @endsection

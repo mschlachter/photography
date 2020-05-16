@@ -105,3 +105,7 @@ Route::get('sitemap.xml', function() {
         'Content-Type' => 'text/xml',
     ]);
 });
+
+Route::get('download/{image:slug}', function (Image $image) {
+    return $image->getFirstMedia('image');
+})->name('download');
