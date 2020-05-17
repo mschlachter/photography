@@ -93,10 +93,10 @@ function detectswipe(el, func) {
         lastTouch = t;
         swipe_det.sX = t.screenX;
         swipe_det.sY = t.screenY;
-    }, false);
+    }, {passive: true});
     el.addEventListener('touchmove', function (e) {
         lastTouch = e.touches[0];
-    });
+    }, {passive: true});
     el.addEventListener('touchend', function (e) {
         var t = lastTouch;
         swipe_det.eX = t.screenX;
@@ -129,7 +129,7 @@ function detectswipe(el, func) {
         swipe_det.sY = 0;
         swipe_det.eX = 0;
         swipe_det.eY = 0;
-    }, false);
+    }, {passive: true});
 }
 
 function swipeDetected(el, direction) {
