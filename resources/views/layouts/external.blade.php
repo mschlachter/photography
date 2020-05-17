@@ -33,7 +33,7 @@
     </script>
 </head>
 
-<body>
+<body class="{{ supportsWebp() ? 'supports-webp' : '' }}">
     @if($showHero ?? true)
     <div class="hero-image @if(!($largeHero ?? false)) hero-small @endif @if($defaultHeroImage ?? false) default-image @endif">
         <nav class="top-nav">

@@ -63,27 +63,53 @@ body {
         animation-timing-function: linear;
         animation-iteration-count: infinite;
     }
+}
 
-    &.default-image {
-        @media(min-width: 1601px), (min-height: 1068px) {
-            background-image: radial-gradient(rgba(0, 0, 0, 0), rgba(0, 0, 0, 1)), url(../images/small-boi.jpg);
-        }
-        
-        @media(max-width: 1600px) and (max-height: 1067px) {
-            background-image: radial-gradient(rgba(0, 0, 0, 0), rgba(0, 0, 0, 1)), url(../images/small-boi--1600-1067.jpg);
-        }
+body.supports-webp .hero-image.default-image {
 
-        @media(max-width: 1024px) and (max-height: 683px) {
-            background-image: radial-gradient(rgba(0, 0, 0, 0), rgba(0, 0, 0, 1)), url(../images/small-boi--1024-683.jpg);
-        }
+    @media(min-width: 1601px),
+    (min-height: 1068px) {
+        background-image: radial-gradient(rgba(0, 0, 0, 0), rgba(0, 0, 0, 1)), url(../images/small-boi.webp);
+    }
 
-        @media(max-width: 720px) and (max-height: 480px) {
-            background-image: radial-gradient(rgba(0, 0, 0, 0), rgba(0, 0, 0, 1)), url(../images/small-boi--720-480.jpg);
-        }
+    @media(max-width: 1600px) and (max-height: 1067px) {
+        background-image: radial-gradient(rgba(0, 0, 0, 0), rgba(0, 0, 0, 1)), url(../images/small-boi--1600-1067.webp);
+    }
 
-        @media(max-width: 500px) and (max-height: 333px) {
-            background-image: radial-gradient(rgba(0, 0, 0, 0), rgba(0, 0, 0, 1)), url(../images/small-boi--500-333.jpg);
-        }
+    @media(max-width: 1024px) and (max-height: 683px) {
+        background-image: radial-gradient(rgba(0, 0, 0, 0), rgba(0, 0, 0, 1)), url(../images/small-boi--1024-683.webp);
+    }
+
+    @media(max-width: 720px) and (max-height: 480px) {
+        background-image: radial-gradient(rgba(0, 0, 0, 0), rgba(0, 0, 0, 1)), url(../images/small-boi--720-480.webp);
+    }
+
+    @media(max-width: 500px) and (max-height: 333px) {
+        background-image: radial-gradient(rgba(0, 0, 0, 0), rgba(0, 0, 0, 1)), url(../images/small-boi--500-333.webp);
+    }
+}
+
+body:not(.supports-webp) .hero-image.default-image {
+
+    @media(min-width: 1601px),
+    (min-height: 1068px) {
+        background-image: radial-gradient(rgba(0, 0, 0, 0), rgba(0, 0, 0, 1)), url(../images/small-boi.jpg);
+    }
+
+    @media(max-width: 1600px) and (max-height: 1067px) {
+        background-image: radial-gradient(rgba(0, 0, 0, 0), rgba(0, 0, 0, 1)), url(../images/small-boi--1600-1067.jpg);
+    }
+
+    @media(max-width: 1024px) and (max-height: 683px) {
+        background-image: radial-gradient(rgba(0, 0, 0, 0), rgba(0, 0, 0, 1)), url(../images/small-boi--1024-683.jpg);
+    }
+
+    @media(max-width: 720px) and (max-height: 480px) {
+        background-image: radial-gradient(rgba(0, 0, 0, 0), rgba(0, 0, 0, 1)), url(../images/small-boi--720-480.jpg);
+    }
+
+    @media(max-width: 500px) and (max-height: 333px) {
+        background-image: radial-gradient(rgba(0, 0, 0, 0), rgba(0, 0, 0, 1)), url(../images/small-boi--500-333.jpg);
     }
 }
 
