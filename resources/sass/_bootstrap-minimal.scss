@@ -59,12 +59,12 @@ h2 {
 }
 
 a {
-    color: #18568a; //#3490dc;
+    //color: #18568a; //#3490dc;
     text-decoration: none;
     background-color: transparent;
 
     &:hover {
-        color: #1d68a7;
+        //color: #1d68a7;
         text-decoration: underline;
     }
 }
@@ -138,9 +138,6 @@ button {
     text-align: center;
     vertical-align: middle;
     cursor: pointer;
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
     user-select: none;
     background-color: transparent;
     border: 1px solid transparent;
