@@ -46,6 +46,9 @@
             Download full-size version
         </a>
     </p>
+    <p>
+        <x-share/>
+    </p>
     <x-comments :pageId="'photography/images/' . $image->id"></x-comments>
 </div>
 @endsection

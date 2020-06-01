@@ -18,6 +18,9 @@
     <a href="{{ route('albums.all') }}">
         <i class="fas fa-chevron-left mr-2"></i>Back to all albums
     </a>
+    <div style="float: right;">
+        <x-share/>
+    </div>
     <h2>
         {{ $album->title }}
     </h2>

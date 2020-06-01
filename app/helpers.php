@@ -74,3 +74,22 @@ function getImageRatio(App\Image $image)
         return $width / $height;
     });
 }
+
+function getShortURL($url = null)
+{
+    $url = getCanonical($url);
+
+    return Cache::remember('url|short|' . $url, 60*60*24*7, function() use ($url) {
+        // Use bit.ly api:
+        $token = 'e069200972cc1c6840724392ff8b5a77afe4f392';
+        
+        $res = Http::withToken($token)->post(
+            'https://api-ssl.bitly.com/v4/shorten',
+            ['long_url' => $url]
+        );
+        if ($res->failed()) {
+            return null;
+        }
+        return $res['link'];
+    });
+}
