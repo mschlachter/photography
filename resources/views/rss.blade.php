@@ -1,9 +1,10 @@
 {!! '<?xml version="1.0" encoding="UTF-8" ?>' !!}
 {!! '<?xml-stylesheet href="/xsl/rss.xsl" type="text/xsl" media="screen"?>' !!}
-<rss version="2.0">
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
     <channel>
         <title>Photography | Matthew Schlachter</title>
         <link>{{ url('/') }}</link>
+        <atom:link href="{{ route('rss') }}" rel="self" type="application/rss+xml" />
         <description>Photography by Matthew Schlachter</description>
         <language>en</language>
         <pubDate>{{ App\Image::orderByDesc('updated_at')->pluck('updated_at')->first()->toRssString() }}</pubDate>

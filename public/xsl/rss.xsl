@@ -37,7 +37,7 @@
 	
 <h2>What is an RSS feed?</h2>
 <p>An RSS feed is an XML-based data format that allows publishers to syndicate information. It allows you to stay up to date on topics that interest you&mdash;all in one place&mdash;without visiting 20-30 different web sites to check for new content. All you need to do to get started is to add the URL (web address) for this feed to your RSS reader.</p>
-<p>The URL for this RSS feed is: <xsl:apply-templates select="link"/></p>
+<p>The URL for this RSS feed is: <xsl:apply-templates select="atom:link"/></p>
 
 <xsl:apply-templates select="item"/>
 
@@ -69,6 +69,10 @@
 
 <xsl:template match="link">
 	<a href="{.}"><xsl:value-of select="."/></a>
+</xsl:template>
+
+<xsl:template match="atom:link">
+	<a href="{@href}"><xsl:value-of select="@href"/></a>
 </xsl:template>
 
 
