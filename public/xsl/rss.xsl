@@ -9,7 +9,6 @@
 	<!ENTITY pound  "&#163;">
 	<!ENTITY yen    "&#165;">
 	<!ENTITY euro   "&#8364;">
-
 ]>
 <xsl:stylesheet version="1.0" 
 	xmlns:xsl="http://www.w3.org/1999/XSL/Transform" 
@@ -21,12 +20,21 @@
 
 <xsl:template match="rss/channel">
 
-<html>
+<html lang="en">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-<title><xsl:value-of select="title"/></title>
-<link rel="stylesheet" type="text/css" href="css/app.css"/>
-<script type="text/javascript" src="/js/xsl-to-html.js"></script>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title><xsl:value-of select="title"/></title>
+    <meta name="description" content="RSS feed for photography by Matthew Schlachter" />
+    <meta name="author" content="Matthew Schlachter" />
+    <meta name="language" content="en" />
+    
+    <link rel="stylesheet" type="text/css" href="/css/app.css"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+    <link rel="manifest" href="/site.webmanifest" />
 </head>
 
 <body style="padding:2rem;">
@@ -41,6 +49,7 @@
 
 <xsl:apply-templates select="item"/>
 
+<script type="text/javascript" src="/js/xsl-to-html.js"></script>
 </body>
 </html>
 
@@ -63,7 +72,7 @@
 
 <xsl:template match="description">
     <div name="decodeme">
-        <xsl:value-of select="."/>
+        <xsl:value-of select="." disable-output-escaping="yes"/>
     </div>
 </xsl:template>
 
