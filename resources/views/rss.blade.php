@@ -10,6 +10,7 @@
         <lastBuildDate>{{ App\Image::orderByDesc('updated_at')->pluck('updated_at')->first()->toRssString() }}</lastBuildDate>
         @foreach($albums as $album)
         <item>
+            <guid>{{ route('albums.show', compact('album')) }}</guid>
             <title>{{ $album->title }}</title>
             <link>{{ route('albums.show', compact('album')) }}</link>
             <description><![CDATA[
@@ -25,7 +26,7 @@ $webp = $media->hasGeneratedConversion('webp') && $media->getGeneratedConversion
             <source srcset="{{ $media->getSrcset('webp') }}" type="image/webp" sizes="300px">
             @endif
             <source srcset="{{ $media->getSrcset() }}" type="{{ $media->mime_type }}" sizes="300px">
-            <img src="{{ $media->getUrl() }}" alt="{{ $image->alt }}" style="max-width: 100%;" />
+            <img src="{{ $media->getUrl() }}" alt="{{ $image->alt }}" style="width: 100%;" />
         </picture>
         <figcaption>
             {{ $image->title }}
