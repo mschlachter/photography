@@ -13,14 +13,14 @@
         <item>
             <guid>{{ route('albums.show', compact('album')) }}</guid>
             <title>{{ $album->title }}</title>
-            <link>{{ route('albums.show', compact('album')) }}</link>
+            <link>{{ route('albums.show', compact('album')) }}?utm_source=feed&amp;utm_medium=RSS</link>
             <description><![CDATA[
 @foreach($album->images as $image)
 @php
 $media = $image->getFirstMedia('image');
 $webp = $media->hasGeneratedConversion('webp') && $media->getGeneratedConversions()['webp'];
 @endphp
-<a href="{{ route('albums.image.show', compact('album', 'image')) }}" style="display: inline-block; width: 300px;">
+<a href="{{ route('albums.image.show', compact('album', 'image')) }}?utm_source=feed&utm_medium=RSS" style="display: inline-block; width: 300px;">
     <figure>
         <picture>
             @if($webp !== false)
