@@ -26,12 +26,10 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
 <title><xsl:value-of select="title"/></title>
 <link rel="stylesheet" type="text/css" href="css/app.css"/>
-    
-<script type="text/javascript"
- src="http://interglacial.com/rss/xsl_mop-up.js"></script>
+<script type="text/javascript" src="/js/xsl-to-html.js"></script>
 </head>
 
-<body style="padding:2rem;" onload="go_decoding();">
+<body style="padding:2rem;">
 <div id="cometestme" style="display:none;"
  ><xsl:text disable-output-escaping="yes" >&amp;amp;</xsl:text></div>
 <h1><xsl:apply-templates select="title"/></h1>
