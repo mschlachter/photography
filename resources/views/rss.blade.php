@@ -22,9 +22,9 @@ $webp = $media->hasGeneratedConversion('webp') && $media->getGeneratedConversion
     <figure>
         <picture>
             @if($webp !== false)
-            <source srcset="{{ $media->getSrcset('webp') }}" type="image/webp" sizes="100vw">
+            <source srcset="{{ $media->getSrcset('webp') }}" type="image/webp" sizes="300px">
             @endif
-            <source srcset="{{ $media->getSrcset() }}" type="{{ $media->mime_type }}" sizes="100vw">
+            <source srcset="{{ $media->getSrcset() }}" type="{{ $media->mime_type }}" sizes="300px">
             <img src="{{ $media->getUrl() }}" alt="{{ $image->alt }}" style="max-width: 100%;" />
         </picture>
         <figcaption>
