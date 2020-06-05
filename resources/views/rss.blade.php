@@ -1,13 +1,13 @@
 {!! '<?xml version="1.0" encoding="UTF-8" ?>' !!}
-{!! '<?xml-stylesheet href="xsl/rss.xsl" type="text/xsl" media="screen"?>' !!}
+{!! '<?xml-stylesheet href="/xsl/rss.xsl" type="text/xsl" media="screen"?>' !!}
 <rss version="2.0">
     <channel>
         <title>Photography | Matthew Schlachter</title>
         <link>{{ url('/') }}</link>
         <description>Photography by Matthew Schlachter</description>
         <language>en</language>
-        <pubDate>{{ App\Image::orderByDesc('updated_at')->pluck('updated_at')->first()->toAtomString() }}</pubDate>
-        <lastBuildDate>{{ App\Image::orderByDesc('updated_at')->pluck('updated_at')->first()->toAtomString() }}</lastBuildDate>
+        <pubDate>{{ App\Image::orderByDesc('updated_at')->pluck('updated_at')->first()->toRfc822String() }}</pubDate>
+        <lastBuildDate>{{ App\Image::orderByDesc('updated_at')->pluck('updated_at')->first()->toRfc822String() }}</lastBuildDate>
         @foreach($albums as $album)
         <item>
             <title>{{ $album->title }}</title>
@@ -18,7 +18,7 @@
 $media = $image->getFirstMedia('image');
 $webp = $media->hasGeneratedConversion('webp') && $media->getGeneratedConversions()['webp'];
 @endphp
-<a href="{{ route('albums.image.show', compact('album', 'image')) }}" style="display: inline-block; max-width: 300px;">
+<a href="{{ route('albums.image.show', compact('album', 'image')) }}" style="display: inline-block; width: 300px;">
     <figure>
         <picture>
             @if($webp !== false)
@@ -34,7 +34,7 @@ $webp = $media->hasGeneratedConversion('webp') && $media->getGeneratedConversion
 </a>
 @endforeach
 ]]></description>
-        <pubDate>{{ $album->created_at->toAtomString() }}</pubDate>
+        <pubDate>{{ $album->created_at->toRfc822String() }}</pubDate>
         </item>
         @endforeach
     </channel>
