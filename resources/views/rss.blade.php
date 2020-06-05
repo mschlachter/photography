@@ -6,8 +6,8 @@
         <link>{{ url('/') }}</link>
         <description>Photography by Matthew Schlachter</description>
         <language>en</language>
-        <pubDate>{{ App\Image::orderByDesc('updated_at')->pluck('updated_at')->first()->toRfc822String() }}</pubDate>
-        <lastBuildDate>{{ App\Image::orderByDesc('updated_at')->pluck('updated_at')->first()->toRfc822String() }}</lastBuildDate>
+        <pubDate>{{ App\Image::orderByDesc('updated_at')->pluck('updated_at')->first()->toRssString() }}</pubDate>
+        <lastBuildDate>{{ App\Image::orderByDesc('updated_at')->pluck('updated_at')->first()->toRssString() }}</lastBuildDate>
         @foreach($albums as $album)
         <item>
             <title>{{ $album->title }}</title>
@@ -34,7 +34,7 @@ $webp = $media->hasGeneratedConversion('webp') && $media->getGeneratedConversion
 </a>
 @endforeach
 ]]></description>
-        <pubDate>{{ $album->created_at->toRfc822String() }}</pubDate>
+        <pubDate>{{ $album->created_at->toRssString() }}</pubDate>
         </item>
         @endforeach
     </channel>
