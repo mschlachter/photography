@@ -61,6 +61,11 @@
 
     <footer class="container container-fluid">
         <emph>&copy; <span class="copyright-year">{{ now()->year }}</span> Matthew Schlachter</emph>
+        <span style="float: right;">
+            <a href="https://mschlachter.visualsociety.com/" target="_blank" rel="noopener">
+                Buy Prints
+            </a>
+        </span>
     </footer>
     <!--[if lt IE 9]>
       <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.js"></script>
