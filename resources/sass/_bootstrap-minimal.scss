@@ -253,3 +253,83 @@ button {
 .align-middle {
     vertical-align: middle;
 }
+
+// Pagination
+
+$pagination-padding-y:              .375rem !default;
+$pagination-padding-x:              .75rem !default;
+$pagination-padding-y-sm:           .25rem !default;
+$pagination-padding-x-sm:           .5rem !default;
+$pagination-padding-y-lg:           .75rem !default;
+$pagination-padding-x-lg:           1.5rem !default;
+
+$pagination-color:                  #0d6efd !default;
+$pagination-bg:                     #ffffff !default;
+$pagination-border-width:           1px !default;
+$pagination-border-radius:          .25rem !default;
+$pagination-margin-left:            -$pagination-border-width !default;
+$pagination-border-color:           #dee2e6 !default;
+
+$pagination-focus-box-shadow:       0 0 0 .2rem rgba(#0d6efd, .25) !default;
+$pagination-focus-outline:          0 !default;
+
+$pagination-hover-color:            darken(#0d6efd, 15%) !default;
+$pagination-hover-bg:               #e9ecef !default;
+$pagination-hover-border-color:     #dee2e6 !default;
+
+$pagination-active-color:           #ffffff !default;
+$pagination-active-bg:              #0d6efd !default;
+$pagination-active-border-color:    $pagination-active-bg !default;
+
+$pagination-disabled-color:         #6c757d !default;
+$pagination-disabled-bg:            #ffffff !default;
+$pagination-disabled-border-color:  #dee2e6 !default;
+
+.pagination {
+  display: flex;
+  padding-left: 0;
+  list-style: none;
+}
+
+.page-link {
+  position: relative;
+  display: block;
+  color: $pagination-color;
+  text-decoration: none;
+  background-color: $pagination-bg;
+  border: $pagination-border-width solid $pagination-border-color;
+
+  &:hover {
+    z-index: 2;
+    color: $pagination-hover-color;
+    text-decoration: none;
+    background-color: $pagination-hover-bg;
+    border-color: $pagination-hover-border-color;
+  }
+
+  &:focus {
+    z-index: 3;
+    outline: $pagination-focus-outline;
+    box-shadow: $pagination-focus-box-shadow;
+  }
+}
+
+.page-item {
+  &:not(:first-child) .page-link {
+    margin-left: $pagination-margin-left;
+  }
+
+  &.active .page-link {
+    z-index: 3;
+    color: $pagination-active-color;
+    background-color: $pagination-active-bg;
+    border-color: $pagination-active-border-color;
+  }
+
+  &.disabled .page-link {
+    color: $pagination-disabled-color;
+    pointer-events: none;
+    background-color: $pagination-disabled-bg;
+    border-color: $pagination-disabled-border-color;
+  }
+}
