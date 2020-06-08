@@ -250,6 +250,20 @@ button {
     margin-right: .5rem;
 }
 
+.mx-auto {
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.row {
+    display: flex;
+}
+
+.col-auto {
+    flex: 0 0 auto;
+    width: auto;
+}
+
 .align-middle {
     vertical-align: middle;
 }
@@ -298,6 +312,7 @@ $pagination-disabled-border-color:  #dee2e6 !default;
   text-decoration: none;
   background-color: $pagination-bg;
   border: $pagination-border-width solid $pagination-border-color;
+  padding: .25rem .5rem
 
   &:hover {
     z-index: 2;
