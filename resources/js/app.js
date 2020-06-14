@@ -54,8 +54,8 @@ document.addEventListener('keydown', function (event) {
     const y = (window.pageYOffset !== undefined) ?
         window.pageYOffset :
         (document.documentElement || document.body.parentNode || document.body).scrollTop;
-    // Only use these if currently scrolled to top of page
-    if (y === 0) {
+    // Only use these if currently scrolled to top of page and share dialog is not open
+    if ((y === 0) && !document.body.classList.contains('good-share-modal-open')) {
         let targetButton;
         switch (event.key) {
             case "Left":
