@@ -221,7 +221,7 @@
 
 	//close share window on escape key
 	document.addEventListener('keyup', function ( event ) {
-	    if (event.defaultPrevented) {
+	    if (event.defaultPrevented || !document.body.classList.contains('good-share-modal-open')) {
 	        return;
 	    }
 
