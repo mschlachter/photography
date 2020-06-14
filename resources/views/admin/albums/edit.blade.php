@@ -107,9 +107,9 @@
                                                 <span id="alt-error-{{ $image->id }}" class="error text-danger" for="input-alt-{{ $image->id }}">{{ $errors->first('alt-' . $image->id) }}</span>
                                                 @endif
                                             </div>
-                                            <div class="form-group{{ $errors->has('tags-' . $image->id) ? ' has-danger' : '' }}">
+                                            <div class="form-group{{ $errors->has('tags-' . $image->id) ? ' has-danger' : '' }}">tags
                                                 <label for="input-tags-{{ $image->id }}">{{ __('Tags') }}</label>
-                                                <input class="form-control tags-input{{ $errors->has('tags-' . $image->id) ? ' is-invalid' : '' }}" name="tags-{{ $image->id }}" id="input-tags-{{ $image->id }}" type="text" placeholder="{{ __('Tags') }}" value="{{ old('tags-' . $image->id, implode(', ', $image->tags->pluck('name')->toArray())) }}" />
+                                                <input class="form-control tags-input border-top-0 border-left-0 border-right-0{{ $errors->has('tags-' . $image->id) ? ' is-invalid' : '' }}" name="tags-{{ $image->id }}" id="input-tags-{{ $image->id }}" type="text" placeholder="{{ __('Tags') }}" value="{{ old('tags-' . $image->id, implode(', ', $image->tags->pluck('name')->toArray())) }}" />
                                                 @if ($errors->has('tags-' . $image->id))
                                                 <span id="tags-error-{{ $image->id }}" class="error text-danger" for="input-tags-{{ $image->id }}">{{ $errors->first('tags-' . $image->id) }}</span>
                                                 @endif
@@ -176,7 +176,7 @@
                                             </div>
                                             <div class="form-group{{ $errors->has('tags-new') ? ' has-danger' : '' }}">
                                                 <label for="input-tags-new">{{ __('Tags') }}</label>
-                                                <input class="form-control tags-input{{ $errors->has('tags-new') ? ' is-invalid' : '' }}" name="tags-new" id="input-tags-new" type="text" placeholder="{{ __('Tags') }}" value="{{ old('tags-new') }}" />
+                                                <input class="form-control tags-input border-right-0 border-left-0 border-top-0{{ $errors->has('tags-new') ? ' is-invalid' : '' }}" name="tags-new" id="input-tags-new" type="text" placeholder="{{ __('Tags') }}" value="{{ old('tags-new') }}" />
                                                 @if ($errors->has('tags-new'))
                                                 <span id="tags-error-new" class="error text-danger" for="input-tags-new">{{ $errors->first('tags-new') }}</span>
                                                 @endif
