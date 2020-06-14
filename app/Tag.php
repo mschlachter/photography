@@ -12,6 +12,12 @@ use Illuminate\Database\Eloquent\Model;
  */
 class Tag extends Model
 {   
+    
+    protected $fillable = [
+        'name',
+        'tag_category_id',
+    ];
+
     public function category()
     {
         return $this->hasOne(TagCategory::class);

@@ -7,12 +7,13 @@
 <meta property="og:site_name" content="Photography | Matthew Schlachter">
 <meta property="og:image" content="{{ $image->getFirstMediaUrl('image') }}">
 <meta name="twitter:image:alt" content="{{ $image->alt }}">
+<meta name="keywords" content="{{ implode(', ', $image->tags->pluck('name')->toArray()) }}">
 @endsection
 
 @section('content')
 <div class="image-viewer">
     <x-picture :image="$image" class="current-image"></x-picture>
-
+{{ implode(', ', $image->tags->pluck('name')->toArray()) }}
     <a class="back-link" href="{{ route('images.all') }}#image-{{ $image->id }}">
         <i class="far fa-times-circle fa-3x align-middle mr-2"></i>Back to Images
     </a>
@@ -40,6 +41,10 @@
     <p>
         Album: 
         <a href="{{ route('albums.show', ['album' => $image->album]) }}#image-{{ $image->id }}">{{ $image->album->title }}</a>
+    </p>
+    <p>
+        Tags:
+        {{ implode(', ', $image->tags->pluck('name')->toArray()) }}
     </p>
     <p>
         <a href="{{ route('download', ['image' => $image]) }}" target="_blank">

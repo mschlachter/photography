@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Image;
+use App\Tag;
 use Illuminate\Http\Request;
 
 class ImageController extends Controller
@@ -54,7 +55,7 @@ class ImageController extends Controller
         // Update the slug (with the new ID)
         $image->save();
         $image->addMedia($validated['file-new'])->withResponsiveImages()->toMediaCollection('image');
-        return back()->withImageStatus(__('Image successfully added.'));
+        return back()->with(['imageStatus' => __('Image successfully added.')]);
     }
 
     /**
@@ -92,13 +93,20 @@ class ImageController extends Controller
             'title-' . $image->id => 'required|string|max:255',
             'alt-' . $image->id => 'required|string|max:255',
             'date-' . $image->id => 'required|date|before:tomorrow',
+            'tags-' . $image->id => 'nullable|string',
         ]);
         $image->update([
             'title' => $validated['title-' . $image->id],
             'alt' => $validated['alt-' . $image->id],
             'date' => $validated['date-' . $image->id],
         ]);
-        return back()->withImageStatus(__('Image successfully updated.'));
+        $tagIds = [];
+        foreach(explode(', ', $validated['tags-' . $image->id] ?? '') as $tagName) {
+            $tag = Tag::firstOrCreate(['name' => $tagName]);
+            $tagIds[] = $tag->id;
+        }
+        $image->tags()->sync($tagIds);
+        return back()->with(['imageStatus' => __('Image successfully updated.')]);
     }
 
     /**
@@ -110,6 +118,6 @@ class ImageController extends Controller
     public function destroy(Image $image)
     {
         $image->delete();
-        return back()->withImageStatus(__('Image successfully deleted.'));
+        return back()->with(['imageStatus' => __('Image successfully deleted.')]);
     }
 }

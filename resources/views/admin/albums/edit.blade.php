@@ -1,5 +1,14 @@
 @extends('layouts.app', ['activePage' => 'albums', 'titlePage' => __('Create Album')])
 
+@push('css')
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@yaireo/tagify@3.11.1/dist/tagify.css" integrity="sha256-oyPFbWMktxbXwQRY8CjTboVuTKjZJ2V5EHKKxDrdnNc=" crossorigin="anonymous">
+    <style type="text/css">
+        .tags-input {
+            height: auto;
+        }
+    </style>
+@endpush
+
 @section('content')
 <div class="content">
     <div class="container-fluid">
@@ -98,6 +107,13 @@
                                                 <span id="alt-error-{{ $image->id }}" class="error text-danger" for="input-alt-{{ $image->id }}">{{ $errors->first('alt-' . $image->id) }}</span>
                                                 @endif
                                             </div>
+                                            <div class="form-group{{ $errors->has('tags-' . $image->id) ? ' has-danger' : '' }}">
+                                                <label for="input-tags-{{ $image->id }}">{{ __('Tags') }}</label>
+                                                <input class="form-control tags-input{{ $errors->has('tags-' . $image->id) ? ' is-invalid' : '' }}" name="tags-{{ $image->id }}" id="input-tags-{{ $image->id }}" type="text" placeholder="{{ __('Tags') }}" value="{{ old('tags-' . $image->id, implode(', ', $image->tags->pluck('name')->toArray())) }}" />
+                                                @if ($errors->has('tags-' . $image->id))
+                                                <span id="tags-error-{{ $image->id }}" class="error text-danger" for="input-tags-{{ $image->id }}">{{ $errors->first('tags-' . $image->id) }}</span>
+                                                @endif
+                                            </div>
                                             <div class="form-group{{ $errors->has('date-' . $image->id) ? ' has-danger' : '' }}">
                                                 <label for="input-date-{{ $image->id }}">{{ __('Date') }}</label>
                                                 <input class="form-control{{ $errors->has('date-' . $image->id) ? ' is-invalid' : '' }}" name="date-{{ $image->id }}" id="input-date-{{ $image->id }}" type="date" placeholder="{{ __('Date') }}" value="{{ old('date-' . $image->id, $image->date) }}" required="true" aria-required="true" />
@@ -158,6 +174,13 @@
                                                 <span id="alt-error-new" class="error text-danger" for="input-alt-new">{{ $errors->first('alt-new') }}</span>
                                                 @endif
                                             </div>
+                                            <div class="form-group{{ $errors->has('tags-new') ? ' has-danger' : '' }}">
+                                                <label for="input-tags-new">{{ __('Tags') }}</label>
+                                                <input class="form-control tags-input{{ $errors->has('tags-new') ? ' is-invalid' : '' }}" name="tags-new" id="input-tags-new" type="text" placeholder="{{ __('Tags') }}" value="{{ old('tags-new') }}" />
+                                                @if ($errors->has('tags-new'))
+                                                <span id="tags-error-new" class="error text-danger" for="input-tags-new">{{ $errors->first('tags-new') }}</span>
+                                                @endif
+                                            </div>
                                             <div class="form-group{{ $errors->has('date-new') ? ' has-danger' : '' }}">
                                                 <label for="input-date-new">{{ __('Date') }}</label>
                                                 <input class="form-control{{ $errors->has('date-new') ? ' is-invalid' : '' }}" name="date-new" id="input-date-new" type="date" value="{{ old('date-new', $album->date) }}" required="true" aria-required="true" />
@@ -182,3 +205,15 @@
     </div>
 </div>
 @endsection
+
+@push('js')
+    <script src="https://cdn.jsdelivr.net/npm/@yaireo/tagify@3.11.1/dist/tagify.min.js" integrity="sha256-jGAErKzBJxTL0qIA/fFPvhNbj9vLi8hsNFule27y6cE=" crossorigin="anonymous"></script>
+    <script type="text/javascript">
+        document.querySelectorAll('.tags-input').forEach(function(tagInput) {
+            new Tagify(tagInput, {
+                whitelist: {!! json_encode(App\Tag::all()->pluck('name')) !!},
+                originalInputValueFormat: valuesArr => valuesArr.map(item => item.value).join(', ')
+            });
+        });
+    </script>
+@endpush
