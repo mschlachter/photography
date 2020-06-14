@@ -212,7 +212,12 @@
         document.querySelectorAll('.tags-input').forEach(function(tagInput) {
             new Tagify(tagInput, {
                 whitelist: {!! json_encode(App\Tag::all()->pluck('name')) !!},
-                originalInputValueFormat: valuesArr => valuesArr.map(item => item.value).join(', ')
+                originalInputValueFormat: valuesArr => valuesArr.map(item => item.value).join(', '),
+                dropdown: {
+                    maxItems: 20,
+                    enabled: 0,
+                    closeOnSelect: false
+                }
             });
         });
     </script>
