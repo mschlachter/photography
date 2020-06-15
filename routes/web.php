@@ -38,12 +38,12 @@ Route::get('/albums/{album:slug}', function (Album $album) {
 })->name('albums.show');
 
 Route::get('/photos', function () {
-    $tags = request('tag');
+    $searchTags = request('tag');
     $imageQuery = Image::select()
-        ->when($tags, function($query) use ($tags) {
-            return $query->whereHas('tags', function ($query) use ($tags) {
-                $query->whereIn('name', $tags);
-            }, '=', count(array_unique($tags)));
+        ->when($searchTags, function($query) use ($searchTags) {
+            return $query->whereHas('tags', function ($query) use ($searchTags) {
+                $query->whereIn('name', $searchTags);
+            }, '=', count(array_unique($searchTags)));
         })
         ->orderByDesc('date');
 
@@ -58,10 +58,10 @@ Route::get('/photos', function () {
     if(request()->ajax()) {
         return [
             'tags' => $tags,
-            'imageView' => view('images/ajaxContent', compact('images'))->render(),
+            'imageView' => view('images/ajaxContent', compact('images', 'searchTags'))->render(),
         ];
     }
-    return view('images/all', compact('images', 'tags'));
+    return view('images/all', compact('images', 'tags', 'searchTags'));
 })->name('images.all');
 
 Route::get('/albums/{album:slug}/{image:slug}', function (Album $album, Image $image) {
@@ -83,7 +83,13 @@ Route::get('/albums/{album:slug}/{image:slug}', function (Album $album, Image $i
 })->name('albums.image.show');
 
 Route::get('/photos/{image:slug}', function (Image $image) {
+    $searchTags = request('searchTags');
     $images = Image::select()
+        ->when($searchTags, function($query) use ($searchTags) {
+            return $query->whereHas('tags', function ($query) use ($searchTags) {
+                $query->whereIn('name', $searchTags);
+            }, '=', count(array_unique($searchTags)));
+        })
         ->orderByDesc('date')
         ->get();
     $previous = null;
@@ -100,7 +106,7 @@ Route::get('/photos/{image:slug}', function (Image $image) {
         }
     }
     
-    return view('images/show', compact('image', 'previous', 'next'));
+    return view('images/show', compact('image', 'previous', 'next', 'searchTags'));
 })->name('images.show');
 
 Auth::routes(['register' => false]);
