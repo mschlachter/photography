@@ -1,6 +1,6 @@
 demo = {
   initDocumentationCharts: function() {
-    if ($('#dailySalesChart').length != 0 && $('#websiteViewsChart').length != 0) {
+    if ($('#websiteViewsChart').length != 0) {
       /* ----------==========     Daily Sales Chart initialization For Documentation    ==========---------- */
 
       dataDailySalesChart = {
@@ -24,7 +24,7 @@ demo = {
         },
       }
 
-      var dailySalesChart = new Chartist.Line('#dailySalesChart', dataDailySalesChart, optionsDailySalesChart);
+      //var dailySalesChart = new Chartist.Line('#dailySalesChart', dataDailySalesChart, optionsDailySalesChart);
 
       var animationHeaderChart = new Chartist.Line('#websiteViewsChart', dataDailySalesChart, optionsDailySalesChart);
     }

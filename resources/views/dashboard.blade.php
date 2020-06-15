@@ -1,5 +1,16 @@
 @extends('layouts.app', ['activePage' => 'dashboard', 'titlePage' => __('Dashboard')])
 
+@inject('analytics', App\Libraries\ToolboxGoogleAnalytics)
+@php
+  // Get our values for the dashboard:
+  $sessionsForLast7Days = $analytics->getSessionsForLast7Days();
+
+  $viewsByDay = $analytics->getViewsPerDayForLast7Days();
+  $viewsByDayLabels = array_map(function($day) {return substr($day['dayOfWeek'], 0, 1);}, $viewsByDay);
+  $viewsByDayValues = array_map(function($day) {return $day['views'];}, $viewsByDay);
+  $viewsByDayChange = count($viewsByDayValues) > 1 ? floor(($viewsByDayValues[count($viewsByDayValues) - 1] * 1.0 / $viewsByDayValues[count($viewsByDayValues) - 2] - 1) * 100) : 0;
+@endphp
+
 @section('content')
   <div class="content">
     <div class="container-fluid">
@@ -35,12 +46,12 @@
               <div class="card-icon">
                 <i class="material-icons">store</i>
               </div>
-              <p class="card-category">Revenue</p>
-              <h3 class="card-title">$34,245</h3>
+              <p class="card-category">Visitors</p>
+              <h3 class="card-title">{{ $analytics->getSessionsForLast7Days() }}</h3>
             </div>
             <div class="card-footer">
               <div class="stats">
-                <i class="material-icons">date_range</i> Last 24 Hours
+                <i class="material-icons">date_range</i> Last 7 days
               </div>
             </div>
           </div>
@@ -49,14 +60,16 @@
           <div class="card card-stats">
             <div class="card-header card-header-danger card-header-icon">
               <div class="card-icon">
-                <i class="material-icons">info_outline</i>
+                <i class="material-icons">camera_alt</i>
               </div>
-              <p class="card-category">Fixed Issues</p>
-              <h3 class="card-title">75</h3>
+              <p class="card-category">Images</p>
+              <h3 class="card-title"><a class="card-title" href="{{ route('admin.albums.index') }}">{{ App\Image::count() }}</a></h3>
             </div>
             <div class="card-footer">
               <div class="stats">
-                <i class="material-icons">local_offer</i> Tracked from Github
+                <i class="material-icons">local_offer</i>
+                <a href="{{ route('admin.tags.index') }}">{{ App\Tag::count() }} tags
+                </a>
               </div>
             </div>
           </div>
@@ -82,16 +95,16 @@
         <div class="col-md-4">
           <div class="card card-chart">
             <div class="card-header card-header-success">
-              <div class="ct-chart" id="dailySalesChart"></div>
+              <div class="ct-chart position-relative" id="dailyViewsChart"></div>
             </div>
             <div class="card-body">
-              <h4 class="card-title">Daily Sales</h4>
+              <h4 class="card-title">Daily Views</h4>
               <p class="card-category">
-                <span class="text-success"><i class="fa fa-long-arrow-up"></i> 55% </span> increase in today sales.</p>
+                <span class="text-{{ $viewsByDayChange >= 0 ? 'success' : 'danger' }}"><i class="fa fa-long-arrow-{{ $viewsByDayChange >= 0 ? 'up' : 'down' }}"></i> {{ $viewsByDayChange }}% </span> {{ $viewsByDayChange >= 0 ? 'increase' : 'decrease' }} in today views.</p>
             </div>
             <div class="card-footer">
               <div class="stats">
-                <i class="material-icons">access_time</i> updated 4 minutes ago
+                <i class="material-icons">access_time</i> updated today
               </div>
             </div>
           </div>
@@ -425,10 +438,40 @@
 @endsection
 
 @push('js')
+<script src="https://cdn.jsdelivr.net/npm/chartist-plugin-tooltips@0.0.17/dist/chartist-plugin-tooltip.min.js" integrity="sha256-BdDMib6f/EOwrxY3YE9bfqySmqixP5zvookyxS1khtY=" crossorigin="anonymous"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/chartist-plugin-tooltips@0.0.17/dist/chartist-plugin-tooltip.min.css">
   <script>
     $(document).ready(function() {
       // Javascript method's body can be found in assets/js/demos.js
       md.initDashboardPageCharts();
+
+      dataDailyViewsChart = {
+        labels: @json($viewsByDayLabels),
+        series: [
+          @json($viewsByDayValues)
+        ]
+      };
+
+      optionsDailyViewsChart = {
+        lineSmooth: Chartist.Interpolation.cardinal({
+          tension: 0
+        }),
+        low: 0,
+        high: {{ max($viewsByDayValues) + 10 }}, // creative tim: we recommend you to set the high sa the biggest value + something for a better look
+        chartPadding: {
+          top: 0,
+          right: 0,
+          bottom: 0,
+          left: 0
+        },
+        plugins: [
+          Chartist.plugins.tooltip({
+            tooltipFnc: function(meta, value) { return meta + value + ' view' + (value == 1 ? '' : 's'); }
+          })
+        ]
+      }
+
+      var dailyViewsChart = new Chartist.Line('#dailyViewsChart', dataDailyViewsChart, optionsDailyViewsChart);
     });
   </script>
 @endpush

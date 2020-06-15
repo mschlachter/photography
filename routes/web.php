@@ -125,6 +125,11 @@ Route::group(['middleware' => 'auth', 'prefix' => 'admin/', 'as' => 'admin.'], f
 	Route::get('profile', ['as' => 'profile.edit', 'uses' => 'ProfileController@edit']);
 	Route::put('profile', ['as' => 'profile.update', 'uses' => 'ProfileController@update']);
 	Route::put('profile/password', ['as' => 'profile.password', 'uses' => 'ProfileController@password']);
+
+    // Analytics
+    Route::get('summary', function(Request $request) {
+        (new App\Libraries\ToolboxGoogleAnalytics)->run();
+    })->name('analytics-summary');
 });
 
 Route::get('sitemap.xml', function() {
