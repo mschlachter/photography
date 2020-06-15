@@ -18,12 +18,12 @@
         <i class="far fa-times-circle fa-3x align-middle mr-2"></i>Back to Images
     </a>
     @if($previous !== null)
-    <a class="prev-link" href="{{ route('images.show', ['image' => $previous, 'tag' => $searchTags]) }}">
+    <a class="prev-link" href="{{ route('images.show', ['image' => $previous, 'searchTags' => $searchTags]) }}">
         <i class="far fa-arrow-alt-circle-left fa-3x align-middle mr-2"></i>Previous
     </a>
     @endif
     @if($next !== null)
-    <a class="next-link" href="{{ route('images.show', ['image' => $next, 'tag' => $searchTags]) }}">
+    <a class="next-link" href="{{ route('images.show', ['image' => $next, 'searchTags' => $searchTags]) }}">
         Next<i class="far fa-arrow-alt-circle-right fa-3x align-middle ml-2"></i>
     </a>
     @endif
