@@ -44,7 +44,9 @@
     </p>
     <p>
         Tags:
-        {{ implode(', ', $image->tags->pluck('name')->toArray()) }}
+        @foreach($image->tags->pluck('name')->toArray() as $tag)
+            <a href="{{ route('images.all', ['tag[]' => $tag]) }}">{{ $tag }}</a>@if(!$loop->last),@endif
+        @endforeach
     </p>
     <p>
         <a href="{{ route('download', ['image' => $image]) }}" target="_blank">

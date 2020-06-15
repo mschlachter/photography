@@ -299,3 +299,14 @@ body:not(.supports-webp) .hero-image.default-image {
 footer {
     padding: 15px;
 }
+
+.photo-search-form {
+    display: flex;
+    flex-direction: row;
+    gap: 1rem;
+
+    label, button {
+        flex-grow: 0;
+        white-space: nowrap;
+    }
+}

@@ -37,9 +37,18 @@ Route::get('/albums/{album:slug}', function (Album $album) {
 })->name('albums.show');
 
 Route::get('/photos', function () {
+    $tags = request('tag');
     $images = Image::select()
+        ->when($tags, function($query) use ($tags) {
+            return $query->whereHas('tags', function ($query) use ($tags) {
+                $query->whereIn('name', $tags);
+            });
+        })
         ->orderByDesc('date')
         ->paginate(50);
+    if(request()->ajax()) {
+        return view('images/ajaxContent', compact('images'));
+    }
     return view('images/all', compact('images'));
 })->name('images.all');
 

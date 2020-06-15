@@ -16,4 +16,5 @@ mix.js('resources/js/app.js', 'public/js')
     .js('resources/js/share.js', 'public/js')
     .sass('resources/sass/share.scss', 'public/css')
     .js('resources/js/xsl-to-html.js', 'public/js')
+    .js('resources/js/image-search.js', 'public/js')
     .version();

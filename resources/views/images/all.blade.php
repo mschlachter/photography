@@ -11,6 +11,7 @@
     }
 
 </style>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/slim-select/1.26.0/slimselect.min.css" rel="stylesheet" defer>
 @endsection
 
 @section('content')
@@ -18,22 +19,35 @@
     <h2>
         All Photos
     </h2>
-    <div class="image-tiles">
-        @foreach($images as $image)
-        <a id="image-{{ $image->id }}" href="{{ route('images.show', compact('image')) }}" class="image-tile" style="background-image: url({{ getMediaUrlForSize($image) }});">
-            <span class="image-title">
-                {{ $image->title }}
-            </span>
-            <span class="image-date">
-                {{ $image->date }}
-            </span>
-        </a>
-        @endforeach
-    </div>
-    <div class="row">
-        <div class="col-auto mx-auto">
-            {!! $images->links() !!}
-        </div>
+    <form class="photo-search-form" action="{{ route('images.all') }}" method="get">
+        <label for="slct-tag">
+            Filter by Tag
+        </label>
+        <select id="slct-tag" name="tag[]" multiple="multiple">
+            @foreach(App\TagCategory::orderBy('name')->with(['tags'])->get() as $tagCategory)
+            <optgroup label="{{ $tagCategory->name }}"></optgroup>
+                @foreach($tagCategory->tags as $tag)
+                <option @if(is_array(request('tag')) && in_array($tag->name, request('tag'))) selected="selected" @endif>{{ $tag->name }}</option>
+                @endforeach
+            @endforeach
+            @foreach(App\Tag::whereNull('tag_category_id')->orderBy('name')->get() as $tag)
+            <option @if(is_array(request('tag')) && in_array($tag->name, request('tag'))) selected="selected" @endif>{{ $tag->name }}</option>
+            @endforeach
+        </select>
+        <noscript>
+            <button type="submit">
+                Search
+            </button>
+        </noscript>
+    </form>
+    <div id="image-section">
+        @include('images/ajaxContent')
     </div>
 </div>
+@endsection
+
+@section('scripts')
+@parent
+<script src="https://cdnjs.cloudflare.com/ajax/libs/slim-select/1.26.0/slimselect.min.js"></script>
+<script src="{{ mix('js/image-search.js') }}"></script>
 @endsection
