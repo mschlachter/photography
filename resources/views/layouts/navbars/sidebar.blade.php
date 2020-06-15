@@ -38,7 +38,7 @@
                 <span class="sidebar-normal"> {{ __('Tags') }} </span>
               </a>
             </li>
-            <li class="nav-item{{ $activePage == 'tag-categories' ? ' active' : '' }}">
+            <li class="nav-item d-none{{ $activePage == 'tag-categories' ? ' active' : '' }}">
               <a class="nav-link" href="{{ route('admin.tag-categories.index') }}">
                 <i class="material-icons">category</i>
                 <span class="sidebar-normal"> {{ __('Tag Categories') }} </span>
