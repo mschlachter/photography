@@ -24,14 +24,8 @@
             Filter by Tag
         </label>
         <select id="slct-tag" name="tag[]" multiple="multiple">
-            @foreach(App\TagCategory::orderBy('name')->with(['tags'])->get() as $tagCategory)
-            <optgroup label="{{ $tagCategory->name }}"></optgroup>
-                @foreach($tagCategory->tags as $tag)
-                <option @if(is_array(request('tag')) && in_array($tag->name, request('tag'))) selected="selected" @endif>{{ $tag->name }}</option>
-                @endforeach
-            @endforeach
-            @foreach(App\Tag::whereNull('tag_category_id')->orderBy('name')->get() as $tag)
-            <option @if(is_array(request('tag')) && in_array($tag->name, request('tag'))) selected="selected" @endif>{{ $tag->name }}</option>
+            @foreach($tags as $tag)
+            <option @if(is_array(request('tag')) && in_array($tag, request('tag'))) selected="selected" @endif>{{ $tag }}</option>
             @endforeach
         </select>
         <noscript>

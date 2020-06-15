@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Album;
 use App\Image;
+use App\Tag;
 
 /*
 |--------------------------------------------------------------------------
@@ -38,18 +39,29 @@ Route::get('/albums/{album:slug}', function (Album $album) {
 
 Route::get('/photos', function () {
     $tags = request('tag');
-    $images = Image::select()
+    $imageQuery = Image::select()
         ->when($tags, function($query) use ($tags) {
             return $query->whereHas('tags', function ($query) use ($tags) {
                 $query->whereIn('name', $tags);
             }, '=', count(array_unique($tags)));
         })
-        ->orderByDesc('date')
-        ->paginate(50);
+        ->orderByDesc('date');
+
+    $tags = Tag::when($imageQuery->count(), function($query) use ($imageQuery) {
+        $query->whereHas('images', function($query) use ($imageQuery) {
+            $query->whereIn('images.id', $imageQuery->pluck('id'));
+        });
+    })->pluck('name')->toArray();
+
+    $images = $imageQuery->paginate(50);
+
     if(request()->ajax()) {
-        return view('images/ajaxContent', compact('images'));
+        return [
+            'tags' => $tags,
+            'imageView' => view('images/ajaxContent', compact('images'))->render(),
+        ];
     }
-    return view('images/all', compact('images'));
+    return view('images/all', compact('images', 'tags'));
 })->name('images.all');
 
 Route::get('/albums/{album:slug}/{image:slug}', function (Album $album, Image $image) {
