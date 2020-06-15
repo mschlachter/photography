@@ -146,7 +146,7 @@
                                             <input type="hidden" name="album_id" value="{{ $album->id }}">
                                             <div class="fileinput fileinput-new text-center w-100" data-provides="fileinput">
                                                 <div class="fileinput-new thumbnail img-raised">
-                                                    <img src="https://wolper.com.au/wp-content/uploads/2017/10/image-placeholder.jpg" alt="...">
+                                                    <img src="{{ asset('material/img/image-placeholder.jpg') }}" alt="...">
                                                 </div>
                                                 <div class="fileinput-preview fileinput-exists thumbnail img-raised"></div>
                                                 <div>
