@@ -51,7 +51,7 @@ Route::get('/photos', function () {
         $query->whereHas('images', function($query) use ($imageQuery) {
             $query->whereIn('images.id', $imageQuery->pluck('id'));
         });
-    })->pluck('name')->toArray();
+    })->orderBy('name')->pluck('name')->toArray();
 
     $images = $imageQuery->paginate(50);
 
