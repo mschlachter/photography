@@ -42,7 +42,7 @@ Route::get('/photos', function () {
         ->when($tags, function($query) use ($tags) {
             return $query->whereHas('tags', function ($query) use ($tags) {
                 $query->whereIn('name', $tags);
-            });
+            }, '=', count(array_unique($tags)));
         })
         ->orderByDesc('date')
         ->paginate(50);
