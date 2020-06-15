@@ -107,7 +107,7 @@
                                                 <span id="alt-error-{{ $image->id }}" class="error text-danger" for="input-alt-{{ $image->id }}">{{ $errors->first('alt-' . $image->id) }}</span>
                                                 @endif
                                             </div>
-                                            <div class="form-group{{ $errors->has('tags-' . $image->id) ? ' has-danger' : '' }}">tags
+                                            <div class="form-group{{ $errors->has('tags-' . $image->id) ? ' has-danger' : '' }}">
                                                 <label for="input-tags-{{ $image->id }}">{{ __('Tags') }}</label>
                                                 <input class="form-control tags-input border-top-0 border-left-0 border-right-0{{ $errors->has('tags-' . $image->id) ? ' is-invalid' : '' }}" name="tags-{{ $image->id }}" id="input-tags-{{ $image->id }}" type="text" placeholder="{{ __('Tags') }}" value="{{ old('tags-' . $image->id, implode(', ', $image->tags->pluck('name')->toArray())) }}" />
                                                 @if ($errors->has('tags-' . $image->id))
