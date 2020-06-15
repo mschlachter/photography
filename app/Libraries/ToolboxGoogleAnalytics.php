@@ -41,6 +41,33 @@ class ToolboxGoogleAnalytics
     }
   }
 
+  public function getSessionsPerDayForLast7Days():array
+  {
+    $analytics = $this->initializeAnalytics();
+    $profile = $this->getFirstProfileId($analytics);
+    $results = $this->getSessionsPerDayResults($analytics, $profile);
+    if ($results->getRows() != null && count($results->getRows()) > 0) {
+      // Get the entry for the first entry in the first row.
+      $rows = $results->getRows();
+
+      $days = array_map(
+        function($day) {
+          return [
+            'date' => $day[0],
+            'sessions' => $day[1],
+            'dayOfWeek' => date('l', strtotime($day[0]))
+          ];
+        },
+        $rows
+      );
+
+      // Print the results.
+      return $days;
+    } else {
+      return [];
+    }
+  }
+
   public function getViewsPerDayForLast7Days(): array
   {
     $analytics = $this->initializeAnalytics();
@@ -146,6 +173,18 @@ class ToolboxGoogleAnalytics
       '7daysAgo',
       'today',
       'ga:sessions');
+  }
+
+  function getSessionsPerDayResults($analytics, $profileId) {
+    // Calls the Core Reporting API and queries for the number of sessions
+    // for the last seven days.
+    return $analytics->data_ga->get(
+      'ga:' . $profileId,
+      '7daysAgo',
+      'today',
+      'ga:sessions',
+      ['dimensions' => 'ga:date']
+    );
   }
 
   function getViewsPerDayResults($analytics, $profileId) {

@@ -5,6 +5,11 @@
   // Get our values for the dashboard:
   $sessionsForLast7Days = $analytics->getSessionsForLast7Days();
 
+  $sessionsByDay = $analytics->getSessionsPerDayForLast7Days();
+  $sessionsByDayLabels = array_map(function($day) {return substr($day['dayOfWeek'], 0, 1);}, $sessionsByDay);
+  $sessionsByDayValues = array_map(function($day) {return $day['sessions'];}, $sessionsByDay);
+  $sessionsByDayChange = count($sessionsByDayValues) > 1 ? floor(($sessionsByDayValues[count($sessionsByDayValues) - 1] * 1.0 / $sessionsByDayValues[count($sessionsByDayValues) - 2] - 1) * 100) : 0;
+
   $viewsByDay = $analytics->getViewsPerDayForLast7Days();
   $viewsByDayLabels = array_map(function($day) {return substr($day['dayOfWeek'], 0, 1);}, $viewsByDay);
   $viewsByDayValues = array_map(function($day) {return $day['views'];}, $viewsByDay);
@@ -95,12 +100,13 @@
         <div class="col-md-4">
           <div class="card card-chart">
             <div class="card-header card-header-success">
-              <div class="ct-chart position-relative" id="dailyViewsChart"></div>
+              <div class="ct-chart position-relative" id="dailyVisitorsChart"></div>
             </div>
             <div class="card-body">
-              <h4 class="card-title">Daily Views</h4>
+              <h4 class="card-title">Daily Visitors</h4>
               <p class="card-category">
-                <span class="text-{{ $viewsByDayChange >= 0 ? 'success' : 'danger' }}"><i class="fa fa-long-arrow-{{ $viewsByDayChange >= 0 ? 'up' : 'down' }}"></i> {{ $viewsByDayChange }}% </span> {{ $viewsByDayChange >= 0 ? 'increase' : 'decrease' }} in today views.</p>
+                <span class="text-{{ $sessionsByDayChange >= 0 ? 'success' : 'danger' }}"><i class="fa fa-long-arrow-{{ $sessionsByDayChange >= 0 ? 'up' : 'down' }}"></i> {{ $sessionsByDayChange }}% </span> {{ $sessionsByDayChange >= 0 ? 'increase' : 'decrease' }} in today visitors.
+              </p>
             </div>
             <div class="card-footer">
               <div class="stats">
@@ -112,15 +118,17 @@
         <div class="col-md-4">
           <div class="card card-chart">
             <div class="card-header card-header-warning">
-              <div class="ct-chart" id="websiteViewsChart"></div>
+              <div class="ct-chart position-relative" id="dailyViewsChart"></div>
             </div>
             <div class="card-body">
-              <h4 class="card-title">Email Subscriptions</h4>
-              <p class="card-category">Last Campaign Performance</p>
+              <h4 class="card-title">Daily Views</h4>
+              <p class="card-category">
+                <span class="text-{{ $viewsByDayChange >= 0 ? 'success' : 'danger' }}"><i class="fa fa-long-arrow-{{ $viewsByDayChange >= 0 ? 'up' : 'down' }}"></i> {{ $viewsByDayChange }}% </span> {{ $viewsByDayChange >= 0 ? 'increase' : 'decrease' }} in today views.
+              </p>
             </div>
             <div class="card-footer">
               <div class="stats">
-                <i class="material-icons">access_time</i> campaign sent 2 days ago
+                <i class="material-icons">access_time</i> updated today
               </div>
             </div>
           </div>
@@ -128,7 +136,7 @@
         <div class="col-md-4">
           <div class="card card-chart">
             <div class="card-header card-header-danger">
-              <div class="ct-chart" id="completedTasksChart"></div>
+              <div class="ct-chart position-relative" id="completedTasksChart"></div>
             </div>
             <div class="card-body">
               <h4 class="card-title">Completed Tasks</h4>
@@ -444,6 +452,34 @@
     $(document).ready(function() {
       // Javascript method's body can be found in assets/js/demos.js
       md.initDashboardPageCharts();
+
+      dataDailyVisitorsChart = {
+        labels: @json($sessionsByDayLabels),
+        series: [
+          @json($sessionsByDayValues)
+        ]
+      };
+
+      optionsDailyVisitorsChart = {
+        lineSmooth: Chartist.Interpolation.cardinal({
+          tension: 0
+        }),
+        low: 0,
+        high: {{ max($sessionsByDayValues) + 10 }}, // creative tim: we recommend you to set the high sa the biggest value + something for a better look
+        chartPadding: {
+          top: 0,
+          right: 0,
+          bottom: 0,
+          left: 0
+        },
+        plugins: [
+          Chartist.plugins.tooltip({
+            tooltipFnc: function(meta, value) { return meta + value + ' view' + (value == 1 ? '' : 's'); }
+          })
+        ]
+      }
+
+      var dailyVisitorsChart = new Chartist.Line('#dailyVisitorsChart', dataDailyVisitorsChart, optionsDailyVisitorsChart);
 
       dataDailyViewsChart = {
         labels: @json($viewsByDayLabels),
