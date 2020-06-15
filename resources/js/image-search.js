@@ -1,7 +1,13 @@
 let lastRequestUrl = '';
 
-const updateImageContent = function(newContent) {
+const updateImageContent = function(newContent, newUrl) {
+    // prevent race conditions
+    if(newUrl != lastRequestUrl) {
+        return;
+    }
     document.querySelector('#image-section').innerHTML = newContent;
+    // update query string in url
+    window.history.pushState({path:newUrl},'',newUrl);
 }
 
 new SlimSelect({
@@ -12,7 +18,8 @@ new SlimSelect({
     closeOnSelect: false,
     onChange: function() {
         const form = document.querySelector('.photo-search-form');
-        const newUrl = form.action + '?' + (new URLSearchParams(new FormData(form))).toString();
+        const queryString = (new URLSearchParams(new FormData(form))).toString();
+        const newUrl = form.action + (queryString ? '?' + queryString : '');
         lastRequestUrl = newUrl;
 
         if(window.fetch) {
@@ -27,11 +34,7 @@ new SlimSelect({
                 return response.text();
             })
             .then(function(responseText) {
-                // prevent race conditions
-                if(newUrl != lastRequestUrl) {
-                    return;
-                }
-                updateImageContent(responseText);
+                updateImageContent(responseText, newUrl);
             })
             .catch(error => {
                 console.error('There was a problem getting the image results: ', error);
@@ -40,12 +43,8 @@ new SlimSelect({
             // legacy support
             var xhttp = new XMLHttpRequest();
             xhttp.onreadystatechange = function() {
-                // prevent race conditions
-                if(newUrl != lastRequestUrl) {
-                    return;
-                }
                 if (this.readyState == 4 && this.status == 200) {
-                    updateImageContent(this.responseText);
+                    updateImageContent(this.responseText, newUrl);
                 }
             };
 
