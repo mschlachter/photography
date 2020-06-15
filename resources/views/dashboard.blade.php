@@ -465,7 +465,7 @@
           tension: 0
         }),
         low: 0,
-        high: {{ max($sessionsByDayValues) + 10 }}, // creative tim: we recommend you to set the high sa the biggest value + something for a better look
+        high: {{ max(array_merge($sessionsByDayValues, [0])) + 10 }}, // creative tim: we recommend you to set the high sa the biggest value + something for a better look
         chartPadding: {
           top: 0,
           right: 0,
@@ -474,7 +474,7 @@
         },
         plugins: [
           Chartist.plugins.tooltip({
-            tooltipFnc: function(meta, value) { return meta + value + ' view' + (value == 1 ? '' : 's'); }
+            tooltipFnc: function(meta, value) { return meta + value + ' visitor' + (value == 1 ? '' : 's'); }
           })
         ]
       }
@@ -493,7 +493,7 @@
           tension: 0
         }),
         low: 0,
-        high: {{ max($viewsByDayValues) + 10 }}, // creative tim: we recommend you to set the high sa the biggest value + something for a better look
+        high: {{ max(array_merge($viewsByDayValues, [0])) + 10 }}, // creative tim: we recommend you to set the high sa the biggest value + something for a better look
         chartPadding: {
           top: 0,
           right: 0,
