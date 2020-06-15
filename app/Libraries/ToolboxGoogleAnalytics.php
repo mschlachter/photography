@@ -95,6 +95,33 @@ class ToolboxGoogleAnalytics
     }
   }
 
+  public function getMostPopularPages(): array
+  {
+    $analytics = $this->initializeAnalytics();
+    $profile = $this->getFirstProfileId($analytics);
+    $results = $this->getMostPopularPagesResults($analytics, $profile);
+    if ($results->getRows() != null && count($results->getRows()) > 0) {
+      // Get the entry for the first entry in the first row.
+      $rows = $results->getRows();
+
+      $pages = array_map(
+        function($row) {
+          return [
+            'title' => $row[0],
+            'url' => $row[1],
+            'views' => $row[2]
+          ];
+        },
+        $rows
+      );
+
+      // Print the results.
+      return $pages;
+    } else {
+      return [];
+    }
+  }
+
 
   function initializeAnalytics()
   {
@@ -196,6 +223,22 @@ class ToolboxGoogleAnalytics
       'today',
       'ga:pageviews',
       ['dimensions' => 'ga:date']
+    );
+  }
+
+  function getMostPopularPagesResults($analytics, $profileId) {
+    // Calls the Core Reporting API and queries for the number of views per day
+    // for the last seven days.
+    return $analytics->data_ga->get(
+      'ga:' . $profileId,
+      '7daysAgo',
+      'today',
+      'ga:pageviews',
+      [
+        'max-results' => 5,
+        'dimensions' => 'ga:pageTitle,ga:pagePath',
+        'sort' => '-ga:pageviews',
+      ]
     );
   }
 
