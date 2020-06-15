@@ -34,7 +34,9 @@
                     @foreach($albums as $album)
                   <tr>
                     <td>
-                      {{ $album->title }}
+                      <a class="font-weight-bold" href="{{ route('admin.albums.edit', compact('album')) }}">
+                        {{ $album->title }}
+                      </a>
                     </td>
                     <td>
                       {{ $album->images_count }}

@@ -1,4 +1,4 @@
-@extends('layouts.app', ['activePage' => 'albums', 'titlePage' => __('Create Album')])
+@extends('layouts.app', ['activePage' => 'albums', 'titlePage' => __('Edit Album')])
 
 @push('css')
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@yaireo/tagify@3.11.1/dist/tagify.css" integrity="sha256-oyPFbWMktxbXwQRY8CjTboVuTKjZJ2V5EHKKxDrdnNc=" crossorigin="anonymous">
