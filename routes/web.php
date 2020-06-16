@@ -111,9 +111,17 @@ Route::get('/photos/{image:slug}', function (Image $image) {
 
 Auth::routes(['register' => false]);
 
-Route::get('/home', 'HomeController@index')->name('dashboard')->middleware('auth');
+Route::get('/home', function() {
+    return redirect(route('admin.dashboard'));
+})->name('dashboard')->middleware('auth');
 
 Route::group(['middleware' => 'auth', 'prefix' => 'admin/', 'as' => 'admin.'], function () {
+    Route::get('/', function() {
+        return redirect(route('admin.dashboard'));
+    });
+
+    Route::get('dashboard', 'HomeController@index')->name('dashboard')->middleware('auth');
+
     Route::resources([
         'albums' => 'AlbumController',
         'images' => 'ImageController',
