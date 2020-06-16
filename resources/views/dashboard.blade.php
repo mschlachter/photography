@@ -8,12 +8,12 @@
   $sessionsByDay = $analytics->getSessionsPerDayForLast7Days();
   $sessionsByDayLabels = array_map(function($day) {return substr($day['dayOfWeek'], 0, 1);}, $sessionsByDay);
   $sessionsByDayValues = array_map(function($day) {return $day['sessions'];}, $sessionsByDay);
-  $sessionsByDayChange = count($sessionsByDayValues) > 1 ? floor(($sessionsByDayValues[count($sessionsByDayValues) - 1] * 1.0 / $sessionsByDayValues[count($sessionsByDayValues) - 2] - 1) * 100) : 0;
+  $sessionsByDayChange = count($sessionsByDayValues) > 1 && $sessionsByDayValues[count($sessionsByDayValues) - 2] > 0 ? floor(($sessionsByDayValues[count($sessionsByDayValues) - 1] * 1.0 / $sessionsByDayValues[count($sessionsByDayValues) - 2] - 1) * 100) : (count($sessionsByDayValues) > 0 && $sessionsByDayValues[count($sessionsByDayValues) - 1] > 0 ? INF : 0);
 
   $viewsByDay = $analytics->getViewsPerDayForLast7Days();
   $viewsByDayLabels = array_map(function($day) {return substr($day['dayOfWeek'], 0, 1);}, $viewsByDay);
   $viewsByDayValues = array_map(function($day) {return $day['views'];}, $viewsByDay);
-  $viewsByDayChange = count($viewsByDayValues) > 1 ? floor(($viewsByDayValues[count($viewsByDayValues) - 1] * 1.0 / $viewsByDayValues[count($viewsByDayValues) - 2] - 1) * 100) : 0;
+  $viewsByDayChange = count($viewsByDayValues) > 1 && $viewsByDayValues[count($viewsByDayValues) - 2] > 0 ? floor(($viewsByDayValues[count($viewsByDayValues) - 1] * 1.0 / $viewsByDayValues[count($viewsByDayValues) - 2] - 1) * 100) : (count($viewsByDayValues) > 0 && $viewsByDayValues[count($viewsByDayValues) - 1] > 0 ? INF : 0);
 
   $mostPopularPages = $analytics->getMostPopularPages();
 @endphp
@@ -54,7 +54,7 @@
                 <i class="material-icons">store</i>
               </div>
               <p class="card-category">Visitors</p>
-              <h3 class="card-title">{{ $analytics->getSessionsForLast7Days() }}</h3>
+              <h3 class="card-title">{{ $sessionsForLast7Days }}</h3>
             </div>
             <div class="card-footer">
               <div class="stats">
@@ -107,7 +107,7 @@
             <div class="card-body">
               <h4 class="card-title">Daily Visitors</h4>
               <p class="card-category">
-                <span class="text-{{ $sessionsByDayChange >= 0 ? 'success' : 'danger' }}"><i class="fa fa-long-arrow-{{ $sessionsByDayChange >= 0 ? 'up' : 'down' }}"></i> {{ $sessionsByDayChange }}% </span> {{ $sessionsByDayChange >= 0 ? 'increase' : 'decrease' }} in today visitors.
+                <span class="text-{{ $sessionsByDayChange >= 0 ? 'success' : 'danger' }}"><i class="fa fa-long-arrow-{{ $sessionsByDayChange >= 0 ? 'up' : 'down' }}"></i> {{ $sessionsByDayChange }}% </span> {{ $sessionsByDayChange >= 0 ? 'increase' : 'decrease' }} in daily visitors today.
               </p>
             </div>
             <div class="card-footer">
@@ -125,7 +125,7 @@
             <div class="card-body">
               <h4 class="card-title">Daily Views</h4>
               <p class="card-category">
-                <span class="text-{{ $viewsByDayChange >= 0 ? 'success' : 'danger' }}"><i class="fa fa-long-arrow-{{ $viewsByDayChange >= 0 ? 'up' : 'down' }}"></i> {{ $viewsByDayChange }}% </span> {{ $viewsByDayChange >= 0 ? 'increase' : 'decrease' }} in today views.
+                <span class="text-{{ $viewsByDayChange >= 0 ? 'success' : 'danger' }}"><i class="fa fa-long-arrow-{{ $viewsByDayChange >= 0 ? 'up' : 'down' }}"></i> {{ $viewsByDayChange }}% </span> {{ $viewsByDayChange >= 0 ? 'increase' : 'decrease' }} in daily views today.
               </p>
             </div>
             <div class="card-footer">
@@ -401,24 +401,26 @@
         <div class="col-lg-6 col-md-12">
           <div class="card">
             <div class="card-header card-header-warning">
-              <h4 class="card-title">Most Popular Pages</h4>
-              <p class="card-category">Most-viewed pages over the past 7 days</p>
+              <h4 class="card-title">Most Popular Images</h4>
+              <p class="card-category">Most-viewed image pages over the past 7 days</p>
             </div>
             <div class="card-body table-responsive">
               <table class="table table-hover">
                 <thead class="text-warning">
                   <th>Page Title</th>
+                  <th>URL</th>
                   <th>Views</th>
                 </thead>
                 <tbody>
                   @foreach($mostPopularPages as $page)
                   <tr>
+                    <td>{{ $page['title'] }}</td>
                     <td>
                       <a href="{{ url($page['url']) }}">
-                        {{ $page->title }}
+                        {{ $page['url'] }}
                       </a>
                     </td>
-                    <td>{{ $page->views }}</td>
+                    <td>{{ $page['views'] }}</td>
                   </tr>
                   @endforeach
                 </tbody>
