@@ -14,7 +14,14 @@ class TagController extends Controller
      */
     public function index()
     {
-        //
+        $tags = Tag::select('tags.*')
+            ->leftJoin('tag_categories', 'tags.tag_category_id', 'tag_categories.id')
+            ->orderBy('tag_categories.name')
+            ->orderBy('tags.name')
+            ->with('category')
+            ->withCount('images')
+            ->paginate(20);
+        return view('admin.tags.index', compact('tags'));
     }
 
     /**
@@ -24,7 +31,7 @@ class TagController extends Controller
      */
     public function create()
     {
-        //
+        abort(404);
     }
 
     /**
@@ -35,7 +42,7 @@ class TagController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        abort(404);
     }
 
     /**
@@ -46,7 +53,7 @@ class TagController extends Controller
      */
     public function show(Tag $tag)
     {
-        //
+        return redirect(route('admin.tags.edit', compact('tag')));
     }
 
     /**
@@ -57,7 +64,7 @@ class TagController extends Controller
      */
     public function edit(Tag $tag)
     {
-        //
+        return view('admin.tags.edit', compact('tag'));
     }
 
     /**
@@ -69,7 +76,11 @@ class TagController extends Controller
      */
     public function update(Request $request, Tag $tag)
     {
-        //
+        $validated = $request->validate([
+            'name' => 'required|string|max:255'
+        ]);
+        $tag->update($validated);
+        return back()->withStatus(__('Tag name successfully updated.'));
     }
 
     /**
@@ -80,6 +91,7 @@ class TagController extends Controller
      */
     public function destroy(Tag $tag)
     {
-        //
+        $tag->delete();
+        return redirect(route('admin.tags.index'));
     }
 }

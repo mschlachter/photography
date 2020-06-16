@@ -20,7 +20,7 @@ class Tag extends Model
 
     public function category()
     {
-        return $this->hasOne(TagCategory::class);
+        return $this->belongsTo(TagCategory::class);
     }
     
     public function images()
