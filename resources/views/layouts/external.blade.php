@@ -30,7 +30,10 @@
         window.dataLayer = window.dataLayer || [];
         function gtag() {dataLayer.push(arguments);}
         gtag('js', new Date());
-        gtag('config', 'UA-59906432-4');
+        gtag('config', 'UA-59906432-4', {
+             'page_title' : '@yield('page-title')',
+             'page_path': '{{ $canonicalURL ?? getCanonical() }}'
+        });
     </script>
 </head>
 
