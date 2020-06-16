@@ -414,7 +414,7 @@
                 <tbody>
                   @foreach($mostPopularPages as $page)
                   <tr>
-                    <td>{{ $page['title'] }}</td>
+                    <td>{{ explode('—', $page['title'])[0] }}</td>
                     <td>
                       <a href="{{ url($page['url']) }}">
                         {{ $page['url'] }}
