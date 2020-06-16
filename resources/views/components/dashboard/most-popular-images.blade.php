@@ -13,17 +13,17 @@ $mostPopularPages = $analytics->getMostPopularPages();
 	<div class="card-body table-responsive">
 		<table class="table table-hover">
 			<thead class="text-warning">
-				<th>Page Title</th>
-				<th>URL</th>
+				<th>Rank</th>
+				<th>Title</th>
 				<th>Views</th>
 			</thead>
 			<tbody>
 				@foreach($mostPopularPages as $page)
 				<tr>
-					<td>{{ explode('—', $page['title'])[0] }}</td>
+					<td>{{ $loop->index + 1 }}</td>
 					<td>
 						<a href="{{ url($page['url']) }}">
-							{{ $page['url'] }}
+							{{ explode('—', $page['title'])[0] }}
 						</a>
 					</td>
 					<td>{{ $page['views'] }}</td>
