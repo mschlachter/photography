@@ -24,11 +24,11 @@ while($startDate <= today()) {
   </div>
   <div class="card-body">
     <h4 class="card-title">Images Per Month</h4>
-    <p class="card-category" id="dailyVisitorsChange">
+    <p class="card-category">
       Number of images uploaded per month
     </p>
   </div>
-  <div class="card-footer">dailyVisitorsChart
+  <div class="card-footer">
     <div class="stats">
       <i class="material-icons">access_time</i> updated today
     </div>
