@@ -1,21 +1,11 @@
-@inject('analytics', App\Libraries\ToolboxGoogleAnalytics)
-@php
-  // Get our values for the dashboard:
-
-$viewsByDay = $analytics->getViewsPerDayForLast7Days();
-$viewsByDayLabels = array_map(function($day) {return substr($day['dayOfWeek'], 0, 1);}, $viewsByDay);
-$viewsByDayValues = array_map(function($day) {return $day['views'];}, $viewsByDay);
-$viewsByDayChange = count($viewsByDayValues) > 2 && $viewsByDayValues[count($viewsByDayValues) - 3] > 0 ? floor(($viewsByDayValues[count($viewsByDayValues) - 2] * 1.0 / $viewsByDayValues[count($viewsByDayValues) - 3] - 1) * 100) : (count($viewsByDayValues) > 0 && $viewsByDayValues[count($viewsByDayValues) - 2] > 0 ? INF : 0);
-@endphp
-
 <div class="card card-chart">
 	<div class="card-header card-header-warning">
-		<div class="ct-chart position-relative" id="dailyViewsChart"></div>
+		<div class="ct-chart position-relative" id="dailyViewsChart">…</div>
 	</div>
 	<div class="card-body">
 		<h4 class="card-title">Daily Views</h4>
-		<p class="card-category">
-			<span class="text-{{ $viewsByDayChange >= 0 ? 'success' : 'danger' }}"><i class="fa fa-long-arrow-{{ $viewsByDayChange >= 0 ? 'up' : 'down' }}"></i> {{ $viewsByDayChange }}% </span> {{ $viewsByDayChange >= 0 ? 'increase' : 'decrease' }} in daily views yesterday.
+		<p class="card-category" id="dailyViewsChange">
+			Loading…
 		</p>
 	</div>
 	<div class="card-footer">
@@ -30,33 +20,57 @@ $viewsByDayChange = count($viewsByDayValues) > 2 && $viewsByDayValues[count($vie
 @push('js')
 <script>
 	$(document).ready(function() {
-      dataDailyViewsChart = {
-      	labels: @json($viewsByDayLabels),
-      	series: [
-      	@json($viewsByDayValues)
-      	]
-      };
+    // get our data:
+    $.ajax('{{ route('admin.dashboard.data.daily-views') }}', {
+      success: function(data) {
+        let labels = data.labels;
+        let values = data.values;
+        let change = (+data.change);
 
-      optionsDailyViewsChart = {
-      	lineSmooth: Chartist.Interpolation.cardinal({
-      		tension: 0
-      	}),
-      	low: 0,
-        high: {{ max(array_merge($viewsByDayValues, [0])) + 10 }}, // creative tim: we recommend you to set the high sa the biggest value + something for a better look
-        chartPadding: {
-        	top: 0,
-        	right: 0,
-        	bottom: 0,
-        	left: 0
-        },
-        plugins: [
-        Chartist.plugins.tooltip({
-        	tooltipFnc: function(meta, value) { return meta + value + ' view' + (value == 1 ? '' : 's'); }
-        })
-        ]
-    }
+        // Build chart:
 
-    var dailyViewsChart = new Chartist.Line('#dailyViewsChart', dataDailyViewsChart, optionsDailyViewsChart);
-});
+        dataDailyViewsChart = {
+          labels: labels,
+          series: [values]
+        };
+
+        optionsDailyViewsChart = {
+          lineSmooth: Chartist.Interpolation.cardinal({
+            tension: 0
+          }),
+          low: 0,
+          high: Math.max.apply(null, values) + 10,
+          chartPadding: {
+            top: 0,
+            right: 0,
+            bottom: 0,
+            left: 0
+          },
+          plugins: [
+          Chartist.plugins.tooltip({
+            tooltipFnc: function(meta, value) { return meta + value + ' view' + (value == 1 ? '' : 's'); }
+          })
+          ]
+        }
+
+        document.getElementById('dailyViewsChart').innerHTML = '';
+
+        var dailyViewsChart = new Chartist.Line('#dailyViewsChart', dataDailyViewsChart, optionsDailyViewsChart
+        );
+
+        // Update '% increase' value
+        
+        changeHtml = '';
+
+        if(change < 0) {
+          changeHtml = '<span class="text-danger"><i class="fa fa-long-arrow-down"></i> ' + change + '% </span> decrease in daily views yesterday.';
+        } else {
+          changeHtml = '<span class="text-success"><i class="fa fa-long-arrow-up"></i> ' + change + '% </span> increase in daily views yesterday.';
+        }
+
+        document.getElementById('dailyViewsChange').innerHTML = changeHtml;
+      }
+    });
+  });
 </script>
 @endpush

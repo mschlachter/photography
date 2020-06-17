@@ -138,6 +138,21 @@ Route::group(['middleware' => 'auth', 'prefix' => 'admin/', 'as' => 'admin.'], f
     Route::get('summary', function(Request $request) {
         (new App\Libraries\ToolboxGoogleAnalytics)->run();
     })->name('analytics-summary');
+
+    Route::group(['prefix' => 'dashboard/data/', 'as' => 'dashboard.data.'], function() {
+        Route::get('daily-views', function(App\Libraries\ToolboxGoogleAnalytics $analytics) {
+            $viewsByDay = $analytics->getViewsPerDayForLast7Days();
+            $viewsByDayLabels = array_map(function($day) {return substr($day['dayOfWeek'], 0, 1);}, $viewsByDay);
+            $viewsByDayValues = array_map(function($day) {return $day['views'];}, $viewsByDay);
+            $viewsByDayChange = count($viewsByDayValues) > 2 && $viewsByDayValues[count($viewsByDayValues) - 3] > 0 ? floor(($viewsByDayValues[count($viewsByDayValues) - 2] * 1.0 / $viewsByDayValues[count($viewsByDayValues) - 3] - 1) * 100) : (count($viewsByDayValues) > 0 && $viewsByDayValues[count($viewsByDayValues) - 2] > 0 ? 'Infinity' : 0);
+
+            return [
+                'labels' => $viewsByDayLabels,
+                'values' => $viewsByDayValues,
+                'change' => $viewsByDayChange,
+            ];
+        })->name('daily-views');
+    });
 });
 
 Route::get('sitemap.xml', function() {
