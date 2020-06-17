@@ -152,6 +152,19 @@ Route::group(['middleware' => 'auth', 'prefix' => 'admin/', 'as' => 'admin.'], f
                 'change' => $viewsByDayChange,
             ];
         })->name('daily-views');
+
+        Route::get('daily-visitors', function(App\Libraries\ToolboxGoogleAnalytics $analytics) {
+            $sessionsByDay = $analytics->getSessionsPerDayForLast7Days();
+            $sessionsByDayLabels = array_map(function($day) {return substr($day['dayOfWeek'], 0, 1);}, $sessionsByDay);
+            $sessionsByDayValues = array_map(function($day) {return $day['sessions'];}, $sessionsByDay);
+            $sessionsByDayChange = count($sessionsByDayValues) > 2 && $sessionsByDayValues[count($sessionsByDayValues) - 3] > 0 ? floor(($sessionsByDayValues[count($sessionsByDayValues) - 2] * 1.0 / $sessionsByDayValues[count($sessionsByDayValues) - 3] - 1) * 100) : (count($sessionsByDayValues) > 0 && $sessionsByDayValues[count($sessionsByDayValues) - 2] > 0 ? 'Infinity' : 0);
+
+            return [
+                'labels' => $sessionsByDayLabels,
+                'values' => $sessionsByDayValues,
+                'change' => $sessionsByDayChange,
+            ];
+        })->name('daily-visitors');
     });
 });
 
