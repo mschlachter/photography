@@ -24,6 +24,7 @@
     <link rel="stylesheet" href="{{ mix('css/app.css') }}">
     @yield('styles')
 
+    @guest
     <!-- Global site tag (gtag.js) - Google Analytics -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-59906432-4"></script>
     <script>
@@ -35,6 +36,7 @@
              'page_path': '{{ parse_url($canonicalURL ?? getCanonical())['path'] ?? '/' }}'
         });
     </script>
+    @endguest
 </head>
 
 <body class="{{ supportsWebp() ? 'supports-webp' : '' }}">
