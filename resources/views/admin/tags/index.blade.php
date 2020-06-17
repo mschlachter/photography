@@ -8,7 +8,7 @@
         <div class="card">
           <div class="card-header card-header-primary">
             <h4 class="card-title ">Tags</h4>
-            <p class="card-category">Photos go into tags, and can also have tags</p>
+            <p class="card-category">Photos go into albums, and can also have tags</p>
           </div>
           <div class="card-body">
             <div class="table-responsive">
