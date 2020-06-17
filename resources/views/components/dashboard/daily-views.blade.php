@@ -1,6 +1,6 @@
 <div class="card card-chart">
 	<div class="card-header card-header-warning">
-		<div class="ct-chart position-relative" id="dailyViewsChart"></div>
+		<div class="ct-chart position-relative" id="dailyViewsChart"><span class="material-icons" style="height:150px;">hourglass_empty</span></div>
 	</div>
 	<div class="card-body">
 		<h4 class="card-title">Daily Views</h4>
@@ -52,6 +52,8 @@
           })
           ]
         }
+
+        document.getElementById('dailyViewsChart').innerHTML = '';
 
         var dailyViewsChart = new Chartist.Line('#dailyViewsChart', dataDailyViewsChart, optionsDailyViewsChart
         );

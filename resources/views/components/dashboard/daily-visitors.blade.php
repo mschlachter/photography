@@ -1,7 +1,7 @@
 
 <div class="card card-chart">
   <div class="card-header card-header-success">
-    <div class="ct-chart position-relative" id="dailyVisitorsChart"></div>
+    <div class="ct-chart position-relative" id="dailyVisitorsChart"><span class="material-icons" style="height:150px;">hourglass_empty</span></div>
   </div>
   <div class="card-body">
     <h4 class="card-title">Daily Visitors</h4>
@@ -53,6 +53,8 @@
           })
           ]
         }
+
+        document.getElementById('dailyVisitorsChart').innerHTML = '';
 
         var dailyVisitorsChart = new Chartist.Line('#dailyVisitorsChart', dataDailyVisitorsChart, optionsDailyVisitorsChart
         );
