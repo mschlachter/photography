@@ -1,6 +1,6 @@
 <div class="card card-chart">
 	<div class="card-header card-header-warning">
-		<div class="ct-chart position-relative" id="dailyViewsChart"><span class="material-icons" style="height:150px;">hourglass_empty</span></div>
+		<div class="ct-chart position-relative" id="dailyViewsChart"><span class="material-icons" style="height:157.5px;">hourglass_empty</span></div>
 	</div>
 	<div class="card-body">
 		<h4 class="card-title">Daily Views</h4>
