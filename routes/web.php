@@ -134,11 +134,56 @@ Route::group(['middleware' => 'auth', 'prefix' => 'admin/', 'as' => 'admin.'], f
 	Route::put('profile', ['as' => 'profile.update', 'uses' => 'ProfileController@update']);
 	Route::put('profile/password', ['as' => 'profile.password', 'uses' => 'ProfileController@password']);
 
-    // Analytics
-    Route::get('summary', function(Request $request) {
-        (new App\Libraries\ToolboxGoogleAnalytics)->run();
-    })->name('analytics-summary');
+    // Search Results
+    Route::get('search', function() {
+        $query = request('q', '');
 
+        $tagResults = Tag::where('name', 'like', "%$query%")->withCount('images');
+
+        $albumResults = Album::where('title', 'like', "%$query%")->withCount('images');
+
+        $imageResults = Image::where('title', 'like', "%$query%")->orWhere('alt', 'like', "%$query%");
+
+        $searchResults = [
+            'query' => $query,
+            'tags' => $tagResults->get()->map(function($tag) {
+                return [
+                    'name' => $tag->name,
+                    'date' => $tag->created_at->toDateString(),
+                    'images' => $tag->images_count,
+                    'url' => route('admin.tags.edit', compact('tag')),
+                ];
+            }),
+            'albums' => $albumResults->get()->map(function($album) {
+                return [
+                    'title' => $album->title,
+                    'date' => $album->date,
+                    'images' => $album->images_count,
+                    'url' => route('admin.albums.edit', compact('album')),
+                ];
+            }),
+            'images' => $imageResults->get()->map(function($image) {
+                return [
+                    'title' => $image->title,
+                    'thumb' => getMediaUrlForSize($image, 100, 100),
+                    'date' => $image->date,
+                    'album' => [
+                        'title' => $image->album->title,
+                        'url' => route('admin.albums.edit', ['album' => $image->album]),
+                    ],
+                    'url' => route('admin.images.edit', compact('image')),
+                ];
+            }),
+        ];
+
+        if(request()->ajax()) {
+            return $searchResults;
+        }
+
+        return view('admin.search', $searchResults);
+    })->name('search');
+
+    // Data for dashboard widgets
     Route::group(['prefix' => 'dashboard/data/', 'as' => 'dashboard.data.'], function() {
         Route::get('daily-views', function(App\Libraries\ToolboxGoogleAnalytics $analytics) {
             $viewsByDay = $analytics->getViewsPerDayForLast7Days();

@@ -6,7 +6,7 @@
   -->
   <div class="logo">
     <a href="/" class="simple-text logo-normal">
-      {{ __('Dashboard') }}
+      {{ __('Back to Site') }}
     </a>
   </div>
   <div class="sidebar-wrapper">
