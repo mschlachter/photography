@@ -49,7 +49,7 @@
           },
           plugins: [
           Chartist.plugins.tooltip({
-            tooltipFnc: function(meta, value) { return meta + value + ' view' + (value == 1 ? '' : 's'); }
+            tooltipFnc: function(meta, value) { return meta + value + ' visitor' + (value == 1 ? '' : 's'); }
           })
           ]
         }
