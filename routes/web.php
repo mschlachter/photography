@@ -165,6 +165,14 @@ Route::group(['middleware' => 'auth', 'prefix' => 'admin/', 'as' => 'admin.'], f
                 'change' => $sessionsByDayChange,
             ];
         })->name('daily-visitors');
+
+        Route::get('most-popular-images', function(App\Libraries\ToolboxGoogleAnalytics $analytics) {
+            return $analytics->getMostPopularPages();
+        })->name('most-popular-images');
+
+        Route::get('visitor-count', function(App\Libraries\ToolboxGoogleAnalytics $analytics) {
+            return $analytics->getSessionsForLast7Days();
+        })->name('visitor-count');
     });
 });
 
