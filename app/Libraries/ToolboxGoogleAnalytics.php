@@ -47,7 +47,6 @@ class ToolboxGoogleAnalytics
     $profile = $this->getFirstProfileId($analytics);
     $results = $this->getSessionsPerDayResults($analytics, $profile);
     if ($results->getRows() != null && count($results->getRows()) > 0) {
-      // Get the entry for the first entry in the first row.
       $rows = $results->getRows();
 
       $days = array_map(
@@ -74,7 +73,6 @@ class ToolboxGoogleAnalytics
     $profile = $this->getFirstProfileId($analytics);
     $results = $this->getViewsPerDayResults($analytics, $profile);
     if ($results->getRows() != null && count($results->getRows()) > 0) {
-      // Get the entry for the first entry in the first row.
       $rows = $results->getRows();
 
       $days = array_map(
@@ -101,7 +99,6 @@ class ToolboxGoogleAnalytics
     $profile = $this->getFirstProfileId($analytics);
     $results = $this->getMostPopularPagesResults($analytics, $profile);
     if ($results->getRows() != null && count($results->getRows()) > 0) {
-      // Get the entry for the first entry in the first row.
       $rows = $results->getRows();
 
       $pages = array_map(
@@ -117,6 +114,31 @@ class ToolboxGoogleAnalytics
 
       // Print the results.
       return $pages;
+    } else {
+      return [];
+    }
+  }
+
+  public function getSessionSources(): array
+  {
+    $analytics = $this->initializeAnalytics();
+    $profile = $this->getFirstProfileId($analytics);
+    $results = $this->getSessionSourcesResults($analytics, $profile);
+    if ($results->getRows() != null && count($results->getRows()) > 0) {
+      $rows = $results->getRows();
+
+      $sources = array_map(
+        function($row) {
+          return [
+            'source_medium' => $row[0],
+            'sessions' => $row[1],
+          ];
+        },
+        $rows
+      );
+
+      // Print the results.
+      return $sources;
     } else {
       return [];
     }
@@ -227,7 +249,7 @@ class ToolboxGoogleAnalytics
   }
 
   function getMostPopularPagesResults($analytics, $profileId) {
-    // Calls the Core Reporting API and queries for the number of views per day
+    // Calls the Core Reporting API and queries for the most popular pages
     // for the last seven days.
     return $analytics->data_ga->get(
       'ga:' . $profileId,
@@ -239,6 +261,21 @@ class ToolboxGoogleAnalytics
         'dimensions' => 'ga:pageTitle,ga:pagePath',
         'sort' => '-ga:pageviews',
         'filters' => 'ga:pagePath=~^\/(albums//[^\/]+|photos)/[^\/]+$',
+      ]
+    );
+  }
+
+  function getSessionSourcesResults($analytics, $profileId) {
+    // Calls the Core Reporting API and queries for the source of sessions
+    // for the last seven days.
+    return $analytics->data_ga->get(
+      'ga:' . $profileId,
+      '7daysAgo',
+      'today',
+      'ga:sessions',
+      [
+        'dimensions' => 'ga:sourceMedium',
+        'sort' => '-ga:sessions',
       ]
     );
   }

@@ -215,6 +215,10 @@ Route::group(['middleware' => 'auth', 'prefix' => 'admin/', 'as' => 'admin.'], f
             return $analytics->getMostPopularPages();
         })->name('most-popular-images');
 
+        Route::get('session-sources', function(App\Libraries\ToolboxGoogleAnalytics $analytics) {
+            return $analytics->getSessionSources();
+        })->name('session-sources');
+
         Route::get('visitor-count', function(App\Libraries\ToolboxGoogleAnalytics $analytics) {
             return $analytics->getSessionsForLast7Days();
         })->name('visitor-count');
