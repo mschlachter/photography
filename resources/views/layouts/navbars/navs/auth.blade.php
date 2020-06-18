@@ -23,9 +23,9 @@
       <ul class="navbar-nav">
         <li class="nav-item">
           <a class="nav-link" href="{{ route('home') }}">
-            <i class="material-icons">dashboard</i>
+            <i class="material-icons">language</i>
             <p class="d-lg-none d-md-block">
-              {{ __('Stats') }}
+              {{ __('View Site') }}
             </p>
           </a>
         </li>

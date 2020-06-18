@@ -5,8 +5,8 @@
       Tip 2: you can also add an image using data-image tag
   -->
   <div class="logo">
-    <a href="/" class="simple-text logo-normal">
-      {{ __('Back to Site') }}
+    <a href="{{ route('admin.dashboard') }}" class="simple-text logo-normal">
+      {{ __('Dashboard') }}
     </a>
   </div>
   <div class="sidebar-wrapper">
