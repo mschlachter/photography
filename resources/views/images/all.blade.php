@@ -1,5 +1,5 @@
 @extends('layouts.external')
-@section('page-title', 'All Photos — Photography | Matthew Schlachter')
+@section('page-title', buildPageTitle('All Photos'))
 @section('meta-description', 'See the photos I\'ve posted from my adventures in photography')
 
 @section('scripts')

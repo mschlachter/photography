@@ -1,5 +1,5 @@
 @extends('layouts.external', ['showHero' => false])
-@section('page-title', $image->title . ' — Photography | Matthew Schlachter')
+@section('page-title', buildPageTitle($image->title))
 @section('meta-description', $image->alt)
 
 @section('styles')

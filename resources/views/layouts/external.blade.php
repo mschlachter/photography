@@ -5,7 +5,7 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title>@yield('page-title')</title>
     <meta name="description" content="@yield('meta-description')">
-    <meta name="author" content="Matthew Schlachter">
+    <meta name="author" content="{{ config('settings.author_name', 'Matthew Schlachter') }}">
     <meta name="language" content="en">
 
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -48,7 +48,7 @@
             <a href="{{ route('images.all') }}">Photos</a>
         </nav>
         <h1 class="bottom-text">
-            Matthew Schlachter | Photography
+            {{ config('settings.site_name', 'Photography | Matthew Schlachter') }}
         </h1>
         @if($largeHero ?? false)
         <button class="bottom-scroll-arrow btn btn-link">
@@ -58,14 +58,14 @@
         @endif
     </div>
     @else
-    <h1 class="sr-only">Matthew Schlachter | Photography</h1>
+    <h1 class="sr-only">{{ config('settings.site_name', 'Photography | Matthew Schlachter') }}</h1>
     @endif
     <main>
         @yield('content')
     </main>
 
     <footer class="container container-fluid">
-        <emph>&copy; <span class="copyright-year">{{ now()->year }}</span> Matthew Schlachter</emph>
+        <emph>&copy; <span class="copyright-year">{{ now()->year }}</span> {{ config('settings.author_name', 'Matthew Schlachter') }}</emph>
         <span style="float: right;">
             <a href="https://mschlachter.visualsociety.com/" target="_blank" rel="noopener">
                 Buy Prints

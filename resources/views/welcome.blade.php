@@ -1,6 +1,6 @@
 @extends('layouts.external', ['largeHero' => true, 'defaultHeroImage' => true])
-@section('page-title', 'Photography | Matthew Schlachter')
-@section('meta-description', 'Experience the fruits of my labours from my adventures in photography')
+@section('page-title', config('settings.site_name', 'Photography | Matthew Schlachter'))
+@section('meta-description', 'I photograph flowers, wildlife, and snippets of my daily life in Montreal, Canada. Experience the results of my adventures in photography.')
 
 @section('content')
 <div class="tiles-section">

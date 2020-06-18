@@ -93,3 +93,10 @@ function getShortURL($url = null)
         return $res['link'];
     });
 }
+
+function buildPageTitle($pageTitle)
+{
+    $titlePattern = config('settings.title_pattern', ':pageTitle — :siteName');
+    $siteName = config('settings.site_name', 'Photography | Matthew Schlachter');
+    return __($titlePattern, compact('pageTitle', 'siteName'));
+}

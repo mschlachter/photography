@@ -1,5 +1,5 @@
 @extends('layouts.external')
-@section('page-title', $album->title . ' — Photography | Matthew Schlachter')
+@section('page-title', buildPageTitle($album->title))
 @section('meta-description', 'See the ' . $album->title . ' album, full of photos from my adventures in photography')
 
 @section('scripts')
