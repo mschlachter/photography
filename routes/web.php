@@ -127,6 +127,7 @@ Route::group(['middleware' => 'auth', 'prefix' => 'admin/', 'as' => 'admin.'], f
         'images' => 'ImageController',
         'tags' => 'TagController',
         'tag-categories' => 'TagCategoryController',
+        'settings' => 'SettingController',
     ]);
     
     // Profile

@@ -66,11 +66,13 @@
 
     <footer class="container container-fluid">
         <emph>&copy; <span class="copyright-year">{{ now()->year }}</span> {{ config('settings.author_name', 'Matthew Schlachter') }}</emph>
+        @if($printsLink = config('settings.prints_link'))
         <span style="float: right;">
-            <a href="https://mschlachter.visualsociety.com/" target="_blank" rel="noopener">
+            <a href="{{ $printsLink }}" target="_blank" rel="noopener">
                 Buy Prints
             </a>
         </span>
+        @endif
     </footer>
     <!--[if lt IE 9]>
       <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.js"></script>

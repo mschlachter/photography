@@ -53,6 +53,12 @@
             <p>{{ __('Profile') }}</p>
         </a>
       </li>
+      <li class="nav-item{{ $activePage == 'settings' ? ' active' : '' }}">
+        <a class="nav-link" href="{{ route('admin.settings.index') }}">
+          <i class="material-icons">settings</i>
+            <p>{{ __('Settings') }}</p>
+        </a>
+      </li>
     </ul>
   </div>
 </div>

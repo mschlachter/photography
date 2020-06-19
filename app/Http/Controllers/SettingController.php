@@ -14,7 +14,14 @@ class SettingController extends Controller
      */
     public function index()
     {
-        //
+        $settings = [
+            'site_name' => config('settings.site_name', 'Photography | Matthew Schlachter'),
+            'title_pattern' => config('settings.title_pattern', ':pageTitle — :siteName'),
+            'author_name' => config('settings.author_name', 'Matthew Schlachter'),
+            'prints_link' => config('settings.prints_link', ''),
+        ];
+
+        return view('admin.settings', compact('settings'));
     }
 
     /**
@@ -35,7 +42,22 @@ class SettingController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validated = $request->validate([
+            'key' => 'required|string',
+            'value' => 'nullable|string',
+        ]);
+
+        $setting = Setting::where(['key' => $validated['key']])->first();
+
+        if ($setting && $validated['value']) {
+            $setting->update($validated);
+        } elseif (!$setting && $validated['value']) {
+            Setting::create($validated);
+        } elseif ($setting && !$validated['value']) {
+            $setting->delete();
+        }
+
+        return back()->withStatus('Setting successfully updated');
     }
 
     /**
@@ -69,22 +91,7 @@ class SettingController extends Controller
      */
     public function update(Request $request, Setting $setting)
     {
-        $validated = $request->validate([
-            'key' => 'required|string',
-            'value' => 'nullable|string',
-        ]);
-
-        $setting = Setting::first(compact('key'));
-
-        if ($setting && $validated['value']) {
-            $setting->update(compact('value'));
-        } elseif (!$setting && $validated['value']) {
-            Setting::create($validated);
-        } elseif ($setting && !$validated['value']) {
-            $validated->delete();
-        }
-
-        return back()->withStatus('Setting updated successfully');
+        return $this->store($request);
     }
 
     /**
