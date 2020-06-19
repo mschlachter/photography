@@ -24,11 +24,11 @@ class ToolboxGoogleAnalytics
     }
   }
 
-  public function getSessionsForLast7Days():int
+  public function getUsersForLast7Days():int
   {
     $analytics = $this->initializeAnalytics();
     $profile = $this->getFirstProfileId($analytics);
-    $results = $this->getSessionsResults($analytics, $profile);
+    $results = $this->getUsersResults($analytics, $profile);
     if ($results->getRows() != null && count($results->getRows()) > 0) {
       // Get the entry for the first entry in the first row.
       $rows = $results->getRows();
@@ -41,11 +41,11 @@ class ToolboxGoogleAnalytics
     }
   }
 
-  public function getSessionsPerDayForLast7Days():array
+  public function getUsersPerDayForLast7Days():array
   {
     $analytics = $this->initializeAnalytics();
     $profile = $this->getFirstProfileId($analytics);
-    $results = $this->getSessionsPerDayResults($analytics, $profile);
+    $results = $this->getUsersPerDayResults($analytics, $profile);
     if ($results->getRows() != null && count($results->getRows()) > 0) {
       $rows = $results->getRows();
 
@@ -214,24 +214,24 @@ class ToolboxGoogleAnalytics
     );
   }
 
-  function getSessionsResults($analytics, $profileId) {
-    // Calls the Core Reporting API and queries for the number of sessions
+  function getUsersResults($analytics, $profileId) {
+    // Calls the Core Reporting API and queries for the number of users
     // for the last seven days.
     return $analytics->data_ga->get(
       'ga:' . $profileId,
       '7daysAgo',
       'today',
-      'ga:sessions');
+      'ga:users');
   }
 
-  function getSessionsPerDayResults($analytics, $profileId) {
-    // Calls the Core Reporting API and queries for the number of sessions
+  function getUsersPerDayResults($analytics, $profileId) {
+    // Calls the Core Reporting API and queries for the number of users
     // for the last seven days.
     return $analytics->data_ga->get(
       'ga:' . $profileId,
       '7daysAgo',
       'today',
-      'ga:sessions',
+      'ga:users',
       ['dimensions' => 'ga:date']
     );
   }
