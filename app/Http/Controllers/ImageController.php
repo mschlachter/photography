@@ -54,6 +54,12 @@ class ImageController extends Controller
         }
         // Update the slug (with the new ID)
         $image->save();
+        $tagIds = [];
+        foreach(explode(', ', $validated['tags-' . $image->id] ?? '') as $tagName) {
+            $tag = Tag::firstOrCreate(['name' => $tagName]);
+            $tagIds[] = $tag->id;
+        }
+        $image->tags()->sync($tagIds);
         $image->addMedia($validated['file-new'])->withResponsiveImages()->toMediaCollection('image');
         return back()->with(['imageStatus' => __('Image successfully added.')]);
     }
