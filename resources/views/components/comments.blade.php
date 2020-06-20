@@ -1,3 +1,4 @@
+@if(config('settings.enable_comments', false))
 <h2>Comments</h2>
 <label class="sr-only" for="commento-textarea-root">
     Add a comment
@@ -9,3 +10,4 @@
     @parent
     <script src="https://cdn.commento.io/js/commento.js" defer="defer" data-no-fonts="true" @if(isset($pageId)) data-page-id="{{ $pageId }}" @endif></script>
 @endsection
+@endif

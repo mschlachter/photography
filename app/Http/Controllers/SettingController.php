@@ -19,6 +19,7 @@ class SettingController extends Controller
             'title_pattern' => config('settings.title_pattern', ':pageTitle — :siteName'),
             'author_name' => config('settings.author_name', 'Author Name'),
             'prints_link' => config('settings.prints_link', ''),
+            'enable_comments' => config('settings.enable_comments', ''),
         ];
 
         return view('admin.settings', compact('settings'));
@@ -117,7 +118,7 @@ class SettingController extends Controller
             ]);
         }
         if(
-            !($newCredentialJson->type ?? false)) ||
+            !($newCredentialJson->type ?? false) ||
             !($newCredentialJson->project_id ?? false) ||
             !($newCredentialJson->private_key_id ?? false) ||
             !($newCredentialJson->private_key ?? false) ||
