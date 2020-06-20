@@ -104,4 +104,54 @@ class SettingController extends Controller
     {
         //
     }
+
+    public function updateGoogleAnalyticsCredentials(Request $request)
+    {
+        $validated = $request->validate([
+            'ga-credentials' => 'required|file|mimes:json',
+        ]);
+        $newCredentials = file_get_contents($validated['ga-credentials']->getRealPath());
+        if(!($newCredentialJson = json_decode($newCredentials))) {
+            return back()->withErrors([
+                'ga-credentials' => 'Credentials file is not a valid JSON file',
+            ]);
+        }
+        if(
+            !($newCredentialJson->type ?? false)) ||
+            !($newCredentialJson->project_id ?? false) ||
+            !($newCredentialJson->private_key_id ?? false) ||
+            !($newCredentialJson->private_key ?? false) ||
+            !($newCredentialJson->client_email ?? false) ||
+            !($newCredentialJson->client_id ?? false) ||
+            !($newCredentialJson->auth_uri ?? false) ||
+            !($newCredentialJson->token_uri ?? false) ||
+            !($newCredentialJson->auth_provider_x509_cert_url ?? false) ||
+            !($newCredentialJson->client_x509_cert_url ?? false)
+        ) {
+            return back()->withErrors([
+                'ga-credentials' => 'Credentials file is missing fields required for service account authentication',
+            ]);
+        }
+
+        // Backup old credentials
+        if(file_exists(base_path() . '/service-account-credentials.json')) {
+            if (!is_dir(base_path() . '/service-account-credential-backups')) {
+                mkdir(base_path() . '/service-account-credential-backups', 0777, true);
+            }
+            rename(
+                base_path() . '/service-account-credentials.json',
+                base_path() . '/service-account-credential-backups/service-account-credentials-' . now() . '.json'
+            );
+        }
+
+        // Save new credentials
+        move_uploaded_file(
+            $validated['ga-credentials']->getRealPath(),
+            base_path() . '/service-account-credentials.json'
+        );
+
+        return back()->with([
+            'ga-credentials-status' => 'Service Account Credentials successfully updated'
+        ]);
+    }
 }

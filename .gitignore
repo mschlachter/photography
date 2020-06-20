@@ -5,6 +5,7 @@
 /vendor
 /storage/media-library/temp
 /service-account-credentials.json
+/service-account-credential-backups
 .env
 .env.backup
 .phpunit.result.cache

@@ -129,6 +129,8 @@ Route::group(['middleware' => 'auth', 'prefix' => 'admin/', 'as' => 'admin.'], f
         'tag-categories' => 'TagCategoryController',
         'settings' => 'SettingController',
     ]);
+
+    Route::post('settings/update-ga', SettingController::class . '@updateGoogleAnalyticsCredentials')->name('settings.update-ga');
     
     // Profile
 	Route::get('profile', ['as' => 'profile.edit', 'uses' => 'ProfileController@edit']);
