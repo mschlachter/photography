@@ -23,12 +23,15 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        $settings = cache()->remember('settings', 24*60, function() {
-            return \App\Setting::pluck('value', 'key')->toArray();
-        });
+        // Load our dynamic user-configurable settings
+        if(\Schema::hasTable('settings')) {
+            $settings = cache()->remember('settings', 24*60, function() {
+                return \App\Setting::pluck('value', 'key')->toArray();
+            });
 
-        foreach ($settings as $key => $value) {
-            config()->set('settings.' . $key, $value);
+            foreach ($settings as $key => $value) {
+                config()->set('settings.' . $key, $value);
+            }
         }
     }
 }
