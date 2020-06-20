@@ -48,7 +48,7 @@
             <a href="{{ route('images.all') }}">Photos</a>
         </nav>
         <h1 class="bottom-text">
-            {{ config('settings.site_name', 'Photography | Matthew Schlachter') }}
+            {{ config('settings.site_name', 'Photography | Author Name') }}
         </h1>
         @if($largeHero ?? false)
         <button class="bottom-scroll-arrow btn btn-link">
@@ -58,14 +58,14 @@
         @endif
     </div>
     @else
-    <h1 class="sr-only">{{ config('settings.site_name', 'Photography | Matthew Schlachter') }}</h1>
+    <h1 class="sr-only">{{ config('settings.site_name', 'Photography | Author Name') }}</h1>
     @endif
     <main>
         @yield('content')
     </main>
 
     <footer class="container container-fluid">
-        <emph>&copy; <span class="copyright-year">{{ now()->year }}</span> {{ config('settings.author_name', 'Matthew Schlachter') }}</emph>
+        <emph>&copy; <span class="copyright-year">{{ now()->year }}</span> {{ config('settings.author_name', 'Author Name') }}</emph>
         @if($printsLink = config('settings.prints_link'))
         <span style="float: right;">
             <a href="{{ $printsLink }}" target="_blank" rel="noopener">

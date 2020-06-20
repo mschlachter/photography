@@ -1,5 +1,5 @@
 @extends('layouts.external', ['largeHero' => true, 'defaultHeroImage' => true])
-@section('page-title', config('settings.site_name', 'Photography | Matthew Schlachter'))
+@section('page-title', config('settings.site_name', 'Photography | Author Name'))
 @section('meta-description', 'I photograph flowers, wildlife, and snippets of my daily life in Montreal, Canada. Experience the results of my adventures in photography.')
 
 @section('content')

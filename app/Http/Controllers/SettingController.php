@@ -15,9 +15,9 @@ class SettingController extends Controller
     public function index()
     {
         $settings = [
-            'site_name' => config('settings.site_name', 'Photography | Matthew Schlachter'),
+            'site_name' => config('settings.site_name', 'Photography | Author Name'),
             'title_pattern' => config('settings.title_pattern', ':pageTitle — :siteName'),
-            'author_name' => config('settings.author_name', 'Matthew Schlachter'),
+            'author_name' => config('settings.author_name', 'Author Name'),
             'prints_link' => config('settings.prints_link', ''),
         ];
 

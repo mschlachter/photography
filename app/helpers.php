@@ -97,6 +97,6 @@ function getShortURL($url = null)
 function buildPageTitle($pageTitle)
 {
     $titlePattern = config('settings.title_pattern', ':pageTitle — :siteName');
-    $siteName = config('settings.site_name', 'Photography | Matthew Schlachter');
+    $siteName = config('settings.site_name', 'Photography | Author Name');
     return __($titlePattern, compact('pageTitle', 'siteName'));
 }
