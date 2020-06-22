@@ -55,7 +55,7 @@ class ImageController extends Controller
         // Update the slug (with the new ID)
         $image->save();
         $tagIds = [];
-        foreach(explode(', ', $validated['tags-' . $image->id] ?? '') as $tagName) {
+        foreach(explode(', ', $validated['tags-new'] ?? '') as $tagName) {
             $tag = Tag::firstOrCreate(['name' => $tagName]);
             $tagIds[] = $tag->id;
         }
