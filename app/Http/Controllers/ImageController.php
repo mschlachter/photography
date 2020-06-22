@@ -41,6 +41,7 @@ class ImageController extends Controller
             'title-new' => 'required|string|max:255',
             'alt-new' => 'required|string|max:255',
             'date-new' => 'required|date|before:tomorrow',
+            'tags-' . $image->id => 'nullable|string',
             'file-new' => 'required|image',
         ]);
         $image = Image::create([
