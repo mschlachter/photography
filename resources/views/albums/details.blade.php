@@ -1,6 +1,6 @@
 @extends('layouts.external')
 @section('page-title', buildPageTitle($album->title))
-@section('meta-description', 'See the ' . $album->title . ' album, full of photos from my adventures in photography')
+@section('meta-description', 'I photograph flowers, wildlife, and snippets of my daily life in Montreal, Canada. See the [' . $album->title . '] album, full of photos I\'ve taken during my adventures in photography')
 
 @php
 $image = $album !== null && $album->defaultImage !== null ?

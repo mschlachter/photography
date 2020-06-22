@@ -1,6 +1,6 @@
 @extends('layouts.external', ['showHero' => false])
 @section('page-title', buildPageTitle($image->title))
-@section('meta-description', $image->alt)
+@section('meta-description', 'I photograph flowers, wildlife, and snippets of my daily life in Montreal, Canada. This photo is [' . $image->title . ']: ' . $image->alt)
 
 @section('styles')
 @parent

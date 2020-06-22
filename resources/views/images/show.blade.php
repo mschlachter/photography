@@ -1,6 +1,6 @@
 @extends('layouts.external', ['showHero' => false, 'canonicalURL' => getCanonical(route('albums.image.show', ['album' => $image->album, 'image' => $image]))])
 @section('page-title', buildPageTitle($image->title))
-@section('meta-description', $image->alt)
+@section('meta-description', 'I photograph flowers, wildlife, and snippets of my daily life in Montreal, Canada. This photo is [' . $image->title . ']: ' . $image->alt)
 
 @section('styles')
 @parent

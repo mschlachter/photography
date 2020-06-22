@@ -1,6 +1,6 @@
 @extends('layouts.external')
 @section('page-title', buildPageTitle('All Albums'))
-@section('meta-description', 'See the photo albums I\'ve posted from my adventures in photography')
+@section('meta-description', 'I photograph flowers, wildlife, and snippets of my daily life in Montreal, Canada. Explore the photo albums containing the images that I\'ve taken.')
 
 @section('scripts')
 @parent
