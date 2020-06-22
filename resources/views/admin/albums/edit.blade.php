@@ -121,7 +121,7 @@
                                             </div>
                                             <div class="form-group{{ $errors->has('alt-new') ? ' has-danger' : '' }}">
                                                 <label for="input-alt-new">{{ __('Alt Text') }}</label>
-                                                <input class="form-control{{ $errors->has('alt-new') ? ' is-invalid' : '' }}" name="alt-new" id="input-alt-new" type="text" value="{{ old('alt-new', '') }}" required="true" aria-required="true" />
+                                                <textarea class="form-control{{ $errors->has('alt-new') ? ' is-invalid' : '' }}" name="alt-new" id="input-alt-new" type="text" required="true" aria-required="true">{{ old('alt-new', '') }}</textarea>
                                                 @if ($errors->has('alt-new'))
                                                 <span id="alt-error-new" class="error text-danger" for="input-alt-new">{{ $errors->first('alt-new') }}</span>
                                                 @endif
