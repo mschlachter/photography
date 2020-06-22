@@ -2,6 +2,20 @@
 @section('page-title', buildPageTitle($album->title))
 @section('meta-description', 'See the ' . $album->title . ' album, full of photos from my adventures in photography')
 
+@php
+$image = $album !== null && $album->defaultImage !== null ?
+        $album->defaultImage : null;
+@endphp
+
+@if($image)
+@section('styles')
+@parent
+<meta property="og:site_name" content="Photography | Matthew Schlachter">
+<meta property="og:image" content="{{ $image->getFirstMediaUrl('image') }}">
+<meta name="twitter:image:alt" content="{{ $image->alt }}">
+@endsection
+@endif
+
 @section('scripts')
 @parent
 <style type="text/css">
