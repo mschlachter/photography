@@ -225,13 +225,24 @@
                     } else if (data.responseText) {
                         error = data.responseText;
                     }
-                    alert('Error saving: ' + error);
 
                     submitButton.prop('disabled', false);
 
                     if(data.responseJSON && error.responseJSON.errors) {
                         console.log(error.responseJSON.errors);
                     }
+
+                    $.notify({
+                        icon: "image",
+                        message: "Error while saving image: " + error
+                    },{
+                        type: 'danger',
+                        timer: 4000,
+                        placement: {
+                            from: 'top',
+                            align: 'right'
+                        }
+                    });
                 },
                 cache: false,
                 contentType: false,
