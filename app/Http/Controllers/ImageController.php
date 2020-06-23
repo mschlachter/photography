@@ -144,9 +144,17 @@ class ImageController extends Controller
      * @param  \App\Image  $image
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Image $image)
+    public function destroy(Image $image, Request $request)
     {
         $image->delete();
+
+        if ($request->ajax()) {
+            return [
+                'result' => true,
+                'message' => __('Image successfully deleted.'),
+            ];
+        }
+
         return back()->with(['imageStatus' => __('Image successfully deleted.')]);
     }
 }

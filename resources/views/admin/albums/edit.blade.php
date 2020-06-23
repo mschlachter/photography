@@ -288,7 +288,7 @@
 
                     // Clear 'new image' inputs:
                     container.find('input:not(#input-date-new), textarea').val('');
-                    container.find('.fileinput-exists').removeClass('fileinput-exists').addClass('.fileinput.fileinput-new');
+                    container.find('.fileinput.fileinput-exists').removeClass('fileinput-exists').addClass('fileinput-new');
                     tagInputs.filter(function(item) {return item.DOM.originalInput == document.querySelector('#input-tags-new')})[0].removeAllTags()
 
                     $.notify({

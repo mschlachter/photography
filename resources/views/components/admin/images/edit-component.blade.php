@@ -33,10 +33,81 @@
                 @endif
             </div>
             <div class="text-center">
+                <button type="submit" form="form-image-delete-{{ $image->id }}" class="btn btn-danger">
+                    Delete
+                </button>
                 <button type="submit" class="btn btn-primary">
                     Save
                 </button>
             </div>
         </form>
+        <form method="post" action="{{ route('admin.images.destroy', compact('image')) }}" id="form-image-delete-{{ $image->id }}" class="d-none form-image-delete">
+            @csrf
+            @method('DELETE')
+        </form>
     </div>
 </div>
+
+@if(!config('image-delete-handler-added', false) && !config()->set('image-delete-handler-added', true))
+@push('js')
+<script type="text/javascript">
+    $(document).on('submit', '.form-image-delete', function(event) {
+        event.preventDefault();
+        if(!confirm('Do you really want to delete this image?')) {
+            return false;
+        }
+
+        let container = $(this).closest('.image-form-container');
+
+        $.ajax(this.action, {
+            'type': 'POST',
+            'data': new FormData(this),
+            'success': function(data) {
+                container.remove();
+
+                $.notify({
+                    icon: "image",
+                    message: data.message
+                },{
+                    type: 'success',
+                    timer: 4000,
+                    placement: {
+                        from: 'top',
+                        align: 'right'
+                    }
+                });
+            },
+            'error': function(data) {
+                let error = data.status;
+                if(data.responseJSON) {
+                    error = data.responseJSON.message;
+                } else if (data.responseText) {
+                    error = data.responseText;
+                }
+
+                if(data.responseJSON && data.responseJSON.errors) {
+                    console.log(data.responseJSON.errors);
+                }
+
+                $.notify({
+                    icon: "image",
+                    message: "Error while deleting image: " + error
+                },{
+                    type: 'danger',
+                    timer: 4000,
+                    placement: {
+                        from: 'top',
+                        align: 'right'
+                    }
+                });
+            },
+            cache: false,
+            contentType: false,
+            processData: false
+        });
+
+        return false;
+    });
+</script>
+@endpush
+@endif
