@@ -260,7 +260,7 @@ class ToolboxGoogleAnalytics
         'max-results' => 5,
         'dimensions' => 'ga:pageTitle,ga:pagePath',
         'sort' => '-ga:pageviews',
-        'filters' => 'ga:pagePath=~^\/(albums//[^\/]+|photos)/[^\/]+$',
+        'filters' => 'ga:pagePath=~^/?(albums/[^/]+|photos)/[^/]+$',
       ]
     );
   }
