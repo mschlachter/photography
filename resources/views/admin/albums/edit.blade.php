@@ -228,8 +228,8 @@
 
                     submitButton.prop('disabled', false);
 
-                    if(data.responseJSON && error.responseJSON.errors) {
-                        console.log(error.responseJSON.errors);
+                    if(data.responseJSON && data.responseJSON.errors) {
+                        console.log(data.responseJSON.errors);
                     }
 
                     $.notify({
