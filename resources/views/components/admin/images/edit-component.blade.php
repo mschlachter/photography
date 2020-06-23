@@ -1,7 +1,7 @@
 <div class="card">
     <x-picture :image="$image" class="card-img-top"></x-picture>
     <div class="card-body">
-        <form method="post" action="{{ route('admin.images.update', compact('image')) }}">
+        <form class="image-update-form" method="post" action="{{ route('admin.images.update', compact('image')) }}">
             @csrf
             @method('PUT')
             <div class="form-group{{ $errors->has('title-' . $image->id) ? ' has-danger' : '' }}">

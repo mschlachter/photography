@@ -86,14 +86,14 @@
                         @endif
                         <div class="row">
                             @foreach($album->images as $image)
-                            <div class="col-12 col-md-6 col-lg-3">
+                            <div class="col-12 col-md-6 col-lg-3 image-form-container">
                                 <x-admin.images.edit-component :image="$image"/>
                             </div>
                             @endforeach
-                            <div class="col-12 col-md-6 col-lg-3">
+                            <div class="col-12 col-md-6 col-lg-3 image-form-container">
                                 <div class="card">
                                     <div class="card-body">
-                                        <form method="post" action="{{ route('admin.images.store') }}" enctype="multipart/form-data">
+                                        <form class="image-create-form" method="post" action="{{ route('admin.images.store') }}" enctype="multipart/form-data">
                                             @csrf
                                             <input type="hidden" name="album_id" value="{{ $album->id }}">
                                             <div class="fileinput fileinput-new text-center w-100" data-provides="fileinput">
@@ -161,8 +161,10 @@
 @push('js')
     <script src="https://cdn.jsdelivr.net/npm/@yaireo/tagify@3.11.1/dist/tagify.min.js" integrity="sha256-jGAErKzBJxTL0qIA/fFPvhNbj9vLi8hsNFule27y6cE=" crossorigin="anonymous"></script>
     <script type="text/javascript">
+        let tagInputs = [];
+
         document.querySelectorAll('.tags-input').forEach(function(tagInput) {
-            new Tagify(tagInput, {
+            let input = new Tagify(tagInput, {
                 whitelist: {!! json_encode(App\Tag::all()->pluck('name')) !!},
                 originalInputValueFormat: valuesArr => valuesArr.map(item => item.value).join(', '),
                 dropdown: {
@@ -171,6 +173,120 @@
                     closeOnSelect: false
                 }
             });
+            tagInputs.push(input);
         });
+
+        $(document).on('submit', '.image-update-form', function(event) {
+            event.preventDefault();
+
+            let submitButton = $(this).find('[type=submit]');
+            submitButton.prop('disabled', true);
+
+            let container = $(this).closest('.image-form-container');
+
+            $.ajax(this.action, {
+                'type': 'POST',
+                'data': new FormData(this),
+                'success': function(data) {
+                    container.html(data['edit-view']);
+                    tagInputs.forEach(function(input) {
+                        try {
+                            input.settings.whitelist = data['tag-list'];
+                        } catch {}
+                    });
+                    let input = new Tagify(container.find('.tags-input')[0], {
+                        whitelist: data['tag-list'],
+                        originalInputValueFormat: valuesArr => valuesArr.map(item => item.value).join(', '),
+                        dropdown: {
+                            maxItems: 20,
+                            enabled: 0,
+                            closeOnSelect: false
+                        }
+                    });
+                    tagInputs.push(input);
+                    submitButton.prop('disabled', false);
+                },
+                'error': function(data) {
+                    let error = data.status;
+                    if(data.responseJSON) {
+                        error = data.responseJSON.message;
+                    } else if (data.responseText) {
+                        error = data.responseText;
+                    }
+                    alert('Error saving: ' + error);
+
+                    submitButton.prop('disabled', false);
+
+                    if(data.responseJSON && error.responseJSON.errors) {
+                        console.log(error.responseJSON.errors);
+                    }
+                },
+                cache: false,
+                contentType: false,
+                processData: false
+            });
+
+            return false;
+        });
+
+        $(document).on('submit', '.image-create-form', function(event) {
+            event.preventDefault();
+
+            let submitButton = $(this).find('[type=submit]');
+            submitButton.prop('disabled', true);
+
+            let container = $(this).closest('.image-form-container');
+
+            $.ajax(this.action, {
+                'type': 'POST',
+                'data': new FormData(this),
+                'success': function(data) {
+                    let newContainer = container.clone();
+                    newContainer.html(data['edit-view']);
+                    container.before(newContainer);
+                    tagInputs.forEach(function(input) {
+                        try {
+                            input.settings.whitelist = data['tag-list'];
+                        } catch {}
+                    });
+                    let input = new Tagify(newContainer.find('.tags-input')[0], {
+                        whitelist: data['tag-list'],
+                        originalInputValueFormat: valuesArr => valuesArr.map(item => item.value).join(', '),
+                        dropdown: {
+                            maxItems: 20,
+                            enabled: 0,
+                            closeOnSelect: false
+                        }
+                    });
+                    tagInputs.push(input);
+                    submitButton.prop('disabled', false);
+
+                    // Clear 'new image' inputs:
+                    container.find('input:not(#input-date-new), textarea').val('');
+                    container.find('.fileinput-exists').removeClass('fileinput-exists').addClass('.fileinput.fileinput-new');
+                    tagInputs.filter(function(item) {return item.DOM.originalInput == document.querySelector('#input-tags-new')})[0].removeAllTags()
+                },
+                'error': function(data) {
+                    let error = data.status;
+                    if(data.responseJSON) {
+                        error = data.responseJSON.message;
+                    } else if (data.responseText) {
+                        error = data.responseText;
+                    }
+                    alert('Error saving: ' + error);
+
+                    submitButton.prop('disabled', false);
+
+                    if(data.responseJSON && error.responseJSON.errors) {
+                        console.log(error.responseJSON.errors);
+                    }
+                },
+                cache: false,
+                contentType: false,
+                processData: false
+            });
+
+            return false;
+        })
     </script>
 @endpush

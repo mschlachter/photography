@@ -91,8 +91,10 @@
 @push('js')
     <script src="https://cdn.jsdelivr.net/npm/@yaireo/tagify@3.11.1/dist/tagify.min.js" integrity="sha256-jGAErKzBJxTL0qIA/fFPvhNbj9vLi8hsNFule27y6cE=" crossorigin="anonymous"></script>
     <script type="text/javascript">
+        let tagInputs = [];
+
         document.querySelectorAll('.tags-input').forEach(function(tagInput) {
-            new Tagify(tagInput, {
+            let input = new Tagify(tagInput, {
                 whitelist: {!! json_encode(App\Tag::all()->pluck('name')) !!},
                 originalInputValueFormat: valuesArr => valuesArr.map(item => item.value).join(', '),
                 dropdown: {
@@ -101,6 +103,60 @@
                     closeOnSelect: false
                 }
             });
+            tagInputs.push(input);
         });
+
+        $(document).on('submit', '.image-update-form', function(event) {
+            event.preventDefault();
+
+            let submitButton = $(this).find('[type=submit]');
+            submitButton.prop('disabled', true);
+
+            let container = $(this).closest('.image-form-container');
+
+            $.ajax(this.action, {
+                'type': 'POST',
+                'data': new FormData(this),
+                'success': function(data) {
+                    container.html(data['edit-view']);
+                    tagInputs.forEach(function(input) {
+                        try {
+                            input.settings.whitelist = data['tag-list'];
+                        } catch {}
+                    });
+                    let input = new Tagify(container.find('.tags-input')[0], {
+                        whitelist: data['tag-list'],
+                        originalInputValueFormat: valuesArr => valuesArr.map(item => item.value).join(', '),
+                        dropdown: {
+                            maxItems: 20,
+                            enabled: 0,
+                            closeOnSelect: false
+                        }
+                    });
+                    tagInputs.push(input);
+                    submitButton.prop('disabled', false);
+                },
+                'error': function(data) {
+                    let error = data.status;
+                    if(data.responseJSON) {
+                        error = data.responseJSON.message;
+                    } else if (data.responseText) {
+                        error = data.responseText;
+                    }
+                    alert('Error saving: ' + error);
+
+                    submitButton.prop('disabled', false);
+
+                    if(data.responseJSON && error.responseJSON.errors) {
+                        console.log(error.responseJSON.errors);
+                    }
+                },
+                cache: false,
+                contentType: false,
+                processData: false
+            });
+
+            return false;
+        })
     </script>
 @endpush

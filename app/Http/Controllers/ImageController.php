@@ -50,18 +50,29 @@ class ImageController extends Controller
             'alt' => $validated['alt-new'],
             'date' => $validated['date-new'],
         ]);
+        // Update the slug (with the new ID)
+        $image->save();
         if ($image->album->default_image_id == null) {
             $image->album->update(['default_image_id' => $image->id]);
         }
-        // Update the slug (with the new ID)
-        $image->save();
-        $tagIds = [];
-        foreach(explode(', ', $validated['tags-new'] ?? '') as $tagName) {
-            $tag = Tag::firstOrCreate(['name' => $tagName]);
-            $tagIds[] = $tag->id;
+        if($validated['tags-new'] ?? false) {
+            $tagIds = [];
+            foreach(explode(', ', $validated['tags-new'] ?? '') as $tagName) {
+                $tag = Tag::firstOrCreate(['name' => $tagName]);
+                $tagIds[] = $tag->id;
+            }
+            $image->tags()->sync($tagIds);
         }
-        $image->tags()->sync($tagIds);
         $image->addMedia($validated['file-new'])->withResponsiveImages()->toMediaCollection('image');
+
+        if ($request->ajax()) {
+            return [
+                'result' => true,
+                'edit-view' => view('components.admin.images.edit-component', compact('image'))->withErrors([])->render(),
+                'tag-list' => \App\Tag::pluck('name')->toArray(),
+            ];
+        }
+
         return back()->with(['imageStatus' => __('Image successfully added.')]);
     }
 
@@ -107,12 +118,23 @@ class ImageController extends Controller
             'alt' => $validated['alt-' . $image->id],
             'date' => $validated['date-' . $image->id],
         ]);
-        $tagIds = [];
-        foreach(explode(', ', $validated['tags-' . $image->id] ?? '') as $tagName) {
-            $tag = Tag::firstOrCreate(['name' => $tagName]);
-            $tagIds[] = $tag->id;
+        if($validated['tags-' . $image->id] ?? false) {
+            $tagIds = [];
+            foreach(explode(', ', $validated['tags-' . $image->id] ?? '') as $tagName) {
+                $tag = Tag::firstOrCreate(['name' => $tagName]);
+                $tagIds[] = $tag->id;
+            }
+            $image->tags()->sync($tagIds);
         }
-        $image->tags()->sync($tagIds);
+
+        if ($request->ajax()) {
+            return [
+                'result' => true,
+                'edit-view' => view('components.admin.images.edit-component', compact('image'))->withErrors([])->render(),
+                'tag-list' => \App\Tag::pluck('name')->toArray(),
+            ];
+        }
+
         return back()->with(['imageStatus' => __('Image successfully updated.')]);
     }
 
