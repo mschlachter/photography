@@ -135,6 +135,18 @@
                     });
                     tagInputs.push(input);
                     submitButton.prop('disabled', false);
+
+                    $.notify({
+                        icon: "image",
+                        message: "Image was successfully saved."
+                    },{
+                        type: 'success',
+                        timer: 4000,
+                        placement: {
+                            from: 'top',
+                            align: 'right'
+                        }
+                    });
                 },
                 'error': function(data) {
                     let error = data.status;
@@ -143,13 +155,24 @@
                     } else if (data.responseText) {
                         error = data.responseText;
                     }
-                    alert('Error saving: ' + error);
 
                     submitButton.prop('disabled', false);
 
-                    if(data.responseJSON && error.responseJSON.errors) {
-                        console.log(error.responseJSON.errors);
+                    if(data.responseJSON && data.responseJSON.errors) {
+                        console.log(data.responseJSON.errors);
                     }
+
+                    $.notify({
+                        icon: "image",
+                        message: "Error while saving image: " + error
+                    },{
+                        type: 'danger',
+                        timer: 4000,
+                        placement: {
+                            from: 'top',
+                            align: 'right'
+                        }
+                    });
                 },
                 cache: false,
                 contentType: false,
