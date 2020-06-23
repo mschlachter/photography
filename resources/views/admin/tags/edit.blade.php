@@ -135,6 +135,7 @@
                     });
                     tagInputs.push(input);
                     submitButton.prop('disabled', false);
+                    $(window).trigger('resize');
 
                     $.notify({
                         icon: "image",

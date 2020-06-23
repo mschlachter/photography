@@ -205,6 +205,7 @@
                     });
                     tagInputs.push(input);
                     submitButton.prop('disabled', false);
+                    $(window).trigger('resize');
 
                     $.notify({
                         icon: "image",
@@ -283,6 +284,7 @@
                     });
                     tagInputs.push(input);
                     submitButton.prop('disabled', false);
+                    $(window).trigger('resize');
 
                     // Clear 'new image' inputs:
                     container.find('input:not(#input-date-new), textarea').val('');
