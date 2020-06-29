@@ -171,9 +171,9 @@
 
 	    	//check if share text exists
 	    	if( share_text ){
-	    		twitter_url_params = share_title + ' / ' + share_text + "&url=" + share_url;
+	    		twitter_url_params = encodeURI(share_title) + ' / ' + encodeURI(share_text) + "&url=" + share_url;
 	    	}else{
-	    		twitter_url_params = share_title + "&url=" + share_url;
+	    		twitter_url_params = encodeURI(share_title) + "&url=" + share_url;
 	    	}
 
 	    	//construct twitter share url
