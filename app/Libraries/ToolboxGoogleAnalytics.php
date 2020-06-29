@@ -24,11 +24,28 @@ class ToolboxGoogleAnalytics
     }
   }
 
-  public function getUsersForLast7Days():int
+  public function getUsersForLast7Days(): int
   {
     $analytics = $this->initializeAnalytics();
     $profile = $this->getFirstProfileId($analytics);
     $results = $this->getUsersResults($analytics, $profile);
+    if ($results->getRows() != null && count($results->getRows()) > 0) {
+      // Get the entry for the first entry in the first row.
+      $rows = $results->getRows();
+      $sessions = $rows[0][0];
+
+      // Print the results.
+      return $sessions;
+    } else {
+      return 0;
+    }
+  }
+  
+  public function getAvgPageLoadSpeedForLast7Days(): string
+  {
+    $analytics = $this->initializeAnalytics();
+    $profile = $this->getFirstProfileId($analytics);
+    $results = $this->getAvgPageLoadSpeedResults($analytics, $profile);
     if ($results->getRows() != null && count($results->getRows()) > 0) {
       // Get the entry for the first entry in the first row.
       $rows = $results->getRows();
@@ -222,6 +239,16 @@ class ToolboxGoogleAnalytics
       '7daysAgo',
       'today',
       'ga:users');
+  }
+
+  function getAvgPageLoadSpeedResults($analytics, $profileId) {
+    // Calls the Core Reporting API and queries for the average page load time
+    // over the last seven days.
+    return $analytics->data_ga->get(
+      'ga:' . $profileId,
+      '7daysAgo',
+      'today',
+      'ga:avgPageLoadTime');
   }
 
   function getUsersPerDayResults($analytics, $profileId) {

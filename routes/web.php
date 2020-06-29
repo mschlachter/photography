@@ -225,6 +225,10 @@ Route::group(['middleware' => 'auth', 'prefix' => 'admin/', 'as' => 'admin.'], f
         Route::get('visitor-count', function(App\Libraries\ToolboxGoogleAnalytics $analytics) {
             return $analytics->getUsersForLast7Days();
         })->name('visitor-count');
+
+        Route::get('avg-page-load-speed', function(App\Libraries\ToolboxGoogleAnalytics $analytics) {
+            return $analytics->getAvgPageLoadSpeedForLast7Days() . ' <small>s<span class="sr-only">econds</span></small>';
+        })->name('avg-page-load-speed');
     });
 });
 
