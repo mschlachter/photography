@@ -36,8 +36,12 @@ function getRandomMediaUrl(\App\Album $album = null)
     return $image->getFirstMediaUrl('image');
 }
 
-function getMediaUrlForSize(\App\Image $image, $targetWidth = 300, $targetHeight = 300)
+function getMediaUrlForSize(\App\Image $image = null, $targetWidth = 300, $targetHeight = 300)
 {
+    if($image === null) {
+        return;
+    }
+
     $media = $image->getFirstMedia('image');
     $srcSet = $media->getSrcset(supportsWebp() ? 'webp' : '');
     $sources = explode(', ', $srcSet);
