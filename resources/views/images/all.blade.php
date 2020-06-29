@@ -11,8 +11,7 @@
     }
 
 </style>
-<link href="https://cdnjs.cloudflare.com/ajax/libs/slim-select/1.26.0/slimselect.min.css" rel="preload" as="style" onload="this.onload=null;this.rel='stylesheet';">
-<noscript><link href="https://cdnjs.cloudflare.com/ajax/libs/slim-select/1.26.0/slimselect.min.css" rel="stylesheet"></noscript>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/slim-select/1.26.0/slimselect.min.css" rel="stylesheet">
 @endsection
 
 @section('content')
