@@ -312,7 +312,8 @@ $pagination-disabled-border-color:  #dee2e6 !default;
   text-decoration: none;
   background-color: $pagination-bg;
   border: $pagination-border-width solid $pagination-border-color;
-  padding: .25rem .5rem;
+  padding: $pagination-padding-y $pagination-padding-x;
+  font-size: 1rem;
 
   &:hover {
     z-index: 2;
