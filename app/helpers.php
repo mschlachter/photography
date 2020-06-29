@@ -59,7 +59,7 @@ function getMediaUrlForSize(\App\Image $image = null, $targetWidth = 300, $targe
     $source = $media->getUrl(supportsWebp() ? 'webp' : '');
     foreach($sources as $testSource) {
         $split = explode(' ', $testSource); // Uses 'imageURL width'
-        if(intVal($split[1]) < $desiredWidth) {
+        if(intVal($split[1]) ?? INF < $desiredWidth) {
             return $source; // Return previously found source
         }
         $source = $split[0];
