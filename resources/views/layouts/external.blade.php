@@ -34,7 +34,8 @@
         gtag('js', new Date());
         gtag('config', 'UA-59906432-4', {
              'page_title' : '@yield('page-title')',
-             'page_path': '{{ parse_url($canonicalURL ?? getCanonical())['path'] ?? '/' }}'
+             'page_path': '{{ parse_url($canonicalURL ?? getCanonical())['path'] ?? '/' }}',
+             'siteSpeedSampleRate': 100
         });
     </script>
     @endguest
