@@ -52,7 +52,8 @@
         <h1 class="bottom-text">
             {{ config('settings.site_name', 'Photography | Author Name') }}
         </h1>
-        @if($largeHero ?? false)
+        @yield('hero-content')
+        @if($showScrollButton ?? false)
         <button class="bottom-scroll-arrow btn btn-link">
             <span class="sr-only">Scroll Down</span>
             <i class="fas fa-arrow-down"></i>
