@@ -1,6 +1,6 @@
 @php
 	if($defaultImage ?? false) {
-		$image = \App\Image::find(config('settings.default-header-image')) ?? getRandomImage();
+		$image = \App\Image::find(config('settings.default_header_image')) ?? getRandomImage();
 	} else {
 		$image = getRandomImage($album ?? null);
 	}
