@@ -1,6 +1,8 @@
-@extends('layouts.external', ['largeHero' => true, 'defaultHeroImage' => true])
+@extends('layouts.external', ['largeHero' => true])
 @section('page-title', buildPageTitle('Error Loading Page'))
 @section('meta-description', '')
+
+<x-header-image-background :defaultImage="true"/>
 
 @section('hero-content')
 <div class="center-text">

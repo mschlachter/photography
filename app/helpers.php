@@ -22,12 +22,17 @@ function supportsWebp()
     return strpos( $_SERVER['HTTP_ACCEPT'], 'image/webp' ) !== false;
 }
 
-function getRandomMediaUrl(\App\Album $album = null)
+function getRandomImage(\App\Album $album = null)
 {
     // Not actually random for albums...
-    $image = $album !== null && $album->defaultImage !== null ?
+    return $album !== null && $album->defaultImage !== null ?
         $album->defaultImage :
         App\Image::inRandomOrder()->first();
+}
+
+function getRandomMediaUrl(\App\Album $album = null)
+{
+    $image = $getRandomImage($album);
     
     if (supportsWebp()) {
         return $image->getFirstMediaUrl('image', 'webp');

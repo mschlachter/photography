@@ -16,16 +16,7 @@ $image = $album !== null && $album->defaultImage !== null ?
 @endsection
 @endif
 
-@section('scripts')
-@parent
-<style type="text/css">
-    .hero-image {
-        background-image: radial-gradient(rgba(0, 0, 0, 0), rgba(0, 0, 0, 1)),
-            url(<?= getRandomMediaUrl($album) ?>);
-    }
-
-</style>
-@endsection
+<x-header-image-background :album="$album"/>
 
 @section('content')
 <div class="tiles-section">

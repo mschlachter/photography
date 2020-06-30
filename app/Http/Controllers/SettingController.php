@@ -20,6 +20,7 @@ class SettingController extends Controller
             'author_name' => config('settings.author_name', 'Author Name'),
             'prints_link' => config('settings.prints_link', ''),
             'enable_comments' => config('settings.enable_comments', ''),
+            'default-header-image' => config('settings.default-header-image', ''),
         ];
 
         return view('admin.settings', compact('settings'));

@@ -4,15 +4,10 @@
 
 @section('scripts')
 @parent
-<style type="text/css">
-    .hero-image {
-        background-image: radial-gradient(rgba(0, 0, 0, 0), rgba(0, 0, 0, 1)),
-            url(<?= getRandomMediaUrl() ?>);
-    }
-
-</style>
 <link href="https://cdnjs.cloudflare.com/ajax/libs/slim-select/1.26.0/slimselect.min.css" rel="stylesheet">
 @endsection
+
+<x-header-image-background/>
 
 @section('content')
 <div class="tiles-section">

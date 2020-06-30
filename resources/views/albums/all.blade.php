@@ -2,16 +2,8 @@
 @section('page-title', buildPageTitle('All Albums'))
 @section('meta-description', 'I photograph flowers, wildlife, and snippets of my daily life in Montreal, Canada. Explore the photo albums containing the images that I\'ve taken.')
 
-@section('scripts')
-@parent
-<style type="text/css">
-    .hero-image {
-        background-image: radial-gradient(rgba(0, 0, 0, 0), rgba(0, 0, 0, 1)),
-            url(<?= getRandomMediaUrl() ?>);
-    }
 
-</style>
-@endsection
+<x-header-image-background/>
 
 @section('content')
 <div class="tiles-section">
