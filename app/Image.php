@@ -71,4 +71,11 @@ class Image extends Model implements HasMedia
     {
         return $this->album->default_image_id == $this->id;
     }
+
+    public function scopeActive($builder)
+    {
+        return $builder->whereHas('album', function($query) {
+            return $query->active();
+        });
+    }
 }

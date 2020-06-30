@@ -1,12 +1,12 @@
 @extends('layouts.app', ['activePage' => 'albums', 'titlePage' => __('Edit Album')])
 
 @push('css')
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@yaireo/tagify@3.11.1/dist/tagify.css" integrity="sha256-oyPFbWMktxbXwQRY8CjTboVuTKjZJ2V5EHKKxDrdnNc=" crossorigin="anonymous">
-    <style type="text/css">
-        .tags-input {
-            height: auto;
-        }
-    </style>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@yaireo/tagify@3.11.1/dist/tagify.css" integrity="sha256-oyPFbWMktxbXwQRY8CjTboVuTKjZJ2V5EHKKxDrdnNc=" crossorigin="anonymous">
+<style type="text/css">
+    .tags-input {
+        height: auto;
+    }
+</style>
 @endpush
 
 @section('content')
@@ -14,16 +14,31 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-md-12">
-                <form method="post" action="{{ route('admin.albums.update', compact('album')) }}" autocomplete="off" class="form-horizontal">
-                    @csrf
-                    @method('put')
 
-                    <div class="card ">
-                        <div class="card-header card-header-primary">
-                            <h4 class="card-title">{{ __('Edit Album') }}</h4>
-                            <p class="card-category">{{ __('Album information') }}</p>
+                <div class="card ">
+                    <div class="card-header card-header-primary">
+                        <div class="row">
+                            <div class="col-12 col-md">
+                                <h4 class="card-title">{{ __('Edit Album') }}</h4>
+                                <p class="card-category">{{ __('Album information') }}</p>
+                            </div>
+                            <form class="col-12 col-md-auto" id="form-publish-album" method="post" action="{{ route('admin.albums.updateIsActive', compact('album')) }}">
+                                <div class="togglebutton card card-body m-0 pl-0">
+                                    @csrf
+                                    <input type="hidden" name="is_active" value="0">
+                                    <label class="text-nowrap mb-0">
+                                        <input name="is_active" type="checkbox" value="1" @if($album->is_active) checked="" @endif class="input-publish-album">
+                                        <span class="toggle"></span>
+                                        Publish Album
+                                    </label>
+                                </div>
+                            </form>
                         </div>
-                        <div class="card-body ">
+                    </div>
+                    <div class="card-body ">
+                        <form method="post" action="{{ route('admin.albums.update', compact('album')) }}" autocomplete="off" class="form-horizontal">
+                            @csrf
+                            @method('put')
                             @if (session('status'))
                             <div class="row">
                                 <div class="col-sm-12">
@@ -58,12 +73,12 @@
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="card-footer ml-auto mr-auto">
-                            <button type="submit" class="btn btn-primary">{{ __('Save') }}</button>
-                        </div>
+                        </form>
                     </div>
-                </form>
+                    <div class="card-footer ml-auto mr-auto">
+                        <button type="submit" class="btn btn-primary">{{ __('Save') }}</button>
+                    </div>
+                </div>
             </div>
             <div class="col-md-12">
                 <div class="card card-plain">
@@ -159,182 +174,235 @@
 @endsection
 
 @push('js')
-    <script src="https://cdn.jsdelivr.net/npm/@yaireo/tagify@3.11.1/dist/tagify.min.js" integrity="sha256-jGAErKzBJxTL0qIA/fFPvhNbj9vLi8hsNFule27y6cE=" crossorigin="anonymous"></script>
-    <script type="text/javascript">
-        let tagInputs = [];
+<script src="https://cdn.jsdelivr.net/npm/@yaireo/tagify@3.11.1/dist/tagify.min.js" integrity="sha256-jGAErKzBJxTL0qIA/fFPvhNbj9vLi8hsNFule27y6cE=" crossorigin="anonymous"></script>
+<script type="text/javascript">
+    let tagInputs = [];
 
-        document.querySelectorAll('.tags-input').forEach(function(tagInput) {
-            let input = new Tagify(tagInput, {
-                whitelist: {!! json_encode(App\Tag::all()->pluck('name')) !!},
-                originalInputValueFormat: valuesArr => valuesArr.map(item => item.value).join(', '),
-                dropdown: {
-                    maxItems: 20,
-                    enabled: 0,
-                    closeOnSelect: false
+    document.querySelectorAll('.tags-input').forEach(function(tagInput) {
+        let input = new Tagify(tagInput, {
+            whitelist: {!! json_encode(App\Tag::all()->pluck('name')) !!},
+            originalInputValueFormat: valuesArr => valuesArr.map(item => item.value).join(', '),
+            dropdown: {
+                maxItems: 20,
+                enabled: 0,
+                closeOnSelect: false
+            }
+        });
+        tagInputs.push(input);
+    });
+
+    $(document).on('submit', '.image-update-form', function(event) {
+        event.preventDefault();
+
+        let submitButton = $(this).find('[type=submit]');
+        submitButton.prop('disabled', true);
+
+        let container = $(this).closest('.image-form-container');
+
+        $.ajax(this.action, {
+            'type': 'POST',
+            'data': new FormData(this),
+            'success': function(data) {
+                container.html(data['edit-view']);
+                tagInputs.forEach(function(input) {
+                    try {
+                        input.settings.whitelist = data['tag-list'];
+                    } catch {}
+                });
+                let input = new Tagify(container.find('.tags-input')[0], {
+                    whitelist: data['tag-list'],
+                    originalInputValueFormat: valuesArr => valuesArr.map(item => item.value).join(', '),
+                    dropdown: {
+                        maxItems: 20,
+                        enabled: 0,
+                        closeOnSelect: false
+                    }
+                });
+                tagInputs.push(input);
+                submitButton.prop('disabled', false);
+                $(window).trigger('resize');
+
+                $.notify({
+                    icon: "image",
+                    message: "Image was successfully saved."
+                },{
+                    type: 'success',
+                    timer: 4000,
+                    placement: {
+                        from: 'top',
+                        align: 'right'
+                    }
+                });
+            },
+            'error': function(data) {
+                let error = data.status;
+                if(data.responseJSON) {
+                    error = data.responseJSON.message;
+                } else if (data.responseText) {
+                    error = data.responseText;
                 }
-            });
-            tagInputs.push(input);
+
+                submitButton.prop('disabled', false);
+
+                if(data.responseJSON && data.responseJSON.errors) {
+                    console.log(data.responseJSON.errors);
+                }
+
+                $.notify({
+                    icon: "image",
+                    message: "Error while saving image: " + error
+                },{
+                    type: 'danger',
+                    timer: 4000,
+                    placement: {
+                        from: 'top',
+                        align: 'right'
+                    }
+                });
+            },
+            cache: false,
+            contentType: false,
+            processData: false
         });
 
-        $(document).on('submit', '.image-update-form', function(event) {
-            event.preventDefault();
+        return false;
+    });
 
-            let submitButton = $(this).find('[type=submit]');
-            submitButton.prop('disabled', true);
+    $(document).on('submit', '.image-create-form', function(event) {
+        event.preventDefault();
 
-            let container = $(this).closest('.image-form-container');
+        let submitButton = $(this).find('[type=submit]');
+        submitButton.prop('disabled', true);
 
-            $.ajax(this.action, {
-                'type': 'POST',
-                'data': new FormData(this),
-                'success': function(data) {
-                    container.html(data['edit-view']);
-                    tagInputs.forEach(function(input) {
-                        try {
-                            input.settings.whitelist = data['tag-list'];
-                        } catch {}
-                    });
-                    let input = new Tagify(container.find('.tags-input')[0], {
-                        whitelist: data['tag-list'],
-                        originalInputValueFormat: valuesArr => valuesArr.map(item => item.value).join(', '),
-                        dropdown: {
-                            maxItems: 20,
-                            enabled: 0,
-                            closeOnSelect: false
-                        }
-                    });
-                    tagInputs.push(input);
-                    submitButton.prop('disabled', false);
-                    $(window).trigger('resize');
+        let container = $(this).closest('.image-form-container');
 
-                    $.notify({
-                        icon: "image",
-                        message: "Image was successfully saved."
-                    },{
-                        type: 'success',
-                        timer: 4000,
-                        placement: {
-                            from: 'top',
-                            align: 'right'
-                        }
-                    });
-                },
-                'error': function(data) {
-                    let error = data.status;
-                    if(data.responseJSON) {
-                        error = data.responseJSON.message;
-                    } else if (data.responseText) {
-                        error = data.responseText;
+        $.ajax(this.action, {
+            'type': 'POST',
+            'data': new FormData(this),
+            'success': function(data) {
+                let newContainer = container.clone();
+                newContainer.html(data['edit-view']);
+                container.before(newContainer);
+                tagInputs.forEach(function(input) {
+                    try {
+                        input.settings.whitelist = data['tag-list'];
+                    } catch {}
+                });
+                let input = new Tagify(newContainer.find('.tags-input')[0], {
+                    whitelist: data['tag-list'],
+                    originalInputValueFormat: valuesArr => valuesArr.map(item => item.value).join(', '),
+                    dropdown: {
+                        maxItems: 20,
+                        enabled: 0,
+                        closeOnSelect: false
                     }
+                });
+                tagInputs.push(input);
+                submitButton.prop('disabled', false);
+                $(window).trigger('resize');
 
-                    submitButton.prop('disabled', false);
+                // Clear 'new image' inputs:
+                container.find('#input-file-new, #input-title-new, #input-alt-new, #input-tags-new').val('');
+                container.find('.fileinput.fileinput-exists').removeClass('fileinput-exists').addClass('fileinput-new');
+                tagInputs.filter(function(item) {return item.DOM.originalInput == document.querySelector('#input-tags-new')})[0].removeAllTags()
 
-                    if(data.responseJSON && data.responseJSON.errors) {
-                        console.log(data.responseJSON.errors);
+                $.notify({
+                    icon: "image",
+                    message: "Image was successfully saved."
+                },{
+                    type: 'success',
+                    timer: 4000,
+                    placement: {
+                        from: 'top',
+                        align: 'right'
                     }
+                });
+            },
+            'error': function(data) {
+                let error = data.status;
+                if(data.responseJSON) {
+                    error = data.responseJSON.message;
+                } else if (data.responseText) {
+                    error = data.responseText;
+                }
 
-                    $.notify({
-                        icon: "image",
-                        message: "Error while saving image: " + error
-                    },{
-                        type: 'danger',
-                        timer: 4000,
-                        placement: {
-                            from: 'top',
-                            align: 'right'
-                        }
-                    });
-                },
-                cache: false,
-                contentType: false,
-                processData: false
-            });
+                submitButton.prop('disabled', false);
 
-            return false;
+                if(data.responseJSON && data.responseJSON.errors) {
+                    console.log(data.responseJSON.errors);
+                }
+
+                $.notify({
+                    icon: "image",
+                    message: "Error while saving image: " + error
+                },{
+                    type: 'danger',
+                    timer: 4000,
+                    placement: {
+                        from: 'top',
+                        align: 'right'
+                    }
+                });
+            },
+            cache: false,
+            contentType: false,
+            processData: false
         });
 
-        $(document).on('submit', '.image-create-form', function(event) {
-            event.preventDefault();
+        return false;
+    });
 
-            let submitButton = $(this).find('[type=submit]');
-            submitButton.prop('disabled', true);
+    $(document).on('change', '.input-publish-album', function(event) {
+        event.preventDefault();
 
-            let container = $(this).closest('.image-form-container');
+        let form = this.form;
 
-            $.ajax(this.action, {
-                'type': 'POST',
-                'data': new FormData(this),
-                'success': function(data) {
-                    let newContainer = container.clone();
-                    newContainer.html(data['edit-view']);
-                    container.before(newContainer);
-                    tagInputs.forEach(function(input) {
-                        try {
-                            input.settings.whitelist = data['tag-list'];
-                        } catch {}
-                    });
-                    let input = new Tagify(newContainer.find('.tags-input')[0], {
-                        whitelist: data['tag-list'],
-                        originalInputValueFormat: valuesArr => valuesArr.map(item => item.value).join(', '),
-                        dropdown: {
-                            maxItems: 20,
-                            enabled: 0,
-                            closeOnSelect: false
-                        }
-                    });
-                    tagInputs.push(input);
-                    submitButton.prop('disabled', false);
-                    $(window).trigger('resize');
-
-                    // Clear 'new image' inputs:
-                    container.find('#input-file-new, #input-title-new, #input-alt-new, #input-tags-new').val('');
-                    container.find('.fileinput.fileinput-exists').removeClass('fileinput-exists').addClass('fileinput-new');
-                    tagInputs.filter(function(item) {return item.DOM.originalInput == document.querySelector('#input-tags-new')})[0].removeAllTags()
-
-                    $.notify({
-                        icon: "image",
-                        message: "Image was successfully saved."
-                    },{
-                        type: 'success',
-                        timer: 4000,
-                        placement: {
-                            from: 'top',
-                            align: 'right'
-                        }
-                    });
-                },
-                'error': function(data) {
-                    let error = data.status;
-                    if(data.responseJSON) {
-                        error = data.responseJSON.message;
-                    } else if (data.responseText) {
-                        error = data.responseText;
+        $.ajax(form.action, {
+            'type': 'POST',
+            'data': new FormData(form),
+            'success': function(data) {
+                $.notify({
+                    icon: "image",
+                    message: "Album publish status successfully updated."
+                },{
+                    type: 'success',
+                    timer: 4000,
+                    placement: {
+                        from: 'top',
+                        align: 'left'
                     }
+                });
+            },
+            'error': function(data) {
+                let error = data.status;
+                if(data.responseJSON) {
+                    error = data.responseJSON.message;
+                } else if (data.responseText) {
+                    error = data.responseText;
+                }
 
-                    submitButton.prop('disabled', false);
+                if(data.responseJSON && data.responseJSON.errors) {
+                    console.log(data.responseJSON.errors);
+                }
 
-                    if(data.responseJSON && data.responseJSON.errors) {
-                        console.log(data.responseJSON.errors);
+                $.notify({
+                    icon: "image",
+                    message: "Error while updating publish status: " + error
+                },{
+                    type: 'danger',
+                    timer: 4000,
+                    placement: {
+                        from: 'top',
+                        align: 'left'
                     }
+                });
+            },
+            cache: false,
+            contentType: false,
+            processData: false
+        });
 
-                    $.notify({
-                        icon: "image",
-                        message: "Error while saving image: " + error
-                    },{
-                        type: 'danger',
-                        timer: 4000,
-                        placement: {
-                            from: 'top',
-                            align: 'right'
-                        }
-                    });
-                },
-                cache: false,
-                contentType: false,
-                processData: false
-            });
-
-            return false;
-        })
-    </script>
+        return false;
+    });
+</script>
 @endpush

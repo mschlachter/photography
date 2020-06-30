@@ -97,4 +97,18 @@ class AlbumController extends Controller
         $album->delete();
         return redirect(route('admin.albums.index'));
     }
+
+    public function updateIsActive(Request $request, Album $album)
+    {
+        $validated = $request->validate([
+            'is_active' => 'required|boolean'
+        ]);
+        $album->update($validated);
+        if ($request->ajax()) {
+            return [
+                'result' => true,
+            ];
+        }
+        return back()->withStatus(__('Album publish status successfully updated.'));
+    }
 }

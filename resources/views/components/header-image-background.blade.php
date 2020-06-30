@@ -5,6 +5,10 @@
 		$image = getRandomImage($album ?? null);
 	}
 
+	if ($image === null) {
+		return;
+	}
+
 	$ratio = getImageRatio($image);
 
 	$media = $image->getFirstMedia('image');

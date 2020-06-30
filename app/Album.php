@@ -10,6 +10,7 @@ use Carbon\Carbon;
  * @property string $title
  * @property Carbon $date
  * @property string $slug
+ * @property boolean $is_active Whether to display the album (and its images) on the site
  * @property Image $defaultImage
  * @property Collection<Image> $images
  */
@@ -19,6 +20,11 @@ class Album extends Model
         'title',
         'date',
         'default_image_id',
+        'is_active',
+    ];
+
+    protected $casts = [
+        'is_active' => 'boolean',
     ];
     
     /**
@@ -43,5 +49,10 @@ class Album extends Model
     public function images()
     {
         return $this->hasMany(Image::class);
+    }
+
+    public function scopeActive($builder)
+    {
+        return $builder->where('is_active', true);
     }
 }

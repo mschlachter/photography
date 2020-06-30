@@ -17,7 +17,7 @@ use App\Tag;
 */
 
 Route::get('/', function () {
-    $albums = Album::select()
+    $albums = Album::active()
         ->with(['images'])
         ->orderByDesc('date')
         ->limit(7)
@@ -26,7 +26,7 @@ Route::get('/', function () {
 })->name('home');
 
 Route::get('/albums', function () {
-    $albums = Album::select()
+    $albums = Album::active()
         ->with(['images'])
         ->orderByDesc('date')
         ->paginate(50);
@@ -39,7 +39,7 @@ Route::get('/albums/{album:slug}', function (Album $album) {
 
 Route::get('/photos', function () {
     $searchTags = request('tag');
-    $imageQuery = Image::select()
+    $imageQuery = Image::active()
         ->when($searchTags, function($query) use ($searchTags) {
             return $query->whereHas('tags', function ($query) use ($searchTags) {
                 $query->whereIn('name', $searchTags);
@@ -84,7 +84,7 @@ Route::get('/albums/{album:slug}/{image:slug}', function (Album $album, Image $i
 
 Route::get('/photos/{image:slug}', function (Image $image) {
     $searchTags = request('searchTags');
-    $images = Image::select()
+    $images = Image::active()
         ->when($searchTags, function($query) use ($searchTags) {
             return $query->whereHas('tags', function ($query) use ($searchTags) {
                 $query->whereIn('name', $searchTags);
@@ -129,6 +129,8 @@ Route::group(['middleware' => 'auth', 'prefix' => 'admin/', 'as' => 'admin.'], f
         'tag-categories' => 'TagCategoryController',
         'settings' => 'SettingController',
     ]);
+
+    Route::post('albums/{album}/updateIsActive', AlbumController::class . '@updateIsActive')->name('albums.updateIsActive');
 
     Route::post('settings/update-ga', SettingController::class . '@updateGoogleAnalyticsCredentials')->name('settings.update-ga');
     

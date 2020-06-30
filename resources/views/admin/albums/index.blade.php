@@ -26,6 +26,9 @@
                   <th>
                     Date
                   </th>
+                  <th class="text-center">
+                    Published
+                  </th>
                   <th class="text-right">
                     Actions
                   </th>
@@ -43,6 +46,21 @@
                     </td>
                     <td>
                       {{ $album->date }}
+                    </td>
+                    <td class="text-center">
+                      <form class="col-12 col-md-auto" id="form-publish-album" method="post" action="{{ route('admin.albums.updateIsActive', compact('album')) }}">
+                          <div class="togglebutton">
+                              @csrf
+                              <input type="hidden" name="is_active" value="0">
+                              <label class="text-nowrap mb-0">
+                                  <input name="is_active" type="checkbox" value="1" @if($album->is_active) checked="" @endif class="input-publish-album">
+                                  <span class="toggle"></span>
+                                  <span class="sr-only">
+                                    Publish Album
+                                  </span>
+                              </label>
+                          </div>
+                      </form>
                     </td>
                     <td class="td-actions text-right">
                         <a rel="tooltip" class="btn btn-success btn-link" href="{{ route('admin.albums.edit', compact('album')) }}">
@@ -69,3 +87,60 @@
   </div>
 </div>
 @endsection
+
+@push('js')
+<script type="text/javascript">
+  $(document).on('change', '.input-publish-album', function(event) {
+        event.preventDefault();
+
+        let form = this.form;
+
+        $.ajax(form.action, {
+            'type': 'POST',
+            'data': new FormData(form),
+            'success': function(data) {
+                $.notify({
+                    icon: "image",
+                    message: "Album publish status successfully updated."
+                },{
+                    type: 'success',
+                    timer: 4000,
+                    placement: {
+                        from: 'top',
+                        align: 'right'
+                    }
+                });
+            },
+            'error': function(data) {
+                let error = data.status;
+                if(data.responseJSON) {
+                    error = data.responseJSON.message;
+                } else if (data.responseText) {
+                    error = data.responseText;
+                }
+
+                if(data.responseJSON && data.responseJSON.errors) {
+                    console.log(data.responseJSON.errors);
+                }
+
+                $.notify({
+                    icon: "image",
+                    message: "Error while updating publish status: " + error
+                },{
+                    type: 'danger',
+                    timer: 4000,
+                    placement: {
+                        from: 'top',
+                        align: 'right'
+                    }
+                });
+            },
+            cache: false,
+            contentType: false,
+            processData: false
+        });
+
+        return false;
+    });
+</script>
+@endpush
