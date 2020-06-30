@@ -41,7 +41,7 @@
                   <label class="col-sm-2 col-form-label" for="input-date">{{ __('Date') }}</label>
                   <div class="col-sm-7">
                     <div class="form-group{{ $errors->has('date') ? ' has-danger' : '' }}">
-                      <input class="form-control{{ $errors->has('date') ? ' is-invalid' : '' }}" name="date" id="input-date" type="date" placeholder="{{ __('date') }}" value="{{ old('date', today()) }}" required />
+                      <input class="form-control{{ $errors->has('date') ? ' is-invalid' : '' }}" name="date" id="input-date" type="date" placeholder="{{ __('date') }}" value="{{ old('date', today()->toDateString()) }}" required />
                       @if ($errors->has('date'))
                         <span id="date-error" class="error text-danger" for="input-date">{{ $errors->first('date') }}</span>
                       @endif
