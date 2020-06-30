@@ -26,7 +26,7 @@
                                 <div class="togglebutton card card-body m-0 pl-0">
                                     @csrf
                                     <input type="hidden" name="is_active" value="0">
-                                    <label class="text-nowrap mb-0">
+                                    <label class="text-primary text-nowrap mb-0">
                                         <input name="is_active" type="checkbox" value="1" @if($album->is_active) checked="" @endif class="input-publish-album">
                                         <span class="toggle"></span>
                                         Publish Album
