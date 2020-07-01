@@ -24,8 +24,8 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <title><xsl:value-of select="title"/></title>
-    <meta name="description" content="RSS feed for photography by Matthew Schlachter" />
-    <meta name="author" content="Matthew Schlachter" />
+    <meta name="description" content="{description}" />
+    <meta name="author" content="{atom:author/atom:name}" />
     <meta name="language" content="en" />
     
     <link rel="stylesheet" type="text/css" href="/css/app.css"/>

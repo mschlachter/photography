@@ -2,10 +2,13 @@
 {!! '<?xml-stylesheet href="/xsl/rss.xsl" type="text/xsl" media="screen"?>' !!}
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
     <channel>
-        <title>Photography | Matthew Schlachter</title>
+        <title>{{ config('settings.site_name', 'Photography | Author Name') }}</title>
         <link>{{ url('/') }}</link>
+        <atom:author>
+            <atom:name>{{ config('settings.author_name', 'Author Name') }}</atom:name>
+        </atom:author>
         <atom:link href="{{ route('rss') }}" rel="self" type="application/rss+xml" />
-        <description>Photography by Matthew Schlachter</description>
+        <description>RSS feed for photography by {{ config('settings.author_name', 'Author Name') }}</description>
         <language>en</language>
         <pubDate>{{ App\Image::orderByDesc('updated_at')->pluck('updated_at')->first()->toRssString() }}</pubDate>
         <lastBuildDate>{{ App\Image::orderByDesc('updated_at')->pluck('updated_at')->first()->toRssString() }}</lastBuildDate>

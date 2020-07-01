@@ -5,7 +5,7 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title>@yield('page-title')</title>
     <meta name="description" content="@yield('meta-description')">
-    <meta name="author" content="{{ config('settings.author_name', 'Matthew Schlachter') }}">
+    <meta name="author" content="{{ config('settings.author_name', 'Author Name') }}">
     <meta name="language" content="en">
 
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />

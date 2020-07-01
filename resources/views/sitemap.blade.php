@@ -28,7 +28,7 @@
     </image:image>
       @endforeach
   </url>
-    @foreach(App\Album::all() as $album)
+    @foreach(App\Album::active()->get() as $album)
   <url>
     <loc>{{ route('albums.show', compact('album')) }}</loc>
     <lastmod>{{ $album->updated_at->toAtomString() }}</lastmod>
@@ -42,7 +42,7 @@
       @endforeach
   </url>
     @endforeach
-    @foreach(App\Image::all() as $image)
+    @foreach(App\Image::active()->get() as $image)
     @php $album = $image->album @endphp
   <url>
     <loc>{{ route('albums.image.show', compact('album', 'image')) }}</loc>

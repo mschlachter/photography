@@ -245,7 +245,7 @@ Route::get('download/{image:slug}', function (Image $image) {
 })->name('download');
 
 Route::get('rss.xml', function () {
-    $albums = Album::with(['images'])->orderByDesc('date')->limit(25)->get();
+    $albums = Album::active()->with(['images'])->orderByDesc('date')->limit(25)->get();
     return response(view('rss', compact('albums')))->withHeaders([
         'Content-Type' => 'application/xml',
     ]);
