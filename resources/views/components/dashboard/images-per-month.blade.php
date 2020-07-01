@@ -74,7 +74,7 @@ while($startDate <= today()) {
           tooltipFnc: function(meta, value) { return meta + value + ' image' + (value == 1 ? '' : 's'); }
         })
         ]
-      }
+      };
 
       document.getElementById('imagesPerMonthChart').innerHTML = '';
 

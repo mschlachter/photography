@@ -52,7 +52,7 @@
             tooltipFnc: function(meta, value) { return meta + value + ' view' + (value == 1 ? '' : 's'); }
           })
           ]
-        }
+        };
 
         document.getElementById('dailyViewsChart').innerHTML = '';
 
