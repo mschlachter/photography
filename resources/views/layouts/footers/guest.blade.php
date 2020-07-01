@@ -10,8 +10,8 @@
         </ul>
         </nav>
         <div class="copyright float-right">
-        &copy;{{ today()->year }}, admin theme made with <i class="material-icons">favorite</i> and based on work by
-        <a href="https://www.creative-tim.com" target="_blank">Creative Tim</a> and <a href="https://www.updivision.com" target="_blank">UPDIVISION</a> for a better web.
+          &copy; {{ now()->year }},
+          made and hosted by <a href="https://www.schlachter.xyz" rel="noopener" target="_blank">Matthew Schlachter</a>
         </div>
     </div>
 </footer>
