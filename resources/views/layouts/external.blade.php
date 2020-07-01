@@ -11,7 +11,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin />
     <link rel="preconnect" href="https://www.google-analytics.com" crossorigin />
-    <link rel="preconnect" href="https://kit-free.fontawesome.com" crossorigin />
+    @yield('preconnect')
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="canonical" href="{{ $canonicalURL ?? getCanonical() }}" />
@@ -46,9 +46,7 @@
     <div class="hero-image @if(!($largeHero ?? false)) hero-small @endif @if($defaultHeroImage ?? false) default-image @endif">
         <nav class="top-nav">
             <a href="{{ route('albums.all') }}">Albums</a>
-            <a href="{{ route('home') }}">
-                <span class="sr-only">Home</span><svg style="width: 1em;vertical-align: -.125em;" class="svg-inline--fa fa-camera fa-w-16" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="camera" class="svg-inline--fa fa-camera fa-w-16" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path fill="currentColor" d="M512 144v288c0 26.5-21.5 48-48 48H48c-26.5 0-48-21.5-48-48V144c0-26.5 21.5-48 48-48h88l12.3-32.9c7-18.7 24.9-31.1 44.9-31.1h125.5c20 0 37.9 12.4 44.9 31.1L376 96h88c26.5 0 48 21.5 48 48zM376 288c0-66.2-53.8-120-120-120s-120 53.8-120 120 53.8 120 120 120 120-53.8 120-120zm-32 0c0 48.5-39.5 88-88 88s-88-39.5-88-88 39.5-88 88-88 88 39.5 88 88z"></path></svg>
-            </a>
+            <a href="{{ route('home') }}"><span class="sr-only">Home</span><svg style="width: 1em;vertical-align: -.125em;" class="svg-inline--fa fa-camera fa-w-16" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="camera" class="svg-inline--fa fa-camera fa-w-16" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path fill="currentColor" d="M512 144v288c0 26.5-21.5 48-48 48H48c-26.5 0-48-21.5-48-48V144c0-26.5 21.5-48 48-48h88l12.3-32.9c7-18.7 24.9-31.1 44.9-31.1h125.5c20 0 37.9 12.4 44.9 31.1L376 96h88c26.5 0 48 21.5 48 48zM376 288c0-66.2-53.8-120-120-120s-120 53.8-120 120 53.8 120 120 120 120-53.8 120-120zm-32 0c0 48.5-39.5 88-88 88s-88-39.5-88-88 39.5-88 88-88 88 39.5 88 88z"></path></svg></a>
             <a href="{{ route('images.all') }}">Photos</a>
         </nav>
         <h1 class="bottom-text">
@@ -58,7 +56,7 @@
         @if($showScrollButton ?? false)
         <button class="bottom-scroll-arrow btn btn-link">
             <span class="sr-only">Scroll Down</span>
-            <i class="fas fa-arrow-down"></i>
+            <svg style="width: .875em;vertical-align: -.125em;" class="svg-inline--fa fa-arrow-down fa-w-14" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="arrow-down" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" data-fa-i2svg=""><path fill="currentColor" d="M413.1 222.5l22.2 22.2c9.4 9.4 9.4 24.6 0 33.9L241 473c-9.4 9.4-24.6 9.4-33.9 0L12.7 278.6c-9.4-9.4-9.4-24.6 0-33.9l22.2-22.2c9.5-9.5 25-9.3 34.3.4L184 343.4V56c0-13.3 10.7-24 24-24h32c13.3 0 24 10.7 24 24v287.4l114.8-120.5c9.3-9.8 24.8-10 34.3-.4z"></path></svg>
         </button>
         @endif
     </div>
@@ -83,7 +81,6 @@
       <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.js"></script>
     <![endif]-->
     <script src="{{ mix('js/app.js') }}" async></script>
-    <script src="https://kit.fontawesome.com/4d7bccd5f5.js" crossorigin="anonymous" async></script>
     @yield('scripts')
     <script src="//instant.page/5.0.1" type="module" data-instant-intensity="mousedown" integrity="sha384-0DvoZ9kNcB36fWcQApIMIGQoTzoBDYTQ85e8nmsfFOGz4RHAdUhADqJt4k3K2uLS"></script>
 </body>

@@ -13,6 +13,8 @@
     )
 )
 
+<x-font-awesome-script/>
+
 @section('styles')
 @parent
 <meta property="og:site_name" content="{{ config('settings.site_name', 'Photography | Author Name') }}">
