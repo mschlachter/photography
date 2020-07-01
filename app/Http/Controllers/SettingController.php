@@ -15,17 +15,55 @@ class SettingController extends Controller
     public function index()
     {
         $settings = [
-            'site_name' => config('settings.site_name', 'Photography | Author Name'),
-            'title_pattern' => config('settings.title_pattern', ':pageTitle — :siteName'),
-            'author_name' => config('settings.author_name', 'Author Name'),
-            'prints_link' => config('settings.prints_link', ''),
-            'enable_comments' => config('settings.enable_comments', ''),
-            'default_header_image' => config('settings.default_header_image', ''),
-            'home_page_meta_description' => config('settings.home_page_meta_description', ':authorName is a photographer based in [city], who takes pictures of [subjects]. Explore their photos.'),
-            'all_albums_meta_description' => config('settings.all_albums_meta_description', 'See photo albums by :authorName'),
-            'album_details_meta_description' => config('settings.album_details_meta_description', 'View the ":albumTitle" album, with photos taken by :authorName'),
-            'all_images_meta_description' => config('settings.all_images_meta_description', 'See all photos taken by :authorName'),
-            'image_viewer_meta_description' => config('settings.image_viewer_meta_description', '":imageTitle" by :authorName: :imageAlt'),
+            'site_name' => [
+                'label' => 'Site Name',
+                'value' => config('settings.site_name', 'Photography | Author Name'),
+            ],
+            'title_pattern' => [
+                'label' => 'Page Title Pattern',
+                'value' => config('settings.title_pattern', ':pageTitle — :siteName'),
+            ],
+            'author_name' => [
+                'label' => 'Author Name',
+                'value' => config('settings.author_name', 'Author Name'),
+            ],
+            'prints_link' => [
+                'label' => 'Prints Link (leave blank to exclude)',
+                'value' => config('settings.prints_link', ''),
+            ],
+            'enable_comments' => [
+                'label' => 'Enable Comments (1 to enable, 0 or leave blank to disable)',
+                'value' => config('settings.enable_comments', ''),
+            ],
+            'default_header_image' => [
+                'label' => 'Default Header Image ID (random if empty)',
+                'value' => config('settings.default_header_image', ''),
+            ],
+            'home_page_meta_description' => [
+                'label' => 'Meta Description: Home Page',
+                'value' => config('settings.home_page_meta_description', ':authorName is a photographer based in [city], who takes pictures of [subjects]. Explore their photos.'),
+                'type' => 'textarea',
+            ],
+            'all_albums_meta_description' => [
+                'label' => 'Meta Description: All Albums Page',
+                'value' => config('settings.all_albums_meta_description', 'See photo albums by :authorName'),
+                'type' => 'textarea',
+            ],
+            'album_details_meta_description' => [
+                'label' => 'Meta Description: Album Details Page',
+                'value' => config('settings.album_details_meta_description', 'View the ":albumTitle" album, with photos taken by :authorName'),
+                'type' => 'textarea',
+            ],
+            'all_images_meta_description' => [
+                'label' => 'Meta Description: All Photos Page',
+                'value' => config('settings.all_images_meta_description', 'See all photos taken by :authorName'),
+                'type' => 'textarea',
+            ],
+            'image_viewer_meta_description' => [
+                'label' => 'Meta Description: Image Viewer Page',
+                'value' => config('settings.image_viewer_meta_description', '":imageTitle" by :authorName: :imageAlt'),
+                'type' => 'textarea',
+            ],
         ];
 
         return view('admin.settings', compact('settings'));

@@ -40,13 +40,19 @@
                   @foreach($settings as $key => $value)
                   <tr>
                     <td>
-                      <label for="setting-{{ $key }}">{{ $key }}</label>
+                      <label for="setting-{{ $key }}">{{ $value['label'] }}</label>
                     </td>
                     <td>
                       <form id="setting-{{ $key }}" action="{{ route('admin.settings.store') }}" method="post">
                         @csrf
                         <input type="hidden" name="key" value="{{ $key }}">
-                        <input id="input-setting-{{ $key }}" class="w-100" type="text" name="value" value="{{ $value }}">
+                        @if($value['type'] ?? 'input' == 'textarea')
+                        <textarea id="input-setting-{{ $key }}" class="w-100 px-2" name="value">{{ $value['value'] }}</textarea>
+                        @else
+                        <input id="input-setting-{{ $key }}" class="w-100" type="text" name="value" value="{{ $value['value'] }}">
+                        @endif
+                        {{-- To ensure this column takes an appropriate amount of space: --}}
+                        <span style="visibility: collapse;height: 0;display: block;">{{ $value['value'] }}</span>
                       </form>
                     </td>
                     <td class="text-right">
