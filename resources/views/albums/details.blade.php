@@ -1,6 +1,15 @@
 @extends('layouts.external')
 @section('page-title', buildPageTitle($album->title))
-@section('meta-description', 'I photograph flowers, wildlife, and snippets of my daily life in Montreal, Canada. See the [' . $album->title . '] album, full of photos I\'ve taken during my adventures in photography')
+@section(
+    'meta-description', 
+    __(
+        config('settings.album_details_meta_description', 'View the ":albumTitle" album, with photos taken by :authorName'),
+        [
+            'albumTitle' => $album->title,
+            'authorName' => config('settings.author_name', 'Author Name'),
+        ]
+    )
+)
 
 @php
 $image = $album !== null && $album->defaultImage !== null ?

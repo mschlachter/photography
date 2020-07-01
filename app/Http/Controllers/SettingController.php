@@ -21,11 +21,11 @@ class SettingController extends Controller
             'prints_link' => config('settings.prints_link', ''),
             'enable_comments' => config('settings.enable_comments', ''),
             'default_header_image' => config('settings.default_header_image', ''),
-            'home_page_meta_description' => config('settings.home_page_meta_description', ''),
-            'all_albums_meta_description' => config('settings.all_albums_meta_description', ''),
-            'album_details_meta_description' => config('settings.album_details_meta_description', ''),
-            'all_images_meta_description' => config('settings.all_images_meta_description', ''),
-            'image_viewer_meta_description' => config('settings.image_viewer_meta_description', ''),
+            'home_page_meta_description' => config('settings.home_page_meta_description', ':authorName is a photographer based in [city], who takes pictures of [subjects]. Explore their photos.'),
+            'all_albums_meta_description' => config('settings.all_albums_meta_description', 'See photo albums by :authorName'),
+            'album_details_meta_description' => config('settings.album_details_meta_description', 'View the ":albumTitle" album, with photos taken by :authorName'),
+            'all_images_meta_description' => config('settings.all_images_meta_description', 'See all photos taken by :authorName'),
+            'image_viewer_meta_description' => config('settings.image_viewer_meta_description', '":imageTitle" by :authorName: :imageAlt'),
         ];
 
         return view('admin.settings', compact('settings'));

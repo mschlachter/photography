@@ -1,6 +1,14 @@
 @extends('layouts.external')
 @section('page-title', buildPageTitle('All Photos'))
-@section('meta-description', 'I photograph flowers, wildlife, and snippets of my daily life in Montreal, Canada. See the photos that I\'ve taken during my adventures.')
+@section(
+    'meta-description',
+    __(
+        config('settings.all_images_meta_description', 'See all photos taken by :authorName'),
+        [
+            'authorName' => config('settings.author_name', 'Author Name'),
+        ]
+    )
+)
 
 @section('scripts')
 @parent

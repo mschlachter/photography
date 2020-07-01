@@ -1,6 +1,14 @@
 @extends('layouts.external')
 @section('page-title', buildPageTitle('All Albums'))
-@section('meta-description', 'I photograph flowers, wildlife, and snippets of my daily life in Montreal, Canada. Explore the photo albums containing the images that I\'ve taken.')
+@section(
+    'meta-description',
+    __(
+        config('settings.all_albums_meta_description', 'See photo albums by :authorName'),
+        [
+            'authorName' => config('settings.author_name', 'Author Name'),
+        ]
+    )
+)
 
 
 <x-header-image-background/>

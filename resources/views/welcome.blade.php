@@ -1,6 +1,14 @@
 @extends('layouts.external', ['largeHero' => true, 'showScrollButton' => true])
 @section('page-title', config('settings.site_name', 'Photography | Author Name'))
-@section('meta-description', 'I photograph flowers, wildlife, and snippets of my daily life in Montreal, Canada. Experience the results of my adventures in photography.')
+@section(
+    'meta-description',
+    __(
+        config('settings.home_page_meta_description', ':authorName is a photographer based in [city], who takes pictures of [subjects]. Explore their photos.'),
+        [
+            'authorName' => config('settings.author_name', 'Author Name'),
+        ]
+    )
+)
 
 <x-header-image-background :defaultImage="true"/>
 

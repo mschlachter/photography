@@ -1,6 +1,17 @@
 @extends('layouts.external', ['showHero' => false])
 @section('page-title', buildPageTitle($image->title))
-@section('meta-description', 'I photograph flowers, wildlife, and snippets of my daily life in Montreal, Canada. This photo is [' . $image->title . ']: ' . $image->alt)
+@section(
+    'meta-description', 
+    __(
+        config('settings.image_viewer_meta_description', '":imageTitle" by :authorName: :imageAlt'),
+        [
+            'imageTitle' => $image->title,
+            'imageAlt' => $image->alt,
+            'albumTitle' => $image->album->title,
+            'authorName' => config('settings.author_name', 'Author Name'),
+        ]
+    )
+)
 
 @section('styles')
 @parent
