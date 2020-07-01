@@ -27,12 +27,12 @@
 
     @guest
     <!-- Global site tag (gtag.js) - Google Analytics -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-59906432-4"></script>
+    <script async src="https://www.googletagmanager.com/gtag/js?id={{ config('settings.ga_tracking_code') }}"></script>
     <script>
         window.dataLayer = window.dataLayer || [];
         function gtag() {dataLayer.push(arguments);}
         gtag('js', new Date());
-        gtag('config', 'UA-59906432-4', {
+        gtag('config', '{{ config('settings.ga_tracking_code') }}', {
              'page_title' : '@yield('page-title')',
              'page_path': '{{ parse_url($canonicalURL ?? getCanonical())['path'] ?? '/' }}',
              'siteSpeedSampleRate': 100

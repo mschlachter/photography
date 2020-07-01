@@ -77,6 +77,11 @@ class SettingController extends Controller
                 'Meta Description: Image Viewer Page',
                 Setting::TYPE_TEXTAREA
             ),
+            Setting::getWithDefault(
+                'ga_tracking_code',
+                '',
+                'Google Analytics Tracking Code'
+            ),
         ];
 
         return view('admin.settings', compact('settings'));
