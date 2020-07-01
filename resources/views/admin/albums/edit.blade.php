@@ -304,7 +304,7 @@
                 /* Clear 'new image' inputs: */
                 container.find('#input-file-new, #input-title-new, #input-alt-new, #input-tags-new').val('');
                 container.find('.fileinput.fileinput-exists').removeClass('fileinput-exists').addClass('fileinput-new');
-                tagInputs.filter(function(item) {return item.DOM.originalInput == document.querySelector('#input-tags-new')})[0].removeAllTags()
+                tagInputs.filter(function(item) {return item.DOM.originalInput == document.querySelector('#input-tags-new')})[0].removeAllTags();
 
                 $.notify({
                     icon: "image",
