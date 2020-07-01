@@ -135,15 +135,17 @@
                 </p>
                 <p>
                   Once you've uploaded the credentials json file, the service account email address will appear here:
-                  {{
-                    !file_exists($credentialsFile = base_path() . '/service-account-credentials.json') ? '' :
-                    json_decode(
-                      file_get_contents(
-                        $credentialsFile
-                      )
-                      , true
-                    )['client_email'] ?? ''
-                  }}
+                  <strong>
+                    {{
+                      !file_exists($credentialsFile = base_path() . '/service-account-credentials.json') ? '' :
+                      json_decode(
+                        file_get_contents(
+                          $credentialsFile
+                        )
+                        , true
+                      )['client_email'] ?? ''
+                    }}
+                  </strong>
                 </p>
               </li>
               <li>
