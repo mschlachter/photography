@@ -27,4 +27,28 @@ class Setting extends Model
             config()->offsetUnset('settings.' . $setting->key);
         });
     }
+
+    // For display only:
+    const TYPE_TEXT = 'text';
+    const TYPE_TEXTAREA = 'textarea';
+    const TYPE_CHECKBOX = 'checkbox';
+    const TYPE_NUMBER = 'number';
+
+    // For display only:
+    public string $type = 'text';
+    public string $label = '';
+
+    // For display only:
+    public static function getWithDefault(string $key, string $default = '', string $label = '', string $type = self::TYPE_TEXT) : self
+    {
+        $setting = new self([
+            'key' => $key,
+            'value' => config('settings.' . $key, $default),
+        ]);
+
+        $setting->label = $label;
+        $setting->type = $type;
+
+        return $setting;
+    }
 }

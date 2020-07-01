@@ -15,61 +15,68 @@ class SettingController extends Controller
     public function index()
     {
         $settings = [
-            'site_name' => [
-                'label' => 'Site Name',
-                'value' => config('settings.site_name', 'Photography | Author Name'),
-                'type' => 'text',
-            ],
-            'title_pattern' => [
-                'label' => 'Page Title Pattern',
-                'value' => config('settings.title_pattern', ':pageTitle — :siteName'),
-                'type' => 'text',
-            ],
-            'author_name' => [
-                'label' => 'Author Name',
-                'value' => config('settings.author_name', 'Author Name'),
-                'type' => 'text',
-            ],
-            'prints_link' => [
-                'label' => 'Prints Link (leave blank to exclude)',
-                'value' => config('settings.prints_link', ''),
-                'type' => 'text',
-            ],
-            'enable_comments' => [
-                'label' => 'Enable Comments',
-                'value' => config('settings.enable_comments', ''),
-                'type' => 'checkbox',
-            ],
-            'default_header_image' => [
-                'label' => 'Default Header Image ID (random if empty)',
-                'value' => config('settings.default_header_image', ''),
-                'type' => 'text',
-            ],
-            'home_page_meta_description' => [
-                'label' => 'Meta Description: Home Page',
-                'value' => config('settings.home_page_meta_description', ':authorName is a photographer based in [city], who takes pictures of [subjects]. Explore their photos.'),
-                'type' => 'textarea',
-            ],
-            'all_albums_meta_description' => [
-                'label' => 'Meta Description: All Albums Page',
-                'value' => config('settings.all_albums_meta_description', 'See photo albums by :authorName'),
-                'type' => 'textarea',
-            ],
-            'album_details_meta_description' => [
-                'label' => 'Meta Description: Album Details Page',
-                'value' => config('settings.album_details_meta_description', 'View the ":albumTitle" album, with photos taken by :authorName'),
-                'type' => 'textarea',
-            ],
-            'all_images_meta_description' => [
-                'label' => 'Meta Description: All Photos Page',
-                'value' => config('settings.all_images_meta_description', 'See all photos taken by :authorName'),
-                'type' => 'textarea',
-            ],
-            'image_viewer_meta_description' => [
-                'label' => 'Meta Description: Image Viewer Page',
-                'value' => config('settings.image_viewer_meta_description', '":imageTitle" by :authorName: :imageAlt'),
-                'type' => 'textarea',
-            ],
+            Setting::getWithDefault(
+                'site_name',
+                'Photography | Author Name',
+                'Site Name'
+            ),
+            Setting::getWithDefault(
+                'title_pattern',
+                ':pageTitle — :siteName',
+                'Page Title Pattern'
+            ),
+            Setting::getWithDefault(
+                'author_name',
+                'Author Name',
+                'Author Name'
+            ),
+            Setting::getWithDefault(
+                'prints_link',
+                '',
+                'Prints Link (leave blank to exclude)'
+            ),
+            Setting::getWithDefault(
+                'enable_comments',
+                '0',
+                'Enable Comments',
+                Setting::TYPE_CHECKBOX
+            ),
+            Setting::getWithDefault(
+                'default_header_image',
+                '',
+                'Home Page Header Image ID (random if empty)',
+                SETTING::TYPE_NUMBER
+            ),
+            Setting::getWithDefault(
+                'home_page_meta_description',
+                ':authorName is a photographer based in [city], who takes pictures of [subjects]. Explore their photos.',
+                'Meta Description: Home Page',
+                Setting::TYPE_TEXTAREA
+            ),
+            Setting::getWithDefault(
+                'all_albums_meta_description',
+                'See photo albums by :authorName',
+                'Meta Description: All Albums Page',
+                Setting::TYPE_TEXTAREA
+            ),
+            Setting::getWithDefault(
+                'album_details_meta_description',
+                'View the ":albumTitle" album, with photos taken by :authorName',
+                'Meta Description: Album Details Page',
+                Setting::TYPE_TEXTAREA
+            ),
+            Setting::getWithDefault(
+                'all_images_meta_description',
+                'See all photos taken by :authorName',
+                'Meta Description: All Photos Page',
+                Setting::TYPE_TEXTAREA
+            ),
+            Setting::getWithDefault(
+                'image_viewer_meta_description',
+                '":imageTitle" by :authorName: :imageAlt',
+                'Meta Description: Image Viewer Page',
+                Setting::TYPE_TEXTAREA
+            ),
         ];
 
         return view('admin.settings', compact('settings'));

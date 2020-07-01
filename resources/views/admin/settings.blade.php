@@ -37,29 +37,29 @@
                   </th>
                 </div>
                 <tbody>
-                  @foreach($settings as $key => $value)
+                  @foreach($settings as $setting)
                   <tr>
                     <td>
-                      <label for="input-setting-{{ $key }}">{{ $value['label'] }}</label>
+                      <label for="input-setting-{{ $setting->key }}">{{ $setting->label }}</label>
                     </td>
                     <td>
-                      <form id="setting-{{ $key }}" action="{{ route('admin.settings.store') }}" method="post">
+                      <form id="setting-{{ $setting->key }}" action="{{ route('admin.settings.store') }}" method="post">
                         @csrf
-                        <input type="hidden" name="key" value="{{ $key }}">
-                        @if($value['type'] == 'textarea')
-                        <textarea id="input-setting-{{ $key }}" class="w-100 px-2 py-1" name="value">{{ $value['value'] }}</textarea>
-                        @elseif($value['type'] == 'checkbox')
+                        <input type="hidden" name="key" value="{{ $setting->key }}">
+                        @if($setting->type == \App\Setting::TYPE_TEXTAREA)
+                        <textarea id="input-setting-{{ $setting->key }}" class="w-100 px-2 py-1" name="value">{{ $setting->value }}</textarea>
+                        @elseif($setting->type == \App\Setting::TYPE_CHECKBOX)
                         <input type="hidden" name="value" value="0">
-                        <input id="input-setting-{{ $key }}" type="checkbox" name="value" value="1" @if($value['value']) checked="" @endif>
+                        <input id="input-setting-{{ $setting->key }}" type="checkbox" name="value" value="1" @if($setting->value) checked="" @endif>
                         @else
-                        <input id="input-setting-{{ $key }}" class="w-100" type="text" name="value" value="{{ $value['value'] }}">
+                        <input id="input-setting-{{ $setting->key }}" class="w-100" type="{{ $setting->type }}" name="value" value="{{ $setting->value }}">
                         @endif
                         {{-- To ensure this column takes an appropriate amount of space: --}}
-                        <span style="visibility: collapse;height: 0;display: block;">{{ $value['value'] }}</span>
+                        <span style="visibility: collapse;height: 0;display: block;">{{ $setting->value }}</span>
                       </form>
                     </td>
                     <td class="text-right">
-                      <button type="submit" form="setting-{{ $key }}" class="btn btn-sm btn-primary">
+                      <button type="submit" form="setting-{{ $setting->key }}" class="btn btn-sm btn-primary">
                         Save
                       </button>
                     </td>
