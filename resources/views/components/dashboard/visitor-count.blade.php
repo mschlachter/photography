@@ -16,7 +16,7 @@
 @push('js')
 <script>
   $(document).ready(function() {
-    // get our data:
+    /* get our data: */
     $.ajax('{{ route('admin.dashboard.data.visitor-count') }}', {
       success: function(data) {
         document.getElementById('visitorCount').innerHTML = data;

@@ -22,7 +22,7 @@
 @push('js')
 <script>
 	$(document).ready(function() {
-    // get our data:
+    /* get our data: */
     $.ajax('{{ route('admin.dashboard.data.most-popular-images') }}', {
       success: function(data) {
       	let pagesHtml = $('<tbody>');

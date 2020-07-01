@@ -52,7 +52,7 @@ while($startDate <= today()) {
       let labels = @json($labels);
       let values = @json($values);
 
-      // Build chart:
+      /* Build chart: */
 
       dataImagesPerMonth = {
         labels: labels,

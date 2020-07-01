@@ -21,14 +21,14 @@
 @push('js')
   <script>
     $(document).ready(function() {
-    // get our data:
+    /* get our data: */
     $.ajax('{{ route('admin.dashboard.data.daily-visitors') }}', {
       success: function(data) {
         let labels = data.labels;
         let values = data.values;
         let change = (+data.change);
 
-        // Build chart:
+        /* Build chart: */
 
         dataDailyVisitorsChart = {
           labels: labels,
@@ -59,7 +59,7 @@
         var dailyVisitorsChart = new Chartist.Line('#dailyVisitorsChart', dataDailyVisitorsChart, optionsDailyVisitorsChart
         );
 
-        // Update '% increase' value
+        /* Update '% increase' value */
         
         changeHtml = '';
 

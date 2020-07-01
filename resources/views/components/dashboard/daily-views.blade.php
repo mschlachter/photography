@@ -20,7 +20,7 @@
 @push('js')
 <script>
 	$(document).ready(function() {
-    // get our data:
+    /* get our data: */
     $.ajax('{{ route('admin.dashboard.data.daily-views') }}', {
       success: function(data) {
         let labels = data.labels;
@@ -28,7 +28,7 @@
         let change = (+data.change);
         document.getElementById('dailyVisitorsUpdatedText').innerHTML = 'updated at ' + data['update-time'];
 
-        // Build chart:
+        /* Build chart: */
 
         dataDailyViewsChart = {
           labels: labels,
@@ -59,7 +59,7 @@
         var dailyViewsChart = new Chartist.Line('#dailyViewsChart', dataDailyViewsChart, optionsDailyViewsChart
         );
 
-        // Update '% increase' value
+        /* Update '% increase' value */
         
         changeHtml = '';
 
