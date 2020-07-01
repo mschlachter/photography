@@ -21,6 +21,11 @@ class SettingController extends Controller
             'prints_link' => config('settings.prints_link', ''),
             'enable_comments' => config('settings.enable_comments', ''),
             'default_header_image' => config('settings.default_header_image', ''),
+            'home_page_meta_description' => config('settings.home_page_meta_description', ''),
+            'all_albums_meta_description' => config('settings.all_albums_meta_description', ''),
+            'album_details_meta_description' => config('settings.album_details_meta_description', ''),
+            'all_images_meta_description' => config('settings.all_images_meta_description', ''),
+            'image_viewer_meta_description' => config('settings.image_viewer_meta_description', ''),
         ];
 
         return view('admin.settings', compact('settings'));
