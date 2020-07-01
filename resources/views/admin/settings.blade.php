@@ -47,7 +47,7 @@
                         @csrf
                         <input type="hidden" name="key" value="{{ $key }}">
                         @if($value['type'] ?? 'input' == 'textarea')
-                        <textarea id="input-setting-{{ $key }}" class="w-100 px-2" name="value">{{ $value['value'] }}</textarea>
+                        <textarea id="input-setting-{{ $key }}" class="w-100 px-2 py-1" name="value">{{ $value['value'] }}</textarea>
                         @else
                         <input id="input-setting-{{ $key }}" class="w-100" type="text" name="value" value="{{ $value['value'] }}">
                         @endif
