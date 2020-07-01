@@ -18,26 +18,32 @@ class SettingController extends Controller
             'site_name' => [
                 'label' => 'Site Name',
                 'value' => config('settings.site_name', 'Photography | Author Name'),
+                'type' => 'text',
             ],
             'title_pattern' => [
                 'label' => 'Page Title Pattern',
                 'value' => config('settings.title_pattern', ':pageTitle — :siteName'),
+                'type' => 'text',
             ],
             'author_name' => [
                 'label' => 'Author Name',
                 'value' => config('settings.author_name', 'Author Name'),
+                'type' => 'text',
             ],
             'prints_link' => [
                 'label' => 'Prints Link (leave blank to exclude)',
                 'value' => config('settings.prints_link', ''),
+                'type' => 'text',
             ],
             'enable_comments' => [
-                'label' => 'Enable Comments (1 to enable, 0 or leave blank to disable)',
+                'label' => 'Enable Comments',
                 'value' => config('settings.enable_comments', ''),
+                'type' => 'checkbox',
             ],
             'default_header_image' => [
                 'label' => 'Default Header Image ID (random if empty)',
                 'value' => config('settings.default_header_image', ''),
+                'type' => 'text',
             ],
             'home_page_meta_description' => [
                 'label' => 'Meta Description: Home Page',

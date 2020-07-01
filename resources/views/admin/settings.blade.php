@@ -40,14 +40,17 @@
                   @foreach($settings as $key => $value)
                   <tr>
                     <td>
-                      <label for="setting-{{ $key }}">{{ $value['label'] }}</label>
+                      <label for="input-setting-{{ $key }}">{{ $value['label'] }}</label>
                     </td>
                     <td>
                       <form id="setting-{{ $key }}" action="{{ route('admin.settings.store') }}" method="post">
                         @csrf
                         <input type="hidden" name="key" value="{{ $key }}">
-                        @if($value['type'] ?? 'input' == 'textarea')
+                        @if($value['type'] == 'textarea')
                         <textarea id="input-setting-{{ $key }}" class="w-100 px-2 py-1" name="value">{{ $value['value'] }}</textarea>
+                        @elseif($value['type'] == 'checkbox')
+                        <input type="hidden" name="value" value="0">
+                        <input id="input-setting-{{ $key }}" type="checkbox" name="value" value="1" @if($value['value']) checked="" @endif>
                         @else
                         <input id="input-setting-{{ $key }}" class="w-100" type="text" name="value" value="{{ $value['value'] }}">
                         @endif
