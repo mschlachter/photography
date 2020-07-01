@@ -200,6 +200,7 @@ Route::group(['middleware' => 'auth', 'prefix' => 'admin/', 'as' => 'admin.'], f
                 'labels' => $viewsByDayLabels,
                 'values' => $viewsByDayValues,
                 'change' => $viewsByDayChange,
+                'update-time' => now()->toTimeString(),
             ];
         })->name('daily-views');
 
@@ -213,6 +214,7 @@ Route::group(['middleware' => 'auth', 'prefix' => 'admin/', 'as' => 'admin.'], f
                 'labels' => $sessionsByDayLabels,
                 'values' => $sessionsByDayValues,
                 'change' => $sessionsByDayChange,
+                'update-time' => now()->toTimeString(),
             ];
         })->name('daily-visitors');
 

@@ -30,7 +30,7 @@ while($startDate <= today()) {
   </div>
   <div class="card-footer">
     <div class="stats">
-      <i class="material-icons">access_time</i> updated today
+      <i class="material-icons">access_time</i> updated at {{ now()->toTimeString() }}
     </div>
   </div>
 </div>

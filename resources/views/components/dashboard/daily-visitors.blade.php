@@ -11,7 +11,7 @@
   </div>
   <div class="card-footer">
     <div class="stats">
-      <i class="material-icons">access_time</i> updated today
+      <i class="material-icons">access_time</i> <span id="dailyVisitorsUpdatedText">Loading…</span>
     </div>
   </div>
 </div>
@@ -70,6 +70,7 @@
         }
 
         document.getElementById('dailyVisitorsChange').innerHTML = changeHtml;
+        document.getElementById('dailyVisitorsUpdatedText').innerHTML = 'updated at ' + data['update-time'];
       }
     });
     });

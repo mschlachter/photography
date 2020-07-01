@@ -10,7 +10,7 @@
 	</div>
 	<div class="card-footer">
 		<div class="stats">
-			<i class="material-icons">access_time</i> updated today
+      <i class="material-icons">access_time</i> <span id="dailyViewsUpdatedText">Loading…</span>
 		</div>
 	</div>
 </div>
@@ -26,6 +26,7 @@
         let labels = data.labels;
         let values = data.values;
         let change = (+data.change);
+        document.getElementById('dailyVisitorsUpdatedText').innerHTML = 'updated at ' + data['update-time'];
 
         // Build chart:
 
@@ -69,6 +70,7 @@
         }
 
         document.getElementById('dailyViewsChange').innerHTML = changeHtml;
+        document.getElementById('dailyViewsUpdatedText').innerHTML = 'updated at ' + data['update-time'];
       }
     });
   });
