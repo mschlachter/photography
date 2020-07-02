@@ -17,4 +17,7 @@ mix.js('resources/js/app.js', 'public/js')
     .sass('resources/sass/share.scss', 'public/css')
     .js('resources/js/xsl-to-html.js', 'public/js')
     .js('resources/js/image-search.js', 'public/js')
+    .js('resources/js/admin/albums/index.js', 'public/js/admin/albums')
+    .js('resources/js/admin/albums/edit.js', 'public/js/admin/albums')
+    .js('resources/js/admin/tags/edit.js', 'public/js/admin/tags')
     .version();
