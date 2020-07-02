@@ -18,7 +18,7 @@ use App\Tag;
 
 Route::get('/', function () {
     $albums = Album::active()
-        ->with(['images'])
+        ->with(['defaultImage', 'defaultImage.media'])
         ->orderByDesc('date')
         ->limit(7)
         ->get();
@@ -27,19 +27,21 @@ Route::get('/', function () {
 
 Route::get('/albums', function () {
     $albums = Album::active()
-        ->with(['images'])
+        ->with(['defaultImage', 'defaultImage.media'])
         ->orderByDesc('date')
-        ->paginate(50);
+        ->paginate(48);
     return view('albums/all', compact('albums'));
 })->name('albums.all');
 
 Route::get('/albums/{album:slug}', function (Album $album) {
+    $album = $album->load(['defaultImage', 'defaultImage.media', 'images', 'images.media']);
     return view('albums/details', compact('album'));
 })->name('albums.show');
 
 Route::get('/photos', function () {
     $searchTags = request('tag');
     $imageQuery = Image::active()
+        ->with(['media'])
         ->when($searchTags, function($query) use ($searchTags) {
             return $query->whereHas('tags', function ($query) use ($searchTags) {
                 $query->whereIn('name', $searchTags);
@@ -47,13 +49,15 @@ Route::get('/photos', function () {
         })
         ->orderByDesc('date');
 
-    $tags = Tag::when($imageQuery->count(), function($query) use ($imageQuery) {
-        $query->whereHas('images', function($query) use ($imageQuery) {
-            $query->whereIn('images.id', $imageQuery->pluck('id'));
+    $tags = Tag::when($searchTags, function($query) use ($searchTags) {
+        $query->whereHas('images', function($query) use ($searchTags) {
+            return $query->whereHas('tags', function ($query) use ($searchTags) {
+                $query->whereIn('name', $searchTags);
+            }, '=', count(array_unique($searchTags)));
         });
     })->orderBy('name')->pluck('name')->toArray();
 
-    $images = $imageQuery->paginate(50);
+    $images = $imageQuery->paginate(48);
 
     if(request()->ajax()) {
         return [
@@ -65,20 +69,11 @@ Route::get('/photos', function () {
 })->name('images.all');
 
 Route::get('/albums/{album:slug}/{image:slug}', function (Album $album, Image $image) {
-    $images = $album->images;
-    $previous = null;
-    $current = null;
-    $next = null;
-    foreach ($images as $checkImage) {
-        if ($checkImage->id == $image->id) {
-            $current = $checkImage;
-        } elseif ($current === null) {
-            $previous = $checkImage;
-        } elseif ($next === null) {
-            $next = $checkImage;
-        }
-    }
-    
+    $image->load(['album', 'media', 'tags']);
+
+    $previous = $album->images()->where('id', '<', $image->id)->orderBy('id','desc')->first();
+    $next = $album->images()->where('id', '>', $image->id)->orderBy('id')->first();
+
     return view('albums/image', compact('album', 'image', 'previous', 'next'));
 })->name('albums.image.show');
 

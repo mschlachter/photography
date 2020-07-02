@@ -4,6 +4,7 @@
 /storage/*.key
 /vendor
 /storage/media-library/temp
+/storage/debugbar
 /service-account-credentials.json
 /service-account-credential-backups
 .env

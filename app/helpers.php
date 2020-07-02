@@ -27,7 +27,7 @@ function getRandomImage(\App\Album $album = null)
     // Not actually random for albums...
     return $album !== null && $album->defaultImage !== null ?
         $album->defaultImage :
-        App\Image::inRandomOrder()->first();
+        App\Image::inRandomOrder()->with(['media'])->first();
 }
 
 function getRandomMediaUrl(\App\Album $album = null)

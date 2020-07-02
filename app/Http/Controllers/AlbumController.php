@@ -66,6 +66,7 @@ class AlbumController extends Controller
      */
     public function edit(Album $album)
     {
+        $album->load(['images', 'images.media', 'images.tags']);
         return view('admin.albums.edit', compact('album'));
     }
 

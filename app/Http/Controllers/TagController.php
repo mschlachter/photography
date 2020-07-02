@@ -64,6 +64,7 @@ class TagController extends Controller
      */
     public function edit(Tag $tag)
     {
+        $tag->load(['images', 'images.media', 'images.tags']);
         return view('admin.tags.edit', compact('tag'));
     }
 
