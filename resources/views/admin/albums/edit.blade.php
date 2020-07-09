@@ -22,6 +22,11 @@
                                 <h4 class="card-title">{{ __('Edit Album') }}</h4>
                                 <p class="card-category">{{ __('Album information') }}</p>
                             </div>
+                            <div class="col-12 col-md-auto d-flex align-items-center">
+                                <a class="text-white py-2" href="{{ route('albums.show', compact('album')) }}" target="_blank">
+                                    <span class="material-icons mr-2">launch</span>View on Site
+                                </a>
+                            </div>
                             <form class="col-12 col-md-auto" id="form-publish-album" method="post" action="{{ route('admin.albums.updateIsActive', compact('album')) }}">
                                 <div class="togglebutton card card-body m-0 pl-0">
                                     @csrf
