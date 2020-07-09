@@ -20,8 +20,7 @@
     <lastmod>{{ App\Image::orderByDesc('updated_at')->pluck('updated_at')->first()->toAtomString() }}</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.80</priority>
-      @foreach(App\Image::take(1000)->get() as $image)
-      @php $album = $image->album @endphp
+      @foreach(App\Image::active()->take(1000)->get() as $image)
     <image:image>
         <image:loc>{{ $image->getFirstMediaUrl('image') }}</image:loc>
         <image:title>{{ $image->title }}</image:title>
