@@ -18,11 +18,13 @@
             <a href="{{ route('images.all', ['tag[]' => $tag]) }}">{{ $tag }}</a>@if(!$loop->last),@endif
         @endforeach
     </p>
+    @if(config('settings.enable_download_link', false))
     <p>
         <a href="{{ route('download', ['image' => $image]) }}" target="_blank">
             Download image
         </a>
     </p>
+    @endif
     <p><x-share/></p>
     <x-comments pageId="photography/images/{{ $image->id }}"/>
 </div>

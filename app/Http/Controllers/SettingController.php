@@ -36,6 +36,12 @@ class SettingController extends Controller
                 'Prints Link (leave blank to exclude)'
             ),
             Setting::getWithDefault(
+                'enable_download_link',
+                '0',
+                'Enable Download Link',
+                Setting::TYPE_CHECKBOX
+            ),
+            Setting::getWithDefault(
                 'enable_comments',
                 '0',
                 'Enable Comments',

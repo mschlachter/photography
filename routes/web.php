@@ -242,6 +242,9 @@ Route::get('sitemap.xml', function() {
 });
 
 Route::get('download/{image:slug}', function (Image $image) {
+    if(!config('settings.enable_download_link', false)) {
+        abort(404, 'Download Link Disabled');
+    }
     return $image->getFirstMedia('image');
 })->name('download');
 
