@@ -51,9 +51,13 @@ Route::get('/photos', function () {
 
     $tags = Tag::when($searchTags, function($query) use ($searchTags) {
         $query->whereHas('images', function($query) use ($searchTags) {
-            return $query->whereHas('tags', function ($query) use ($searchTags) {
+            return $query->active()->whereHas('tags', function ($query) use ($searchTags) {
                 $query->whereIn('name', $searchTags);
             }, '=', count(array_unique($searchTags)));
+        });
+    })->when(!$searchTags, function($query) {
+        $query->whereHas('images', function($query) {
+            return $query->active();
         });
     })->orderBy('name')->pluck('name')->toArray();
 
