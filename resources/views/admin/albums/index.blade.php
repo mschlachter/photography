@@ -18,7 +18,7 @@
               <table class="table">
                 <thead class=" text-primary">
                   <th>
-                    Name
+                    Title
                   </th>
                   <th>
                     Images
