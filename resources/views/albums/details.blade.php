@@ -40,7 +40,7 @@ $image = $album !== null && $album->defaultImage !== null ?
     </h2>
     <div class="image-tiles">
         @foreach($album->images as $image)
-        <a id="image-{{ $image->id }}" href="{{ route('albums.image.show', compact('album', 'image')) }}" class="image-tile" style="background-image: url({{ getMediaUrlForSize($image) }});">
+        <a id="image-{{ $image->id }}" href="{{ route('albums.image.show', compact('album', 'image')) }}" class="image-tile" style="background-image: url('{{ getMediaUrlForSize($image) }}');">
             <span class="image-title">
                 {{ $image->title }}
             </span>
