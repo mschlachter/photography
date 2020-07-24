@@ -19,7 +19,7 @@ function getCanonical($url = null)
 
 function supportsWebp() 
 {
-    return strpos( $_SERVER['HTTP_ACCEPT'], 'image/webp' ) !== false;
+    return strpos( $_SERVER['HTTP_ACCEPT'] ?? '', 'image/webp' ) !== false;
 }
 
 function getRandomImage(\App\Album $album = null)
@@ -100,7 +100,7 @@ function getShortURL($url = null)
             return null;
         }
         return $res['link'];
-    });
+    }) ?? $url;
 }
 
 function buildPageTitle($pageTitle)
