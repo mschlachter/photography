@@ -243,7 +243,7 @@ Route::get('sitemap.xml', function() {
 
 Route::get('robots.txt', function() {
     return response(view('robots'))->withHeaders([
-        'Content-Type' => 'text/text',
+        'Content-Type' => 'text/plain',
     ]);
 })->name('robots');
 
