@@ -3,4 +3,4 @@ Disallow: /home
 Disallow: /admin
 Disallow: /admin/*
 Disallow: /login
-Sitemap: /sitemap.xml
+Sitemap: route('sitemap')

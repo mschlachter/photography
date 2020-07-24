@@ -239,7 +239,13 @@ Route::get('sitemap.xml', function() {
     return response(view('sitemap'))->withHeaders([
         'Content-Type' => 'text/xml',
     ]);
-});
+})->name('sitemap');
+
+Route::get('robots.txt', function() {
+    return response(view('robots'))->withHeaders([
+        'Content-Type' => 'text/text',
+    ]);
+})->name('robots');
 
 Route::get('download/{image:slug}', function (Image $image) {
     if(!config('settings.enable_download_link', false)) {
