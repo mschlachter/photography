@@ -28,3 +28,26 @@
     <p><x-share/></p>
     <x-comments pageId="photography/images/{{ $image->id }}"/>
 </div>
+
+@section('scripts')
+    @parent
+    <script type="application/ld+json">
+        {
+            "@context": "http://schema.org",
+            "@type": "ImageObject",
+            "author": "{{ config('settings.author_name', 'Author Name') }}",
+            "contentUrl": "{{ $image->getFirstMediaUrl('image') }}",
+            "datePublished": "{{ $image->date }}",
+            "description": "{{ $image->alt }}",
+            "name": "{{ $image->title }}",
+            "representativeOfPage": true,
+            "thumbnail": {
+                "@type": "ImageObject",
+                "contentUrl": "{{ getMediaUrlForSize($image) }}"
+            },
+            "accessMode": "visual",
+            "copyrightHolder": "{{ config('settings.author_name', 'Author Name') }}",
+            "copyrightYear": {{ date('Y', strtotime($image->date)) }}
+        }
+    </script>
+@endsection
