@@ -100,7 +100,7 @@ function getShortURL($url = null)
             return null;
         }
         return $res['link'];
-    });
+    }) ?? $url;
 }
 
 function buildPageTitle($pageTitle)
