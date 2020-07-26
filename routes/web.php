@@ -47,7 +47,8 @@ Route::get('/photos', function () {
                 $query->whereIn('name', $searchTags);
             }, '=', count(array_unique($searchTags)));
         })
-        ->orderByDesc('date');
+        ->orderByDesc('date')
+        ->orderByDesc('id');
 
     $tags = Tag::when($searchTags, function($query) use ($searchTags) {
         $query->whereHas('images', function($query) use ($searchTags) {
@@ -90,6 +91,7 @@ Route::get('/photos/{image:slug}', function (Image $image) {
             }, '=', count(array_unique($searchTags)));
         })
         ->orderByDesc('date')
+        ->orderByDesc('id')
         ->get();
     $previous = null;
     $current = null;
