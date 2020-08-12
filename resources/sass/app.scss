@@ -33,12 +33,14 @@ body {
 .hero-image {
     background-size: cover;
     background-position: center center;
+    height: 100%; // Legacy fallback
     height: 100vh;
     min-height: 120px;
     position: relative;
     background-attachment: fixed;
 
     &.hero-small {
+        height: 40%; // Legacy fallback
         height: 40vh;
     }
 
@@ -121,6 +123,8 @@ body {
 }
 
 .image-tiles {
+    display: block; // Legacy fallback
+    text-align: center; // Legacy fallback
     display: flex;
     justify-content: center;
     flex-wrap: wrap;
@@ -137,6 +141,7 @@ body {
         margin: 1rem;
         color: transparent;
         padding: 1rem;
+        display: inline-block; // Legacy fallback
         display: flex;
         justify-content: space-around;
         flex-direction: column;
@@ -175,6 +180,7 @@ body {
 
 .image-viewer {
     position: relative;
+    height: 100%; // Legacy fallback
     height: 100vh;
     background: #000000;
     text-align: center;
@@ -212,12 +218,14 @@ body {
     }
 
     .prev-link {
+        top: 50%; // Legacy fallback
         top: 50vh;
         left: 0;
         transform: translateY(-50%);
     }
 
     .next-link {
+        top: 50%; // Legacy fallback
         top: 50vh;
         right: 0;
         transform: translateY(-50%);
