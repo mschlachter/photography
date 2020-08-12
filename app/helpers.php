@@ -49,7 +49,7 @@ function getMediaUrlForSize(\App\Image $image = null, $targetWidth = 300, $targe
 
     $media = $image->getFirstMedia('image');
     $srcSet = $media->getSrcset(supportsWebp() ? 'webp' : '');
-    $sources = explode(', ', $srcSet);
+    $sources = preg_replace('/https?:\/\/[^\/]+\//i', '/', explode(', ', $srcSet));
     
     // Get the ratio of the image
     $ratio = getImageRatio($image);
@@ -61,7 +61,7 @@ function getMediaUrlForSize(\App\Image $image = null, $targetWidth = 300, $targe
     $desiredWidth = $ratio < $targetRatio ? $targetWidth : $targetHeight * $ratio;
     
     // Find the smallest source that satisfies the desired width
-    $source = $media->getUrl(supportsWebp() ? 'webp' : '');
+    $source = preg_replace('/https?:\/\/[^\/]+\//i', '/', $media->getUrl(supportsWebp() ? 'webp' : ''));
     foreach($sources as $testSource) {
         $split = explode(' ', $testSource); // Uses 'imageURL width'
         if(intVal($split[1] ?? INF) < $desiredWidth) {
