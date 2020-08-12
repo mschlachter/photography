@@ -232,7 +232,7 @@ Route::group(['middleware' => 'auth', 'prefix' => 'admin/', 'as' => 'admin.'], f
         })->name('visitor-count');
 
         Route::get('avg-page-load-speed', function(App\Libraries\ToolboxGoogleAnalytics $analytics) {
-            return $analytics->getAvgPageLoadSpeedForLast7Days() . ' <small>s<span class="sr-only">econds</span></small>';
+            return $analytics->getAvgPageLoadSpeedForLast30Days() . ' <small>s<span class="sr-only">econds</span></small>';
         })->name('avg-page-load-speed');
     });
 });

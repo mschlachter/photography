@@ -41,7 +41,7 @@ class ToolboxGoogleAnalytics
     }
   }
   
-  public function getAvgPageLoadSpeedForLast7Days(): string
+  public function getAvgPageLoadSpeedForLast30Days(): string
   {
     $analytics = $this->initializeAnalytics();
     $profile = $this->getFirstProfileId($analytics);
@@ -246,7 +246,7 @@ class ToolboxGoogleAnalytics
     // over the last seven days.
     return $analytics->data_ga->get(
       'ga:' . $profileId,
-      '7daysAgo',
+      '30daysAgo',
       'today',
       'ga:avgPageLoadTime');
   }

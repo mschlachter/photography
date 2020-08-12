@@ -8,7 +8,7 @@
   </div>
   <div class="card-footer">
     <div class="stats">
-      <i class="material-icons">date_range</i> Last 7 days
+      <i class="material-icons">date_range</i> Last 30 days
     </div>
   </div>
 </div>
