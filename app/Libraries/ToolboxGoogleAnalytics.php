@@ -183,41 +183,44 @@ class ToolboxGoogleAnalytics
 
   function getFirstProfileId($analytics) {
     // Get the user's first view (profile) ID.
+    
+    // Remember for 30 seconds (reduce calls to API)
+    return \Cache::remember('ga|profile-id', 30, function() use ($analytics) {
+      // Get the list of accounts for the authorized user.
+      $accounts = $analytics->management_accounts->listManagementAccounts();
 
-    // Get the list of accounts for the authorized user.
-    $accounts = $analytics->management_accounts->listManagementAccounts();
+      if (count($accounts->getItems()) > 0) {
+        $items = $accounts->getItems();
+        $firstAccountId = $items[0]->getId();
 
-    if (count($accounts->getItems()) > 0) {
-      $items = $accounts->getItems();
-      $firstAccountId = $items[0]->getId();
+        // Get the list of properties for the authorized user.
+        $properties = $analytics->management_webproperties
+        ->listManagementWebproperties($firstAccountId);
 
-      // Get the list of properties for the authorized user.
-      $properties = $analytics->management_webproperties
-      ->listManagementWebproperties($firstAccountId);
+        if (count($properties->getItems()) > 0) {
+          $items = $properties->getItems();
+          $firstPropertyId = $items[0]->getId();
 
-      if (count($properties->getItems()) > 0) {
-        $items = $properties->getItems();
-        $firstPropertyId = $items[0]->getId();
+          // Get the list of views (profiles) for the authorized user.
+          $profiles = $analytics->management_profiles
+          ->listManagementProfiles($firstAccountId, $firstPropertyId);
 
-        // Get the list of views (profiles) for the authorized user.
-        $profiles = $analytics->management_profiles
-        ->listManagementProfiles($firstAccountId, $firstPropertyId);
+          if (count($profiles->getItems()) > 0) {
+            $items = $profiles->getItems();
 
-        if (count($profiles->getItems()) > 0) {
-          $items = $profiles->getItems();
+            // Return the first view (profile) ID.
+            return $items[0]->getId();
 
-          // Return the first view (profile) ID.
-          return $items[0]->getId();
-
+          } else {
+            throw new Exception('No views (profiles) found for this user.');
+          }
         } else {
-          throw new Exception('No views (profiles) found for this user.');
+          throw new Exception('No properties found for this user.');
         }
       } else {
-        throw new Exception('No properties found for this user.');
+        throw new Exception('No accounts found for this user.');
       }
-    } else {
-      throw new Exception('No accounts found for this user.');
-    }
+    });
   }
 
   function getProfileInfoResults($analytics, $profileId) {
