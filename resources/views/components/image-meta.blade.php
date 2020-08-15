@@ -13,6 +13,9 @@
         <a href="{{ route('albums.show', ['album' => $image->album]) }}#image-{{ $image->id }}">{{ $image->album->title }}</a>
     </p>
     <p>
+        Descriptive text: {{ $image->alt}}
+    </p>
+    <p>
         Tags:
         @foreach($image->tags->pluck('name')->toArray() as $tag)
             <a href="{{ route('images.all', ['tag[]' => $tag]) }}">{{ $tag }}</a>@if(!$loop->last),@endif
