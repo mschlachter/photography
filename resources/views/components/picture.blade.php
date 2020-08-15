@@ -15,8 +15,8 @@ $height = $dimensions ? $dimensions['height'] : 1;
 @endphp
 <picture>
     @if($webp !== false)
-    <source srcset="{{ preg_replace('/https?:\/\/[^\/]+\//i', '/', $media->getSrcset('webp')) }}" type="image/webp" sizes="1px">
+    <source srcset="{{ strip_domain($media->getSrcset('webp')) }}" type="image/webp" sizes="1px">
     @endif
-    <source srcset="{{ preg_replace('/https?:\/\/[^\/]+\//i', '/', $media->getSrcset()) }}" type="{{ $media->mime_type }}" sizes="1px">
-    <img @if($id ?? false) id="{{ $id }}" @endif class="{{ $class ?? '' }}" src="{{ preg_replace('/https?:\/\/[^\/]+\//i', '/', $media->getUrl()) }}" title="{{ $image->title }}" alt="{{ $image->alt }}" @if(isset($width)) data-width="{{ $width }}" @endif @if(isset($height)) data-height="{{ $height }}" @endif>
+    <source srcset="{{ strip_domain($media->getSrcset()) }}" type="{{ $media->mime_type }}" sizes="1px">
+    <img @if($id ?? false) id="{{ $id }}" @endif class="{{ $class ?? '' }}" src="{{ strip_domain($media->getUrl()) }}" title="{{ $image->title }}" alt="{{ $image->alt }}" @if(isset($width)) data-width="{{ $width }}" @endif @if(isset($height)) data-height="{{ $height }}" @endif>
 </picture>
