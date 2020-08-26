@@ -16,119 +16,33 @@ use App\Tag;
 |
 */
 
-Route::get('/', function () {
-    $albums = Album::active()
-        ->with(['defaultImage', 'defaultImage.media'])
-        ->orderByDesc('date')
-        ->limit(7)
-        ->get();
-    return view('welcome', compact('albums'));
-})->name('home');
+Route::get('/', PublicSiteController::class . '@home')->name('home');
 
-Route::get('/albums', function () {
-    $albums = Album::active()
-        ->with(['defaultImage', 'defaultImage.media'])
-        ->orderByDesc('date')
-        ->paginate(48);
-    return view('albums/all', compact('albums'));
-})->name('albums.all');
+Route::get('/albums', PublicSiteController::class . '@allAlbums')->name('albums.all');
 
-Route::get('/albums/{album:slug}', function (Album $album) {
-    $album = $album->load(['defaultImage', 'defaultImage.media', 'images', 'images.media']);
-    return view('albums/details', compact('album'));
-})->name('albums.show');
+Route::get('/albums/{album:slug}', PublicSiteController::class . '@showAlbum')->name('albums.show');
 
-Route::get('/photos', function () {
-    $searchTags = request('tag');
-    $imageQuery = Image::active()
-        ->with(['media'])
-        ->when($searchTags, function($query) use ($searchTags) {
-            return $query->whereHas('tags', function ($query) use ($searchTags) {
-                $query->whereIn('name', $searchTags);
-            }, '=', count(array_unique($searchTags)));
-        })
-        ->orderByDesc('date')
-        ->orderByDesc('id');
+Route::get('/photos', PublicSiteController::class . '@allImages')->name('images.all');
 
-    $tags = Tag::when($searchTags, function($query) use ($searchTags) {
-        $query->whereHas('images', function($query) use ($searchTags) {
-            return $query->active()->whereHas('tags', function ($query) use ($searchTags) {
-                $query->whereIn('name', $searchTags);
-            }, '=', count(array_unique($searchTags)));
-        });
-    })->when(!$searchTags, function($query) {
-        $query->whereHas('images', function($query) {
-            return $query->active();
-        });
-    })->orderBy('name')->pluck('name')->toArray();
+Route::get('/albums/{album:slug}/{image:slug}', PublicSiteController::class . '@showAlbumImage')->name('albums.image.show');
 
-    $images = $imageQuery->paginate(48);
-
-    if(request()->ajax()) {
-        return [
-            'tags' => $tags,
-            'imageView' => view('images/ajaxContent', compact('images', 'searchTags'))->render(),
-        ];
-    }
-    return view('images/all', compact('images', 'tags', 'searchTags'));
-})->name('images.all');
-
-Route::get('/albums/{album:slug}/{image:slug}', function (Album $album, Image $image) {
-    $image->load(['album', 'media', 'tags']);
-
-    $previous = $album->images()->where('id', '<', $image->id)->orderBy('id','desc')->first();
-    $next = $album->images()->where('id', '>', $image->id)->orderBy('id')->first();
-
-    return view('albums/image', compact('album', 'image', 'previous', 'next'));
-})->name('albums.image.show');
-
-Route::get('/photos/{image:slug}', function (Image $image) {
-    $searchTags = request('searchTags');
-    $images = Image::active()
-        ->when($searchTags, function($query) use ($searchTags) {
-            return $query->whereHas('tags', function ($query) use ($searchTags) {
-                $query->whereIn('name', $searchTags);
-            }, '=', count(array_unique($searchTags)));
-        })
-        ->orderByDesc('date')
-        ->orderByDesc('id')
-        ->get();
-    $previous = null;
-    $current = null;
-    $next = null;
-    foreach ($images as $checkImage) {
-        if ($checkImage->id == $image->id) {
-            $current = $checkImage;
-        } elseif ($current === null) {
-            $previous = $checkImage;
-        } elseif ($next === null) {
-            $next = $checkImage;
-            break;
-        }
-    }
-    
-    return view('images/show', compact('image', 'previous', 'next', 'searchTags'));
-})->name('images.show');
+Route::get('/photos/{image:slug}', PublicSiteController::class . '@showImage')->name('images.show');
 
 Auth::routes(['register' => false]);
 
-Route::get('/home', function() {
-    return redirect(route('admin.dashboard'));
-})->name('dashboard')->middleware('auth');
+Route::redirect('/home', '/admin/dashboard', 301)->name('dashboard')->middleware('auth');
 
 Route::group(['middleware' => 'auth', 'prefix' => 'admin/', 'as' => 'admin.'], function () {
-    Route::get('/', function() {
-        return redirect(route('admin.dashboard'));
-    });
+    Route::redirect('/', '/admin/dashboard', 301);
 
     Route::get('dashboard', 'HomeController@index')->name('dashboard')->middleware('auth');
 
     Route::resources([
-        'albums' => 'AlbumController',
-        'images' => 'ImageController',
-        'tags' => 'TagController',
-        'tag-categories' => 'TagCategoryController',
-        'settings' => 'SettingController',
+        'albums' => AlbumController::class,
+        'images' => ImageController::class,
+        'tags' => TagController::class,
+        'tag-categories' => TagCategoryController::class,
+        'settings' => SettingController::class,
     ]);
 
     Route::post('albums/{album}/updateIsActive', AlbumController::class . '@updateIsActive')->name('albums.updateIsActive');
@@ -141,124 +55,28 @@ Route::group(['middleware' => 'auth', 'prefix' => 'admin/', 'as' => 'admin.'], f
 	Route::put('profile/password', ['as' => 'profile.password', 'uses' => 'ProfileController@password']);
 
     // Search Results
-    Route::get('search', function() {
-        $query = request('q', '');
-
-        $tagResults = Tag::where('name', 'like', "%$query%")->withCount('images');
-
-        $albumResults = Album::where('title', 'like', "%$query%")->withCount('images');
-
-        $imageResults = Image::where('title', 'like', "%$query%")->orWhere('alt', 'like', "%$query%");
-
-        $searchResults = [
-            'query' => $query,
-            'tags' => $tagResults->get()->map(function($tag) {
-                return [
-                    'name' => $tag->name,
-                    'date' => $tag->created_at->toDateString(),
-                    'images' => $tag->images_count,
-                    'url' => route('admin.tags.edit', compact('tag')),
-                ];
-            }),
-            'albums' => $albumResults->get()->map(function($album) {
-                return [
-                    'title' => $album->title,
-                    'date' => $album->date,
-                    'images' => $album->images_count,
-                    'url' => route('admin.albums.edit', compact('album')),
-                ];
-            }),
-            'images' => $imageResults->get()->map(function($image) {
-                return [
-                    'title' => $image->title,
-                    'thumb' => getMediaUrlForSize($image, 100, 100),
-                    'date' => $image->date,
-                    'album' => [
-                        'title' => $image->album->title,
-                        'url' => route('admin.albums.edit', ['album' => $image->album]),
-                    ],
-                    'url' => route('admin.images.edit', compact('image')),
-                ];
-            }),
-        ];
-
-        if(request()->ajax()) {
-            return $searchResults;
-        }
-
-        return view('admin.search', $searchResults);
-    })->name('search');
+    Route::get('search', DashboardController::class . '@search')->name('search');
 
     // Data for dashboard widgets
     Route::group(['prefix' => 'dashboard/data/', 'as' => 'dashboard.data.'], function() {
-        Route::get('daily-views', function(App\Libraries\ToolboxGoogleAnalytics $analytics) {
-            $viewsByDay = $analytics->getViewsPerDayForLast7Days();
-            $viewsByDayLabels = array_map(function($day) {return substr($day['dayOfWeek'], 0, 1);}, $viewsByDay);
-            $viewsByDayValues = array_map(function($day) {return $day['views'];}, $viewsByDay);
-            $viewsByDayChange = count($viewsByDayValues) > 2 && $viewsByDayValues[count($viewsByDayValues) - 3] > 0 ? floor(($viewsByDayValues[count($viewsByDayValues) - 2] * 1.0 / $viewsByDayValues[count($viewsByDayValues) - 3] - 1) * 100) : (count($viewsByDayValues) > 0 && $viewsByDayValues[count($viewsByDayValues) - 2] > 0 ? 'Infinity' : 0);
+        Route::get('daily-views', DashboardController::class . '@widgetDailyViews')->name('daily-views');
 
-            return [
-                'labels' => $viewsByDayLabels,
-                'values' => $viewsByDayValues,
-                'change' => $viewsByDayChange,
-                'update-time' => now()->toTimeString(),
-            ];
-        })->name('daily-views');
+        Route::get('daily-visitors', DashboardController::class . '@widgetDailyVisitors')->name('daily-visitors');
 
-        Route::get('daily-visitors', function(App\Libraries\ToolboxGoogleAnalytics $analytics) {
-            $sessionsByDay = $analytics->getUsersPerDayForLast7Days();
-            $sessionsByDayLabels = array_map(function($day) {return substr($day['dayOfWeek'], 0, 1);}, $sessionsByDay);
-            $sessionsByDayValues = array_map(function($day) {return $day['sessions'];}, $sessionsByDay);
-            $sessionsByDayChange = count($sessionsByDayValues) > 2 && $sessionsByDayValues[count($sessionsByDayValues) - 3] > 0 ? floor(($sessionsByDayValues[count($sessionsByDayValues) - 2] * 1.0 / $sessionsByDayValues[count($sessionsByDayValues) - 3] - 1) * 100) : (count($sessionsByDayValues) > 0 && $sessionsByDayValues[count($sessionsByDayValues) - 2] > 0 ? 'Infinity' : 0);
+        Route::get('most-popular-images', DashboardController::class . '@widgetMostPopularImages')->name('most-popular-images');
 
-            return [
-                'labels' => $sessionsByDayLabels,
-                'values' => $sessionsByDayValues,
-                'change' => $sessionsByDayChange,
-                'update-time' => now()->toTimeString(),
-            ];
-        })->name('daily-visitors');
+        Route::get('session-sources', DashboardController::class . '@widgetSessionSources')->name('session-sources');
 
-        Route::get('most-popular-images', function(App\Libraries\ToolboxGoogleAnalytics $analytics) {
-            return $analytics->getMostPopularPages();
-        })->name('most-popular-images');
+        Route::get('visitor-count', DashboardController::class . '@widgetVisitorCount')->name('visitor-count');
 
-        Route::get('session-sources', function(App\Libraries\ToolboxGoogleAnalytics $analytics) {
-            return $analytics->getSessionSources();
-        })->name('session-sources');
-
-        Route::get('visitor-count', function(App\Libraries\ToolboxGoogleAnalytics $analytics) {
-            return $analytics->getUsersForLast7Days();
-        })->name('visitor-count');
-
-        Route::get('avg-page-load-speed', function(App\Libraries\ToolboxGoogleAnalytics $analytics) {
-            return $analytics->getAvgPageLoadSpeedForLast30Days() . ' <small>s<span class="sr-only">econds</span></small>';
-        })->name('avg-page-load-speed');
+        Route::get('avg-page-load-speed', DashboardController::class . '@widgetPageLoadTime')->name('avg-page-load-speed');
     });
 });
 
-Route::get('sitemap.xml', function() {
-    return response(view('sitemap'))->withHeaders([
-        'Content-Type' => 'text/xml',
-    ]);
-})->name('sitemap');
+Route::get('sitemap.xml', PublicSiteController::class . '@sitemap')->name('sitemap');
 
-Route::get('robots.txt', function() {
-    return response(view('robots'))->withHeaders([
-        'Content-Type' => 'text/plain',
-    ]);
-})->name('robots');
+Route::get('robots.txt', PublicSiteController::class . '@robots')->name('robots');
 
-Route::get('download/{image:slug}', function (Image $image) {
-    if(!config('settings.enable_download_link', false)) {
-        abort(404, 'Download Link Disabled');
-    }
-    return $image->getFirstMedia('image');
-})->name('download');
+Route::get('download/{image:slug}', PublicSiteController::class . '@download')->name('download');
 
-Route::get('rss.xml', function () {
-    $albums = Album::active()->with(['images'])->orderByDesc('date')->limit(25)->get();
-    return response(view('rss', compact('albums')))->withHeaders([
-        'Content-Type' => 'application/xml',
-    ]);
-})->name('rss');
+Route::get('rss.xml', PublicSiteController::class . '@rss')->name('rss');
