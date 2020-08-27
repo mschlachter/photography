@@ -50,4 +50,10 @@
 	}
 	@endforeach
 </style>
+
+@if($defaultImage ?? false)
+	<meta property="og:site_name" content="{{ config('settings.site_name', 'Photography | Author Name') }}">
+	<meta property="og:image" content="{{ $image->getFirstMediaUrl('image') }}">
+	<meta name="twitter:image:alt" content="{{ $image->alt }}">
+@endif
 @endsection
