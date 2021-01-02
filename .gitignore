@@ -7,6 +7,7 @@
 /storage/debugbar
 /service-account-credentials.json
 /service-account-credential-backups
+/.idea
 .env
 .env.backup
 .phpunit.result.cache

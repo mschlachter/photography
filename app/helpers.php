@@ -17,14 +17,20 @@ function getCanonical($url = null)
     return $newUrl;
 }
 
-function supportsWebp() 
+function supportsWebp()
 {
     return strpos( $_SERVER['HTTP_ACCEPT'] ?? '', 'image/webp' ) !== false;
 }
 
-function strip_domain(string $url)
+function strip_domain(string $url, string $replace = '/')
 {
-    return preg_replace('/https?:\/\/[^\/]+\//i', '/', $url);
+    return preg_replace('/https?:\/\/[^\/]+\//i', $replace, $url);
+}
+
+function strip_domain_assets(string $url)
+{
+    $assetUrl = config('app.asset_url');
+    return strip_domain($url, $assetUrl ? $assetUrl . '/' : '/');
 }
 
 function getRandomImage(\App\Album $album = null)
@@ -38,11 +44,11 @@ function getRandomImage(\App\Album $album = null)
 function getRandomMediaUrl(\App\Album $album = null)
 {
     $image = $getRandomImage($album);
-    
+
     if (supportsWebp()) {
         return $image->getFirstMediaUrl('image', 'webp');
     }
-    
+
     return $image->getFirstMediaUrl('image');
 }
 
@@ -53,20 +59,20 @@ function getMediaUrlForSize(\App\Image $image = null, $targetWidth = 300, $targe
     }
 
     $media = $image->getFirstMedia('image');
-    $srcSet = strip_domain($media->getSrcset(supportsWebp() ? 'webp' : ''));
+    $srcSet = strip_domain_assets($media->getSrcset(supportsWebp() ? 'webp' : ''));
     $sources = explode(', ', $srcSet);
-    
+
     // Get the ratio of the image
     $ratio = getImageRatio($image);
-    
+
     // Get the desired ratio
     $targetRatio = $targetWidth / $targetHeight;
-    
+
     // Get the maximum desired width, based on the ratios
     $desiredWidth = $ratio < $targetRatio ? $targetWidth : $targetHeight * $ratio;
-    
+
     // Find the smallest source that satisfies the desired width
-    $source = strip_domain($media->getUrl(supportsWebp() ? 'webp' : ''));
+    $source = strip_domain_assets($media->getUrl(supportsWebp() ? 'webp' : ''));
     foreach($sources as $testSource) {
         $split = explode(' ', $testSource); // Uses 'imageURL width'
         if(intVal($split[1] ?? INF) < $desiredWidth) {
@@ -74,7 +80,7 @@ function getMediaUrlForSize(\App\Image $image = null, $targetWidth = 300, $targe
         }
         $source = $split[0];
     }
-    
+
     // Return the URL for the desired size
     return $source;
 }
@@ -96,7 +102,7 @@ function getShortURL($url = null)
     return Cache::remember('url|short|' . $url, 60*60*24*7, function() use ($url) {
         // Use bit.ly api:
         $token = 'e069200972cc1c6840724392ff8b5a77afe4f392';
-        
+
         $res = Http::withToken($token)->post(
             'https://api-ssl.bitly.com/v4/shorten',
             ['long_url' => $url]

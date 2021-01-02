@@ -12,7 +12,7 @@
 	$ratio = getImageRatio($image);
 
 	$media = $image->getFirstMedia('image');
-	$srcSet = strip_domain($media->getSrcset(supportsWebp() ? 'webp' : ''));
+	$srcSet = strip_domain_assets($media->getSrcset(supportsWebp() ? 'webp' : ''));
 	$sources = explode(', ', $srcSet);
 @endphp
 
