@@ -10,7 +10,14 @@
     )
 )
 
-@section('scripts')
+@section('preconnect')
+    @parent
+    <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/slim-select/1.26.0/slimselect.min.css" as="style">
+    <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/slim-select/1.26.0/slimselect.min.js" as="script">
+    <link rel="preload" href="{{ mix('js/image-search.js') }}" as="script">
+@endsection
+
+@section('styles')
 @parent
 <link href="https://cdnjs.cloudflare.com/ajax/libs/slim-select/1.26.0/slimselect.min.css" rel="stylesheet">
 @endsection
@@ -26,11 +33,14 @@
         <label for="slct-tag">
             Filter by Tag
         </label>
+        <!-- Scripts inline to remove dropdown flicker (preloaded above so should already be loaded) -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/slim-select/1.26.0/slimselect.min.js"></script>
         <select id="slct-tag" name="tag[]" multiple="multiple">
             @foreach($tags as $tag)
             <option @if(is_array(request('tag')) && in_array($tag, request('tag'))) selected="selected" @endif>{{ $tag }}</option>
             @endforeach
         </select>
+        <script src="{{ mix('js/image-search.js') }}"></script>
         <noscript>
             <button type="submit">
                 Search
@@ -41,10 +51,4 @@
         @include('images/ajaxContent')
     </div>
 </div>
-@endsection
-
-@section('scripts')
-@parent
-<script src="https://cdnjs.cloudflare.com/ajax/libs/slim-select/1.26.0/slimselect.min.js"></script>
-<script src="{{ mix('js/image-search.js') }}"></script>
 @endsection
