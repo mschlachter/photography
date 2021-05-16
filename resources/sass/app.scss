@@ -18,7 +18,7 @@ body {
     text-align: center;
     color: #ffffff;
     padding: 1rem;
-    font-size: 1.25rem;
+    font-size: 1.5rem;
 
     svg {
         margin-left: 0.5rem;
@@ -27,6 +27,7 @@ body {
 
     a {
         color: #ffffff;
+        padding: 0 0.5rem;
     }
 }
 
@@ -34,7 +35,7 @@ body {
     background-size: cover;
     background-position: center center;
     height: 100%; // Legacy fallback
-    height: 100vh;
+    height: calc(100vh - 6.25rem);
     min-height: 120px;
     position: relative;
     background-attachment: fixed;
