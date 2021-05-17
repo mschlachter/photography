@@ -27,7 +27,7 @@ function setScrollY(timestamp) {
     requestAnimationFrame(setScrollY);
 }
 
-window.addEventListener('DOMContentLoaded', setScrollY, false);
+setScrollY();
 
 // Dynamically set 'sizes' attribute on source elements to be expected width of picture
 function setPictureSizes() {
@@ -57,7 +57,7 @@ if (window.addEventListener) {
 } else {
     window.attachEvent('onload', setPictureSizes)
 }
-var resizeFinished;
+let resizeFinished;
 window.onresize = function () {
     clearTimeout(resizeFinished);
     resizeFinished = setTimeout(setPictureSizes, 250);
