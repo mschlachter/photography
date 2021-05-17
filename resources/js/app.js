@@ -15,6 +15,20 @@ scrollArrow && scrollArrow.addEventListener('click', function () {
     });
 });
 
+// Set scroll-y css variable
+const rootElement = document.querySelector(':root');
+let lastScrollYUpdate = 0;
+
+function setScrollY(timestamp) {
+    if(lastScrollYUpdate !== timestamp) {
+        rootElement.style.setProperty('--scroll-y', window.scrollY + 'px');
+    }
+    lastScrollYUpdate = timestamp;
+    requestAnimationFrame(setScrollY);
+}
+
+window.addEventListener('DOMContentLoaded', setScrollY, false);
+
 // Dynamically set 'sizes' attribute on source elements to be expected width of picture
 function setPictureSizes() {
     const vw = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
@@ -86,7 +100,7 @@ function detectswipe(el, func) {
         eY: 0,
     };
     const limit = Math.tan(45 * 1.5 / 180 * Math.PI);
-    
+
     let lastTouch;
     el.addEventListener('touchstart', function (e) {
         var t = e.touches[0];
@@ -151,6 +165,6 @@ function swipeDetected(el, direction) {
 const imageViewer = document.querySelector('.image-viewer');
 imageViewer && detectswipe(imageViewer, swipeDetected);
 
-imageViewer && imageViewer.addEventListener('mousemove', function() {
+imageViewer && imageViewer.addEventListener('mousemove', function () {
     imageViewer.classList.remove('hide-controls');
 });
