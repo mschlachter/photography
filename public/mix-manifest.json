@@ -1,11 +1,11 @@
 {
-    "/js/admin/albums/edit.js": "/js/admin/albums/edit.js?id=370089a1981e2001ebe2",
-    "/js/admin/albums/index.js": "/js/admin/albums/index.js?id=e257658155d1a6de3f3b",
-    "/js/admin/tags/edit.js": "/js/admin/tags/edit.js?id=69fad5523c595d42dbf9",
-    "/js/app.js": "/js/app.js?id=63ff21130cdc6a7bebc0",
-    "/css/app.css": "/css/app.css?id=9d318d4a7ed7a6399540",
-    "/css/share.css": "/css/share.css?id=742b1f81085dbd0d9b1f",
-    "/js/image-search.js": "/js/image-search.js?id=b65cdd89820de9ead065",
-    "/js/share.js": "/js/share.js?id=045c17d18cdc1d4a3c22",
-    "/js/xsl-to-html.js": "/js/xsl-to-html.js?id=36e7b31f6272d4274840"
+    "/js/app.js": "/js/app.js?id=8eb04a123c161471a705",
+    "/js/share.js": "/js/share.js?id=6c5ce9f224f50cbc22a9",
+    "/js/xsl-to-html.js": "/js/xsl-to-html.js?id=cbb8cd78b917ad083a0d",
+    "/js/image-search.js": "/js/image-search.js?id=e23ac66af2abdfeacced",
+    "/js/admin/albums/index.js": "/js/admin/albums/index.js?id=eadc424f96d74d89ace7",
+    "/js/admin/albums/edit.js": "/js/admin/albums/edit.js?id=528cc708abb102b86d8b",
+    "/js/admin/tags/edit.js": "/js/admin/tags/edit.js?id=6bf9521423e537639649",
+    "/css/app.css": "/css/app.css?id=50b74cb5c323fbe86347",
+    "/css/share.css": "/css/share.css?id=81f0faf2c596bebd866c"
 }

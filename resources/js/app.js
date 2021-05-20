@@ -15,19 +15,39 @@ scrollArrow && scrollArrow.addEventListener('click', function () {
     });
 });
 
-// Set scroll-y css variable
-const rootElement = document.querySelector(':root');
-let lastScrollYUpdate = 0;
+// Set scroll-y css variable, when hero is visible
+const heroElement = document.querySelector('.hero-image');
+if (heroElement) {
+    const rootElement = document.querySelector(':root');
+    let isScrolling = false;
+    let tScrollingFinished = null;
+    let lastScrollYUpdate = 0;
 
-function setScrollY(timestamp) {
-    if(lastScrollYUpdate !== timestamp) {
-        rootElement.style.setProperty('--scroll-y', window.scrollY + 'px');
+    function setScrollY(timestamp) {
+        if (lastScrollYUpdate !== timestamp) {
+            rootElement.style.setProperty('--scroll-y', window.scrollY + 'px');
+        }
+        lastScrollYUpdate = timestamp;
+        if (isScrolling) {
+            requestAnimationFrame(setScrollY);
+        }
     }
-    lastScrollYUpdate = timestamp;
-    requestAnimationFrame(setScrollY);
-}
 
-setScrollY();
+    setScrollY();
+
+    window.addEventListener('scroll', function () {
+        if (window.scrollY < heroElement.offsetHeight) {
+            if (!isScrolling) {
+                isScrolling = true;
+                requestAnimationFrame(setScrollY);
+            }
+            window.clearTimeout(tScrollingFinished);
+            tScrollingFinished = window.setTimeout(function () {
+                isScrolling = false;
+            }, 500);
+        }
+    });
+}
 
 // Dynamically set 'sizes' attribute on source elements to be expected width of picture
 function setPictureSizes() {
