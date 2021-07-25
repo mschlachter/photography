@@ -38,6 +38,7 @@
              'siteSpeedSampleRate': 100
         });
     </script>
+    <script async defer data-domain="photography.schlachter.xyz" src="https://analytics.schlachter.xyz/js/plausible.js"></script>
     @endguest
 </head>
 
