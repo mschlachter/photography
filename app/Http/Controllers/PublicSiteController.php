@@ -80,7 +80,7 @@ class PublicSiteController extends Controller
 
         $images = $imageQuery->paginate(48);
         if ($searchTags) {
-            $images->appends(['tags' => $searchTags]);
+            $images->appends(['tag' => $searchTags]);
         }
 
         if (request()->ajax()) {
