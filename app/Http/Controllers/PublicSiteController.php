@@ -79,8 +79,11 @@ class PublicSiteController extends Controller
         })->orderBy('name')->pluck('name')->toArray();
 
         $images = $imageQuery->paginate(48);
+        if ($searchTags) {
+            $images->appends(['tags' => $searchTags])
+        }
 
-        if(request()->ajax()) {
+        if (request()->ajax()) {
             return [
                 'tags' => $tags,
                 'imageView' => view('images/ajaxContent', compact('images', 'searchTags'))->render(),
