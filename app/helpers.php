@@ -33,17 +33,17 @@ function strip_domain_assets(string $url)
     return strip_domain($url, $assetUrl ? $assetUrl . '/' : '/');
 }
 
-function getRandomImage(\App\Album $album = null)
+function getRandomImage(\App\Album|Null $album = null)
 {
     // Not actually random for albums...
-    return $album !== null && $album->defaultImage !== null ?
+    return !is_null($album) && !is_null($album->defaultImage) ?
         $album->defaultImage :
         App\Image::inRandomOrder()->active()->with(['media'])->first();
 }
 
-function getRandomMediaUrl(\App\Album $album = null)
+function getRandomMediaUrl(\App\Album|Null $album = null)
 {
-    $image = $getRandomImage($album);
+    $image = getRandomImage($album);
 
     if (supportsWebp()) {
         return $image->getFirstMediaUrl('image', 'webp');
@@ -52,9 +52,9 @@ function getRandomMediaUrl(\App\Album $album = null)
     return $image->getFirstMediaUrl('image');
 }
 
-function getMediaUrlForSize(\App\Image $image = null, $targetWidth = 300, $targetHeight = 300)
+function getMediaUrlForSize(\App\Image|Null $image = null, $targetWidth = 300, $targetHeight = 300)
 {
-    if($image === null) {
+    if(is_null($image)) {
         return;
     }
 
