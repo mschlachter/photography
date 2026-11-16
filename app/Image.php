@@ -47,7 +47,7 @@ class Image extends Model implements HasMedia
             ->singleFile();
     }
     
-    public function registerMediaConversions(Media): void
+    public function registerMediaConversions(Media|Null $media = null): void
     {
         $this->addMediaConversion('thumb')
             ->width(450)
