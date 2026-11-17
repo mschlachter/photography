@@ -36,8 +36,8 @@
     @parent
     <script type="application/ld+json">
         {
-            "@context": "http://schema.org",
-            "@type": "ImageObject",
+            "@@context": "http://schema.org",
+            "@@type": "ImageObject",
             "author": "{{ config('settings.author_name', 'Author Name') }}",
             "contentUrl": "{{ $image->getFirstMediaUrl('image') }}",
             "datePublished": "{{ $image->date }}",
@@ -45,7 +45,7 @@
             "name": "{{ $image->title }}",
             "representativeOfPage": true,
             "thumbnail": {
-                "@type": "ImageObject",
+                "@@type": "ImageObject",
                 "contentUrl": "{{ getMediaUrlForSize($image) }}"
             },
             "accessMode": "visual",
